@@ -115,6 +115,7 @@ namespace StandApp
         private void linkBtn_Click(object sender, EventArgs e)
         {
             ActiveButton(sender, RGBColors.color3);
+            OpenChildForm(new setupForm());
         }
 
         private void systemBtn_Click(object sender, EventArgs e)
