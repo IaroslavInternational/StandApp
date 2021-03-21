@@ -38,7 +38,6 @@ namespace StandApp
             this.label2 = new System.Windows.Forms.Label();
             this.testCnct = new FontAwesome.Sharp.IconButton();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.console = new System.Windows.Forms.RichTextBox();
             this.serialTestPort = new System.IO.Ports.SerialPort(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.checkBoxConnection = new System.Windows.Forms.CheckBox();
@@ -47,6 +46,7 @@ namespace StandApp
             this.comPortSelected = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.console = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -125,6 +125,8 @@ namespace StandApp
             // 
             // testCnct
             // 
+            this.testCnct.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.testCnct.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(64)))), ((int)(((byte)(142)))));
             this.testCnct.Cursor = System.Windows.Forms.Cursors.Hand;
             this.testCnct.FlatAppearance.BorderSize = 0;
@@ -138,7 +140,7 @@ namespace StandApp
             this.testCnct.Location = new System.Drawing.Point(12, 324);
             this.testCnct.Name = "testCnct";
             this.testCnct.Padding = new System.Windows.Forms.Padding(10, 0, 20, 0);
-            this.testCnct.Size = new System.Drawing.Size(228, 60);
+            this.testCnct.Size = new System.Drawing.Size(228, 91);
             this.testCnct.TabIndex = 3;
             this.testCnct.Text = "Проверить подключение";
             this.testCnct.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -148,25 +150,15 @@ namespace StandApp
             // 
             // panel3
             // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
             this.panel3.Controls.Add(this.console);
             this.panel3.Location = new System.Drawing.Point(255, 12);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(387, 372);
+            this.panel3.Size = new System.Drawing.Size(387, 403);
             this.panel3.TabIndex = 2;
-            // 
-            // console
-            // 
-            this.console.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
-            this.console.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.console.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.console.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.console.ForeColor = System.Drawing.Color.Gainsboro;
-            this.console.Location = new System.Drawing.Point(0, 0);
-            this.console.Name = "console";
-            this.console.Size = new System.Drawing.Size(387, 372);
-            this.console.TabIndex = 6;
-            this.console.Text = "";
             // 
             // panel4
             // 
@@ -249,6 +241,19 @@ namespace StandApp
             this.label3.TabIndex = 0;
             this.label3.Text = "Baud-rate:";
             // 
+            // console
+            // 
+            this.console.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
+            this.console.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.console.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.console.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.console.ForeColor = System.Drawing.Color.Gainsboro;
+            this.console.Location = new System.Drawing.Point(0, 0);
+            this.console.Name = "console";
+            this.console.Size = new System.Drawing.Size(387, 403);
+            this.console.TabIndex = 10;
+            this.console.Text = "";
+            // 
             // setupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -261,6 +266,7 @@ namespace StandApp
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MinimumSize = new System.Drawing.Size(654, 427);
             this.Name = "setupForm";
             this.Text = "setupForm";
             this.Load += new System.EventHandler(this.setupForm_Load);
@@ -291,8 +297,8 @@ namespace StandApp
         private System.Windows.Forms.Label baudRateSelected;
         private System.Windows.Forms.Label comPortSelected;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.RichTextBox console;
         private System.Windows.Forms.CheckBox checkBoxConnection;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.RichTextBox console;
     }
 }

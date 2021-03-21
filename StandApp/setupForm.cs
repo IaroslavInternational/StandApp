@@ -9,10 +9,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Text.RegularExpressions;
+using System.IO;
 using System.IO.Ports;
+using Newtonsoft.Json;
 
 namespace StandApp
 {
+    struct ConnectionData
+    {
+        public string PortName;
+        public int BaudRate;
+    }
+
     public partial class setupForm : Form
     {
         public delegate void AddThreadLog(string log);
@@ -21,8 +29,13 @@ namespace StandApp
         public delegate void SetThreadChecked(bool IsCheck);
         public SetThreadChecked SetCheckedTh;
 
+        public delegate void SaveThreadSettings();
+        public SaveThreadSettings SaveSettingsTh;
+
         private bool IsSuccessLoad;
-        private const int AllowedLines = 17;        
+        private const int AllowedLines = 17;
+
+        private ConnectionData data = new ConnectionData();
 
         public setupForm()
         {
@@ -30,6 +43,7 @@ namespace StandApp
 
             AddLogTh = new AddThreadLog(AddLog);
             SetCheckedTh = new SetThreadChecked(SetChekedValue);
+            SaveSettingsTh = new SaveThreadSettings(SaveConnectionSettings);
         }
 
         private void AddLog(string log)
@@ -42,7 +56,7 @@ namespace StandApp
 
             console.Text += " > " + log + "\n";
         }
-
+        
         private void SetChekedValue(bool IsCheck)
         {
             checkBoxConnection.Checked = IsCheck;
@@ -103,6 +117,20 @@ namespace StandApp
             AddLog("Добавлен список скоростей");
         }
 
+        private void SaveConnectionSettings()
+        {
+            string json = JsonConvert.SerializeObject(data);
+
+            // запись в файл
+            using (FileStream fstream = new FileStream("connection settings.json", FileMode.OpenOrCreate))
+            {
+                byte[] array = System.Text.Encoding.Default.GetBytes(json);               
+                fstream.Write(array, 0, array.Length);
+                
+                console.Invoke(AddLogTh, "Настройки сохранены");
+            }
+        }
+
         private void setupForm_Load(object sender, EventArgs e)
         {
             AddLog("Настройка...");
@@ -131,6 +159,9 @@ namespace StandApp
 
                     AddLog("Порт " + serialTestPort.PortName + " открыт");
 
+                    data.PortName = (string)comList.SelectedItem;
+                    data.BaudRate = Convert.ToInt32(baudRateList.SelectedItem);
+
                     serialTestPort.WriteLine("[Test connection]");
                 }
                 else
@@ -152,13 +183,14 @@ namespace StandApp
 
             read = Regex.Replace(read, @"[\u0000-\u001F]", string.Empty);
 
-            if (read == "[Connection succeeded]")
-            {
-                checkBoxConnection.Invoke(SetCheckedTh, true);
-            }
-
             if (read != "")
             {
+                if (read == "[Connection succeeded]")
+                {
+                    checkBoxConnection.Invoke(SetCheckedTh, true);
+                    SaveSettingsTh();
+                }
+
                 console.Invoke(AddLogTh, log);
             }
         }
