@@ -39,7 +39,7 @@ namespace StandApp
 
         public setupForm()
         {
-            InitializeComponent();
+            InitializeComponent();            
 
             AddLogTh = new AddThreadLog(AddLog);
             SetCheckedTh = new SetThreadChecked(SetChekedValue);
@@ -203,6 +203,14 @@ namespace StandApp
         private void baudRateList_SelectedValueChanged(object sender, EventArgs e)
         {
             baudRateSelected.Text = Convert.ToString(baudRateList.SelectedItem);
+        }
+
+        private void checkBoxConnection_Click(object sender, EventArgs e)
+        {
+            if (sender is CheckBox)
+            {
+                ((CheckBox)sender).Checked = !((CheckBox)sender).Checked;
+            }
         }
     }
 }

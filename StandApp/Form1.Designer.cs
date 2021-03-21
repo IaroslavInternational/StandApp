@@ -265,6 +265,7 @@
             this.Controls.Add(this.titleBar);
             this.Controls.Add(this.panelMenu);
             this.ForeColor = System.Drawing.Color.Gainsboro;
+            this.MinimumSize = new System.Drawing.Size(890, 550);
             this.Name = "btnHome";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
