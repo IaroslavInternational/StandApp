@@ -8,28 +8,44 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Text.RegularExpressions;
 using System.IO.Ports;
 
 namespace StandApp
 {
     public partial class setupForm : Form
     {
+        public delegate void AddThreadLog(string log);
+        public AddThreadLog AddLogTh;
+
+        public delegate void SetThreadChecked(bool IsCheck);
+        public SetThreadChecked SetCheckedTh;
+
+        private bool IsSuccessLoad;
+        private const int AllowedLines = 17;        
+
         public setupForm()
         {
             InitializeComponent();
-        }
 
-        private bool IsSuccessLoad;
-        private const int AllowedLines = 14;
+            AddLogTh = new AddThreadLog(AddLog);
+            SetCheckedTh = new SetThreadChecked(SetChekedValue);
+        }
 
         private void AddLog(string log)
         {
             if (console.Lines.Length == AllowedLines)
             {
                 console.Clear();
+                console.Text += "\n";
             }
 
-            console.Text += ">" + log + "\n";
+            console.Text += " > " + log + "\n";
+        }
+
+        private void SetChekedValue(bool IsCheck)
+        {
+            checkBoxConnection.Checked = IsCheck;
         }
 
         private void LoadPorts()
@@ -85,7 +101,6 @@ namespace StandApp
             }
 
             AddLog("Добавлен список скоростей");
-
         }
 
         private void setupForm_Load(object sender, EventArgs e)
@@ -101,14 +116,61 @@ namespace StandApp
             if (IsSuccessLoad)
             {
                 AddLog("Подключение к порту " + comList.SelectedItem + "...");
+
                 serialTestPort.PortName = (string)comList.SelectedItem;
                 serialTestPort.BaudRate = (int)baudRateList.SelectedItem;
+
+                comPortSelected.Text = (string)comList.SelectedItem;
+                baudRateSelected.Text = Convert.ToString(baudRateList.SelectedItem);
+
+                serialTestPort.DataReceived += SerialTestPort_DataReceived;
+
+                if (!serialTestPort.IsOpen)
+                {
+                    serialTestPort.Open();
+
+                    AddLog("Порт " + serialTestPort.PortName + " открыт");
+
+                    serialTestPort.WriteLine("[Test connection]");
+                }
+                else
+                {
+                    AddLog("Порт " + serialTestPort.PortName + " не доступен");
+                }
             }
-            else 
+            else
             {
                 AddLog("Порт с контроллером не был обнаружен. Повторная проверка...");
                 LoadPorts();
             }
+        }
+
+        private void SerialTestPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            var read = serialTestPort.ReadLine();
+            var log = "Ответ от контроллера:" + read;
+
+            read = Regex.Replace(read, @"[\u0000-\u001F]", string.Empty);
+
+            if (read == "[Connection succeeded]")
+            {
+                checkBoxConnection.Invoke(SetCheckedTh, true);
+            }
+
+            if (read != "")
+            {
+                console.Invoke(AddLogTh, log);
+            }
+        }
+
+        private void comList_SelectedValueChanged(object sender, EventArgs e)
+        {
+            comPortSelected.Text = (string)comList.SelectedItem;
+        }
+
+        private void baudRateList_SelectedValueChanged(object sender, EventArgs e)
+        {
+            baudRateSelected.Text = Convert.ToString(baudRateList.SelectedItem);
         }
     }
 }
