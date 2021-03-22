@@ -270,6 +270,7 @@ namespace StandApp
             this.MinimumSize = new System.Drawing.Size(654, 427);
             this.Name = "setupForm";
             this.Text = "Подключение";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.setupForm_FormClosing);
             this.Load += new System.EventHandler(this.setupForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

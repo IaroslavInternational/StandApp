@@ -23,14 +23,14 @@ namespace StandApp
 
     public partial class setupForm : Form
     {
-        public delegate void AddThreadLog(string log);
-        public AddThreadLog AddLogTh;
+        private delegate void AddThreadLog(string log);
+        private AddThreadLog AddLogTh;
 
-        public delegate void SetThreadChecked(bool IsCheck);
-        public SetThreadChecked SetCheckedTh;
+        private delegate void SetThreadChecked(bool IsCheck);
+        private SetThreadChecked SetCheckedTh;
 
-        public delegate void SaveThreadSettings();
-        public SaveThreadSettings SaveSettingsTh;
+        private delegate void SaveThreadSettings();
+        private SaveThreadSettings SaveSettingsTh;
 
         private bool IsSuccessLoad;
         private const int AllowedLines = 17;
@@ -44,6 +44,8 @@ namespace StandApp
             AddLogTh = new AddThreadLog(AddLog);
             SetCheckedTh = new SetThreadChecked(SetChekedValue);
             SaveSettingsTh = new SaveThreadSettings(SaveConnectionSettings);
+
+            serialTestPort.DataReceived += SerialTestPort_DataReceived;
         }
 
         private void AddLog(string log)
@@ -151,8 +153,6 @@ namespace StandApp
                 comPortSelected.Text = (string)comList.SelectedItem;
                 baudRateSelected.Text = Convert.ToString(baudRateList.SelectedItem);
 
-                serialTestPort.DataReceived += SerialTestPort_DataReceived;
-
                 if (!serialTestPort.IsOpen)
                 {
                     serialTestPort.Open();
@@ -185,7 +185,7 @@ namespace StandApp
 
             if (read != "")
             {
-                if (read == "[Connection succeeded]")
+                if (read == "[Connection succeded]")
                 {
                     checkBoxConnection.Invoke(SetCheckedTh, true);
                     SaveSettingsTh();
@@ -210,6 +210,16 @@ namespace StandApp
             if (sender is CheckBox)
             {
                 ((CheckBox)sender).Checked = !((CheckBox)sender).Checked;
+            }
+        }
+
+        private void setupForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AddLog("Закрытие порта");
+
+            if (serialTestPort.IsOpen)
+            {
+                serialTestPort.Close();
             }
         }
     }
