@@ -95,11 +95,11 @@ namespace StandApp
 
             panelDesktop.Controls.Add(childForm);
             panelDesktop.Tag = childForm;
-            
-            childForm.BringToFront();
-            childForm.Show();
 
             labelHome.Text = childForm.Text;
+
+            childForm.BringToFront();
+            childForm.Show();
         }
 
         private void manageBtn_Click(object sender, EventArgs e)
