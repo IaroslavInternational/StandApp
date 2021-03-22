@@ -28,6 +28,13 @@ namespace StandApp
             public const string humidity = "[BMP/E 280 humidity]";          // Влажность
         }
 
+        // Команды от
+        // АЦП с тензодатчика
+        public struct HX711
+        {
+            public const string realPressure = "[HX 711 pressure]";  // Давление на тензодатчике
+        }
+
         // Команды для Ардуино
         public struct Arduino
         {

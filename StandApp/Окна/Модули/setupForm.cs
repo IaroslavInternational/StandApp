@@ -23,7 +23,7 @@ namespace StandApp
     }
 
     // Форма настроек и тестирования подключения
-    public partial class setupForm : Form
+    public partial class SetupForm : Form
     {
         /* Делегаты */
         
@@ -48,7 +48,7 @@ namespace StandApp
         private ConnectionData data = new ConnectionData();
 
         // Конструктор
-        public setupForm()
+        public SetupForm()
         {
             InitializeComponent();            
 

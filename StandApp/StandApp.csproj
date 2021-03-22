@@ -92,11 +92,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands.cs" />
-    <Compile Include="Окна\Модули\setupForm.cs">
+    <Compile Include="Окна\Модули\SetupForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Окна\Модули\setupForm.Designer.cs">
-      <DependentUpon>setupForm.cs</DependentUpon>
+    <Compile Include="Окна\Модули\SetupForm.Designer.cs">
+      <DependentUpon>SetupForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Окна\Модули\ChartForm.resx">
       <DependentUpon>ChartForm.cs</DependentUpon>
@@ -117,8 +117,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Окна\Модули\setupForm.resx">
-      <DependentUpon>setupForm.cs</DependentUpon>
+    <EmbeddedResource Include="Окна\Модули\SetupForm.resx">
+      <DependentUpon>SetupForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

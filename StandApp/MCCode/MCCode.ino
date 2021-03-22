@@ -1,60 +1,8 @@
-/*#include "Headers/HX711.h"
+/* Библиотеки для работы с АЦП HX711 */
 
-#define DOUT  7
-#define CLK  6
+#include <HX711.h>
 
-HX711 scale;
-
-float calibration_factor = 10.50; //-7050 worked for my 440lb max scale setup
-float units;
-float ounces;
-
-void setup() {
-  scale.begin(DOUT, CLK);
-  Serial.begin(9600);
-  Serial.println("HX711 calibration sketch");
-  Serial.println("Remove all weight from scale");
-  Serial.println("After readings begin, place known weight on scale");
-  Serial.println("Press + or a to increase calibration factor");
-  Serial.println("Press - or z to decrease calibration factor");
-
-  scale.set_scale();
-  scale.tare();	//Reset the scale to 0
-
-  long zero_factor = scale.read_average(); //Get a baseline reading
-  Serial.print("Zero factor: "); //This can be used to remove the need to tare the scale. Useful in permanent scale projects.
-  Serial.println(zero_factor);
-}
-
-void loop() {
-
-  scale.set_scale(calibration_factor); //Adjust to this calibration factor
-
-  Serial.print("Reading: ");
-  units = scale.get_units(), 10;
-  if (units < 0)
-  {
-    units = 0.00;
-  }
-  ounces = units * 0.035274;
-  Serial.print(ounces);
-  Serial.print(" grams"); 
-  Serial.print(" calibration_factor: ");
-  Serial.print(calibration_factor);
-  Serial.println();
-
-  if(Serial.available())
-  {
-    char temp = Serial.read();
-    if(temp == '+' || temp == 'a')
-      calibration_factor += 0.1;
-    else if(temp == '-' || temp == 'z')
-      calibration_factor -= 0.1;
-  }
-}*/
-
-// Настройки
-#include "Headers/commands.h"
+/*************************************/
 
 /* Библиотеки для работы с датчиком BMP/E 280 */
 
@@ -64,17 +12,43 @@ void loop() {
 
 /**********************************************/
 
+/* Настройки */
+
+#include "Headers/commands.h" // Команды
+
+/* Настройки для АЦП HX711 */
+
+// Пин данных для АЦП HX711
+#define DOUT 7 
+
+// Пин clock для АЦП HX711
+#define CLK 6  
+
+// Объект АЦП
+HX711 hx711;
+
+float calibration_factor = 10.50; // Калибровочный множитель
+float units;                      // Значение
+float kg_press;                   // Кг
+
+// Если АЦП доступен
+bool IsHX_Valid = false;
+/****************************/
+
 /* Настройки для датчика BMP/E 280 */
 
-// Давление на высоте уровня моря в гектопаскалях
+// Давление на высоте уровня моря в гектопаскалях для Чёрного моря
 #define SEALEVELPRESSURE_HPA (999.92)
 
 // Объект датчика
 Adafruit_BME280 bme;
 
+// Если датчик доступен
 bool IsBMP_E_Valid = false;
  
 /***********************************/
+
+/*************/
 
 // Инициализация датчика BMP/E 280
 void bmeSetup()
@@ -90,7 +64,18 @@ void bmeSetup()
   }
 }
 
-void Print_BMP_E_Info(String header, String val)
+// Инициализация АЦП HX711
+void hxSetup()
+{
+  hx711.begin(DOUT, CLK);
+  hx711.set_scale(calibration_factor);
+  hx711.tare();
+  
+  IsHX_Valid = true;
+}
+
+// Метод для отправки данных с датчиков, АЦП и пр.
+void Send_Device_InData_Info(String header, String val)
 {
   Serial.print(header);
   Serial.print(SPLITTER_SIGN);
@@ -127,28 +112,47 @@ void setup()
     }
   }
 
-bmeSetup();
+  bmeSetup(); // Установка датчика BMP/E 280
+  hxSetup();  // Установка АЦП HX711
 }
 
 // Главный цикл
 void loop()
 {
+  // Если порт доступен
   if (Serial.available() > 0) 
   {
-    String data = Serial.readString();
+    String command = Serial.readString();
 
-    if(data == SHUTDOWN)
+    // Если спящий режим
+    if(command == SHUTDOWN)
     {
       setup();
     }
   }
-  
+
+  // Если доступен датчик BMP/E 280
   if(IsBMP_E_Valid)
   {
-    Print_BMP_E_Info(BMP_E_TEMP, (String)bme.readTemperature());
-    Print_BMP_E_Info(BMP_E_PRES, (String)(bme.readPressure() / 133.0f));
-    Print_BMP_E_Info(BMP_E_ALT, (String)bme.readAltitude(SEALEVELPRESSURE_HPA));
-    Print_BMP_E_Info(BMP_E_HUM, (String)bme.readHumidity());
+    Send_Device_InData_Info(BMP_E_TEMP, (String)bme.readTemperature());
+    Send_Device_InData_Info(BMP_E_PRES, (String)(bme.readPressure() / 133.0f));
+    Send_Device_InData_Info(BMP_E_ALT, (String)bme.readAltitude(SEALEVELPRESSURE_HPA));
+    Send_Device_InData_Info(BMP_E_HUM, (String)bme.readHumidity());
+  }
+
+  // Если доступен АЦП HX711
+  if(IsHX_Valid)
+  {
+    units = hx711.get_units(), 10;
+    
+    if (units < 0)
+    {
+      units = 0.00;
+    }
+    
+    kg_press = units * 0.035274;
+
+    Send_Device_InData_Info(HX711_PRES, (String)kg_press);
   }
   
   delay(250);

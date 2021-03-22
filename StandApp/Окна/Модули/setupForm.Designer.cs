@@ -1,7 +1,7 @@
 ﻿
 namespace StandApp
 {
-    partial class setupForm
+    partial class SetupForm
     {
         /// <summary>
         /// Required designer variable.

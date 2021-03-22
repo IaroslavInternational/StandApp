@@ -42,14 +42,19 @@
             this.serialPortMain = new System.IO.Ports.SerialPort(this.components);
             this.mainChart = new LiveCharts.WinForms.CartesianChart();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.showTempChartBtn = new FontAwesome.Sharp.IconButton();
-            this.showHumChartBtn = new FontAwesome.Sharp.IconButton();
-            this.showPresChartBtn = new FontAwesome.Sharp.IconButton();
             this.showAltChartBtn = new FontAwesome.Sharp.IconButton();
+            this.showPresChartBtn = new FontAwesome.Sharp.IconButton();
+            this.showHumChartBtn = new FontAwesome.Sharp.IconButton();
+            this.showTempChartBtn = new FontAwesome.Sharp.IconButton();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.showRealPresBtn = new FontAwesome.Sharp.IconButton();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -193,43 +198,24 @@
             this.panel2.Size = new System.Drawing.Size(26, 80);
             this.panel2.TabIndex = 4;
             // 
-            // showTempChartBtn
+            // showAltChartBtn
             // 
-            this.showTempChartBtn.BackColor = System.Drawing.Color.Goldenrod;
-            this.showTempChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.showTempChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.showTempChartBtn.FlatAppearance.BorderSize = 0;
-            this.showTempChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showTempChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
-            this.showTempChartBtn.IconChar = FontAwesome.Sharp.IconChar.ThermometerThreeQuarters;
-            this.showTempChartBtn.IconColor = System.Drawing.Color.Black;
-            this.showTempChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.showTempChartBtn.IconSize = 20;
-            this.showTempChartBtn.Location = new System.Drawing.Point(0, 0);
-            this.showTempChartBtn.Name = "showTempChartBtn";
-            this.showTempChartBtn.Size = new System.Drawing.Size(26, 20);
-            this.showTempChartBtn.TabIndex = 0;
-            this.showTempChartBtn.UseVisualStyleBackColor = false;
-            this.showTempChartBtn.Click += new System.EventHandler(this.showTempChart_Click);
-            // 
-            // showHumChartBtn
-            // 
-            this.showHumChartBtn.BackColor = System.Drawing.Color.DodgerBlue;
-            this.showHumChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.showHumChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.showHumChartBtn.FlatAppearance.BorderSize = 0;
-            this.showHumChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showHumChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
-            this.showHumChartBtn.IconChar = FontAwesome.Sharp.IconChar.Tint;
-            this.showHumChartBtn.IconColor = System.Drawing.Color.Black;
-            this.showHumChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.showHumChartBtn.IconSize = 20;
-            this.showHumChartBtn.Location = new System.Drawing.Point(0, 20);
-            this.showHumChartBtn.Name = "showHumChartBtn";
-            this.showHumChartBtn.Size = new System.Drawing.Size(26, 20);
-            this.showHumChartBtn.TabIndex = 1;
-            this.showHumChartBtn.UseVisualStyleBackColor = false;
-            this.showHumChartBtn.Click += new System.EventHandler(this.showHumChartBtn_Click);
+            this.showAltChartBtn.BackColor = System.Drawing.Color.Maroon;
+            this.showAltChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showAltChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showAltChartBtn.FlatAppearance.BorderSize = 0;
+            this.showAltChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showAltChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showAltChartBtn.IconChar = FontAwesome.Sharp.IconChar.ArrowsAltV;
+            this.showAltChartBtn.IconColor = System.Drawing.Color.Black;
+            this.showAltChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showAltChartBtn.IconSize = 20;
+            this.showAltChartBtn.Location = new System.Drawing.Point(0, 60);
+            this.showAltChartBtn.Name = "showAltChartBtn";
+            this.showAltChartBtn.Size = new System.Drawing.Size(26, 20);
+            this.showAltChartBtn.TabIndex = 3;
+            this.showAltChartBtn.UseVisualStyleBackColor = false;
+            this.showAltChartBtn.Click += new System.EventHandler(this.showAltChartBtn_Click);
             // 
             // showPresChartBtn
             // 
@@ -250,24 +236,43 @@
             this.showPresChartBtn.UseVisualStyleBackColor = false;
             this.showPresChartBtn.Click += new System.EventHandler(this.showPresChartBtn_Click);
             // 
-            // showAltChartBtn
+            // showHumChartBtn
             // 
-            this.showAltChartBtn.BackColor = System.Drawing.Color.Maroon;
-            this.showAltChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.showAltChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.showAltChartBtn.FlatAppearance.BorderSize = 0;
-            this.showAltChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showAltChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
-            this.showAltChartBtn.IconChar = FontAwesome.Sharp.IconChar.ArrowsAltV;
-            this.showAltChartBtn.IconColor = System.Drawing.Color.Black;
-            this.showAltChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.showAltChartBtn.IconSize = 20;
-            this.showAltChartBtn.Location = new System.Drawing.Point(0, 60);
-            this.showAltChartBtn.Name = "showAltChartBtn";
-            this.showAltChartBtn.Size = new System.Drawing.Size(26, 20);
-            this.showAltChartBtn.TabIndex = 3;
-            this.showAltChartBtn.UseVisualStyleBackColor = false;
-            this.showAltChartBtn.Click += new System.EventHandler(this.showAltChartBtn_Click);
+            this.showHumChartBtn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.showHumChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showHumChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showHumChartBtn.FlatAppearance.BorderSize = 0;
+            this.showHumChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showHumChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showHumChartBtn.IconChar = FontAwesome.Sharp.IconChar.Tint;
+            this.showHumChartBtn.IconColor = System.Drawing.Color.Black;
+            this.showHumChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showHumChartBtn.IconSize = 20;
+            this.showHumChartBtn.Location = new System.Drawing.Point(0, 20);
+            this.showHumChartBtn.Name = "showHumChartBtn";
+            this.showHumChartBtn.Size = new System.Drawing.Size(26, 20);
+            this.showHumChartBtn.TabIndex = 1;
+            this.showHumChartBtn.UseVisualStyleBackColor = false;
+            this.showHumChartBtn.Click += new System.EventHandler(this.showHumChartBtn_Click);
+            // 
+            // showTempChartBtn
+            // 
+            this.showTempChartBtn.BackColor = System.Drawing.Color.Goldenrod;
+            this.showTempChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showTempChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showTempChartBtn.FlatAppearance.BorderSize = 0;
+            this.showTempChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showTempChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showTempChartBtn.IconChar = FontAwesome.Sharp.IconChar.ThermometerThreeQuarters;
+            this.showTempChartBtn.IconColor = System.Drawing.Color.Black;
+            this.showTempChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showTempChartBtn.IconSize = 20;
+            this.showTempChartBtn.Location = new System.Drawing.Point(0, 0);
+            this.showTempChartBtn.Name = "showTempChartBtn";
+            this.showTempChartBtn.Size = new System.Drawing.Size(26, 20);
+            this.showTempChartBtn.TabIndex = 0;
+            this.showTempChartBtn.UseVisualStyleBackColor = false;
+            this.showTempChartBtn.Click += new System.EventHandler(this.showTempChart_Click);
             // 
             // panel3
             // 
@@ -279,12 +284,52 @@
             this.panel3.Size = new System.Drawing.Size(32, 116);
             this.panel3.TabIndex = 9;
             // 
+            // panel4
+            // 
+            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
+            this.panel4.Controls.Add(this.panel5);
+            this.panel4.Location = new System.Drawing.Point(302, 299);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(32, 116);
+            this.panel4.TabIndex = 10;
+            // 
+            // panel5
+            // 
+            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
+            this.panel5.Controls.Add(this.showRealPresBtn);
+            this.panel5.Location = new System.Drawing.Point(3, 25);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(26, 80);
+            this.panel5.TabIndex = 4;
+            // 
+            // showRealPresBtn
+            // 
+            this.showRealPresBtn.BackColor = System.Drawing.Color.RoyalBlue;
+            this.showRealPresBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showRealPresBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showRealPresBtn.FlatAppearance.BorderSize = 0;
+            this.showRealPresBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showRealPresBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showRealPresBtn.IconChar = FontAwesome.Sharp.IconChar.LongArrowAltDown;
+            this.showRealPresBtn.IconColor = System.Drawing.Color.Black;
+            this.showRealPresBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showRealPresBtn.IconSize = 20;
+            this.showRealPresBtn.Location = new System.Drawing.Point(0, 0);
+            this.showRealPresBtn.Name = "showRealPresBtn";
+            this.showRealPresBtn.Size = new System.Drawing.Size(26, 20);
+            this.showRealPresBtn.TabIndex = 0;
+            this.showRealPresBtn.UseVisualStyleBackColor = false;
+            this.showRealPresBtn.Click += new System.EventHandler(this.showRealPresBtn_Click);
+            // 
             // ChartForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(33)))), ((int)(((byte)(74)))));
             this.ClientSize = new System.Drawing.Size(654, 427);
+            this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.mainChart);
             this.Controls.Add(this.panel1);
@@ -297,6 +342,8 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -321,5 +368,8 @@
         private FontAwesome.Sharp.IconButton showPresChartBtn;
         private FontAwesome.Sharp.IconButton showHumChartBtn;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel panel5;
+        private FontAwesome.Sharp.IconButton showRealPresBtn;
     }
 }

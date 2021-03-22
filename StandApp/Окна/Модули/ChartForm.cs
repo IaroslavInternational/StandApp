@@ -47,10 +47,11 @@ namespace StandApp
         private const string mmOfMerc = "мм. рт. ст.";  // Постфикс для давления в мм. рт. ст
         private const string meter = "м.";              // Постфикс для высоты в метрах
 
-        private bool IsShowTempChart = false;   // Показать график для температуры
-        private bool IsShowPresChart = false;   // Показать график для давления
-        private bool IsShowAltChart = false;    // Показать график для высоты
-        private bool IsShowHumChart = false;    // Показать график для влажности
+        private bool IsShowTempChart = false;        // Показать график для температуры
+        private bool IsShowPresChart = false;        // Показать график для давления
+        private bool IsShowAltChart = false;         // Показать график для высоты
+        private bool IsShowHumChart = false;         // Показать график для влажности
+        private bool IsShowRealPresChart = false;    // Показать график для давления на тензодатчике
 
         private const int AllowedPoints = 20;   // Кол-во одновременно отрисованных точек на графике
 
@@ -87,6 +88,7 @@ namespace StandApp
             IsShowPresChart = false;
             IsShowAltChart = false;
             IsShowHumChart = false;
+            IsShowRealPresChart = false;
 
             mainChart.Series[0].Values.Clear();
         }
@@ -195,7 +197,7 @@ namespace StandApp
                 string command = arr_data[0];   // Команда
                 string value = arr_data[1];     // Значение
                 
-                if (command == Commands.BMP_E280.temperature)   // Если датчик температуры
+                if (command == Commands.BMP_E280.temperature)     // Если датчик температуры
                 {
                     // Установить значение
                     tempState.Invoke(SetTemp, value);
@@ -206,7 +208,7 @@ namespace StandApp
                         mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
-                else if (command == Commands.BMP_E280.pressure) // Если датчик давления
+                else if (command == Commands.BMP_E280.pressure)   // Если датчик давления
                 {
                     // Установить значение
                     presState.Invoke(SetPres, value);
@@ -217,7 +219,7 @@ namespace StandApp
                         mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
-                else if (command == Commands.BMP_E280.altitude) // Если датчик высоты
+                else if (command == Commands.BMP_E280.altitude)   // Если датчик высоты
                 {
                     // Установить значение
                     heightState.Invoke(SetHeight, value);
@@ -228,13 +230,20 @@ namespace StandApp
                         mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
-                else if (command == Commands.BMP_E280.humidity) // Если датчик влажности
+                else if (command == Commands.BMP_E280.humidity)   // Если датчик влажности
                 {
                     // Установить значение
                     humState.Invoke(SetHum, value);
 
                     // При возможности отрисовать график
                     if (IsShowHumChart)
+                    {
+                        mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                    }
+                }else if (command == Commands.HX711.realPressure) // Если тензодатчик
+                {
+                    // При возможности отрисовать график
+                    if (IsShowRealPresChart)
                     {
                         mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                     }
@@ -292,6 +301,16 @@ namespace StandApp
             IsShowAltChart = true;
 
             mainChart.AxisY[0].MinValue = -20.0;
+            mainChart.AxisY[0].MaxValue = 1000.0;
+        }
+
+        // При нажатии на кнопку для отрисовки давления на тензодатчик
+        private void showRealPresBtn_Click(object sender, EventArgs e)
+        {
+            DisableAllCharts();
+            IsShowRealPresChart = true;
+
+            mainChart.AxisY[0].MinValue = 0.0;
             mainChart.AxisY[0].MaxValue = 1000.0;
         }
     }
