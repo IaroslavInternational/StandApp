@@ -128,12 +128,21 @@ void setup()
   }
 
 bmeSetup();
-
 }
 
 // Главный цикл
 void loop()
 {
+  if (Serial.available() > 0) 
+  {
+    String data = Serial.readString();
+
+    if(data == SHUTDOWN)
+    {
+      setup();
+    }
+  }
+  
   if(IsBMP_E_Valid)
   {
     Print_BMP_E_Info(BMP_E_TEMP, (String)bme.readTemperature());

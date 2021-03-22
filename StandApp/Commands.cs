@@ -20,6 +20,17 @@ namespace StandApp
             public const string humidity = "[BMP/E 280 humidity]";
         }
 
+        public struct Arduino
+        {
+            public const string shutdown = "[Reset]";
+            public const string testConnection = "[Test connection]";
+        }
+
+        public struct Response
+        {
+            public const string goodConnection = "[Connection succeded]";
+        }
+
         public static string DeleteSpecSymb(string str)
         {
             return Regex.Replace(str, @"[\u0000-\u001F]", string.Empty);

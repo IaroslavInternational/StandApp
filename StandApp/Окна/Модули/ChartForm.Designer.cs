@@ -30,18 +30,26 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.heightState = new System.Windows.Forms.Label();
+            this.presState = new System.Windows.Forms.Label();
+            this.humState = new System.Windows.Forms.Label();
+            this.tempState = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.serialPortMain = new System.IO.Ports.SerialPort(this.components);
             this.mainChart = new LiveCharts.WinForms.CartesianChart();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tempState = new System.Windows.Forms.Label();
-            this.humState = new System.Windows.Forms.Label();
-            this.presState = new System.Windows.Forms.Label();
-            this.heightState = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.showTempChartBtn = new FontAwesome.Sharp.IconButton();
+            this.showHumChartBtn = new FontAwesome.Sharp.IconButton();
+            this.showPresChartBtn = new FontAwesome.Sharp.IconButton();
+            this.showAltChartBtn = new FontAwesome.Sharp.IconButton();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -61,6 +69,94 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(246, 116);
             this.panel1.TabIndex = 2;
+            // 
+            // heightState
+            // 
+            this.heightState.AutoSize = true;
+            this.heightState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.heightState.ForeColor = System.Drawing.Color.Gainsboro;
+            this.heightState.Location = new System.Drawing.Point(113, 86);
+            this.heightState.Name = "heightState";
+            this.heightState.Size = new System.Drawing.Size(35, 20);
+            this.heightState.TabIndex = 8;
+            this.heightState.Text = "0 м.";
+            // 
+            // presState
+            // 
+            this.presState.AutoSize = true;
+            this.presState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.presState.ForeColor = System.Drawing.Color.Gainsboro;
+            this.presState.Location = new System.Drawing.Point(113, 66);
+            this.presState.Name = "presState";
+            this.presState.Size = new System.Drawing.Size(89, 20);
+            this.presState.TabIndex = 7;
+            this.presState.Text = "0 мм. рт. ст.";
+            // 
+            // humState
+            // 
+            this.humState.AutoSize = true;
+            this.humState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.humState.ForeColor = System.Drawing.Color.Gainsboro;
+            this.humState.Location = new System.Drawing.Point(113, 46);
+            this.humState.Name = "humState";
+            this.humState.Size = new System.Drawing.Size(34, 20);
+            this.humState.TabIndex = 6;
+            this.humState.Text = "0 %";
+            // 
+            // tempState
+            // 
+            this.tempState.AutoSize = true;
+            this.tempState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.tempState.ForeColor = System.Drawing.Color.Gainsboro;
+            this.tempState.Location = new System.Drawing.Point(113, 26);
+            this.tempState.Name = "tempState";
+            this.tempState.Size = new System.Drawing.Size(37, 20);
+            this.tempState.TabIndex = 5;
+            this.tempState.Text = "0 °C";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label5.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label5.Location = new System.Drawing.Point(4, 26);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(103, 20);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Температура:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label4.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label4.Location = new System.Drawing.Point(4, 86);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(63, 20);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Высота:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label3.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label3.Location = new System.Drawing.Point(4, 66);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(82, 20);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Давление:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label2.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label2.Location = new System.Drawing.Point(4, 46);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(88, 20);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Влажность:";
             // 
             // label1
             // 
@@ -84,93 +180,104 @@
             this.mainChart.TabIndex = 3;
             this.mainChart.Text = "cartesianChart1";
             // 
-            // label2
+            // panel2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label2.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label2.Location = new System.Drawing.Point(4, 46);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(88, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Влажность:";
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
+            this.panel2.Controls.Add(this.showAltChartBtn);
+            this.panel2.Controls.Add(this.showPresChartBtn);
+            this.panel2.Controls.Add(this.showHumChartBtn);
+            this.panel2.Controls.Add(this.showTempChartBtn);
+            this.panel2.Location = new System.Drawing.Point(3, 25);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(26, 80);
+            this.panel2.TabIndex = 4;
             // 
-            // label3
+            // showTempChartBtn
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label3.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label3.Location = new System.Drawing.Point(4, 66);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 20);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Давление:";
+            this.showTempChartBtn.BackColor = System.Drawing.Color.Goldenrod;
+            this.showTempChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showTempChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showTempChartBtn.FlatAppearance.BorderSize = 0;
+            this.showTempChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showTempChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showTempChartBtn.IconChar = FontAwesome.Sharp.IconChar.ThermometerThreeQuarters;
+            this.showTempChartBtn.IconColor = System.Drawing.Color.Black;
+            this.showTempChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showTempChartBtn.IconSize = 20;
+            this.showTempChartBtn.Location = new System.Drawing.Point(0, 0);
+            this.showTempChartBtn.Name = "showTempChartBtn";
+            this.showTempChartBtn.Size = new System.Drawing.Size(26, 20);
+            this.showTempChartBtn.TabIndex = 0;
+            this.showTempChartBtn.UseVisualStyleBackColor = false;
+            this.showTempChartBtn.Click += new System.EventHandler(this.showTempChart_Click);
             // 
-            // label4
+            // showHumChartBtn
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label4.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label4.Location = new System.Drawing.Point(4, 86);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 20);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Высота:";
+            this.showHumChartBtn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.showHumChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showHumChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showHumChartBtn.FlatAppearance.BorderSize = 0;
+            this.showHumChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showHumChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showHumChartBtn.IconChar = FontAwesome.Sharp.IconChar.Tint;
+            this.showHumChartBtn.IconColor = System.Drawing.Color.Black;
+            this.showHumChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showHumChartBtn.IconSize = 20;
+            this.showHumChartBtn.Location = new System.Drawing.Point(0, 20);
+            this.showHumChartBtn.Name = "showHumChartBtn";
+            this.showHumChartBtn.Size = new System.Drawing.Size(26, 20);
+            this.showHumChartBtn.TabIndex = 1;
+            this.showHumChartBtn.UseVisualStyleBackColor = false;
+            this.showHumChartBtn.Click += new System.EventHandler(this.showHumChartBtn_Click);
             // 
-            // label5
+            // showPresChartBtn
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label5.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label5.Location = new System.Drawing.Point(4, 26);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(103, 20);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Температура:";
+            this.showPresChartBtn.BackColor = System.Drawing.Color.BlueViolet;
+            this.showPresChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showPresChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showPresChartBtn.FlatAppearance.BorderSize = 0;
+            this.showPresChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showPresChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showPresChartBtn.IconChar = FontAwesome.Sharp.IconChar.CompressAlt;
+            this.showPresChartBtn.IconColor = System.Drawing.Color.Black;
+            this.showPresChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showPresChartBtn.IconSize = 20;
+            this.showPresChartBtn.Location = new System.Drawing.Point(0, 40);
+            this.showPresChartBtn.Name = "showPresChartBtn";
+            this.showPresChartBtn.Size = new System.Drawing.Size(26, 20);
+            this.showPresChartBtn.TabIndex = 2;
+            this.showPresChartBtn.UseVisualStyleBackColor = false;
+            this.showPresChartBtn.Click += new System.EventHandler(this.showPresChartBtn_Click);
             // 
-            // tempState
+            // showAltChartBtn
             // 
-            this.tempState.AutoSize = true;
-            this.tempState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.tempState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.tempState.Location = new System.Drawing.Point(113, 26);
-            this.tempState.Name = "tempState";
-            this.tempState.Size = new System.Drawing.Size(37, 20);
-            this.tempState.TabIndex = 5;
-            this.tempState.Text = "0 °C";
+            this.showAltChartBtn.BackColor = System.Drawing.Color.Maroon;
+            this.showAltChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showAltChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showAltChartBtn.FlatAppearance.BorderSize = 0;
+            this.showAltChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showAltChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showAltChartBtn.IconChar = FontAwesome.Sharp.IconChar.ArrowsAltV;
+            this.showAltChartBtn.IconColor = System.Drawing.Color.Black;
+            this.showAltChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showAltChartBtn.IconSize = 20;
+            this.showAltChartBtn.Location = new System.Drawing.Point(0, 60);
+            this.showAltChartBtn.Name = "showAltChartBtn";
+            this.showAltChartBtn.Size = new System.Drawing.Size(26, 20);
+            this.showAltChartBtn.TabIndex = 3;
+            this.showAltChartBtn.UseVisualStyleBackColor = false;
+            this.showAltChartBtn.Click += new System.EventHandler(this.showAltChartBtn_Click);
             // 
-            // humState
+            // panel3
             // 
-            this.humState.AutoSize = true;
-            this.humState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.humState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.humState.Location = new System.Drawing.Point(113, 46);
-            this.humState.Name = "humState";
-            this.humState.Size = new System.Drawing.Size(34, 20);
-            this.humState.TabIndex = 6;
-            this.humState.Text = "0 %";
-            // 
-            // presState
-            // 
-            this.presState.AutoSize = true;
-            this.presState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.presState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.presState.Location = new System.Drawing.Point(113, 66);
-            this.presState.Name = "presState";
-            this.presState.Size = new System.Drawing.Size(89, 20);
-            this.presState.TabIndex = 7;
-            this.presState.Text = "0 мм. рт. ст.";
-            // 
-            // heightState
-            // 
-            this.heightState.AutoSize = true;
-            this.heightState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.heightState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.heightState.Location = new System.Drawing.Point(113, 86);
-            this.heightState.Name = "heightState";
-            this.heightState.Size = new System.Drawing.Size(35, 20);
-            this.heightState.TabIndex = 8;
-            this.heightState.Text = "0 м.";
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
+            this.panel3.Controls.Add(this.panel2);
+            this.panel3.Location = new System.Drawing.Point(264, 299);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(32, 116);
+            this.panel3.TabIndex = 9;
             // 
             // ChartForm
             // 
@@ -178,6 +285,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(33)))), ((int)(((byte)(74)))));
             this.ClientSize = new System.Drawing.Size(654, 427);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.mainChart);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -187,6 +295,8 @@
             this.Load += new System.EventHandler(this.ChartForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -205,5 +315,11 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel panel2;
+        private FontAwesome.Sharp.IconButton showTempChartBtn;
+        private FontAwesome.Sharp.IconButton showAltChartBtn;
+        private FontAwesome.Sharp.IconButton showPresChartBtn;
+        private FontAwesome.Sharp.IconButton showHumChartBtn;
+        private System.Windows.Forms.Panel panel3;
     }
 }

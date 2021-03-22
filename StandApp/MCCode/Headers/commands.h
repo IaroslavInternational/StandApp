@@ -4,6 +4,7 @@
 
 #define TEST_QUERY "[Test connection]\n"
 #define WORK_MODE_ACTIVE "[Work mode]\n"
+#define SHUTDOWN "[Reset]\n"
 
 /*****************/
 

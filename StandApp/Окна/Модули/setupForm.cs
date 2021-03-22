@@ -162,7 +162,7 @@ namespace StandApp
                     data.PortName = (string)comList.SelectedItem;
                     data.BaudRate = Convert.ToInt32(baudRateList.SelectedItem);
 
-                    serialTestPort.WriteLine("[Test connection]");
+                    serialTestPort.WriteLine(Commands.Arduino.testConnection);
                 }
                 else
                 {
@@ -181,11 +181,11 @@ namespace StandApp
             var read = serialTestPort.ReadLine();
             var log = "Ответ от контроллера:" + read;
 
-            read = Regex.Replace(read, @"[\u0000-\u001F]", string.Empty);
+            read = Commands.DeleteSpecSymb(read);
 
             if (read != "")
             {
-                if (read == "[Connection succeded]")
+                if (read == Commands.Response.goodConnection)
                 {
                     checkBoxConnection.Invoke(SetCheckedTh, true);
                     SaveSettingsTh();

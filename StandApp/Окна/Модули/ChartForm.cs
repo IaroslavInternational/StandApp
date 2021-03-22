@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.IO;
 using System.IO.Ports;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace StandApp
 {
@@ -26,12 +28,20 @@ namespace StandApp
         private HeightSetter SetHeight;
 
         private delegate void HumSetter(string val);
-        private HumSetter SetHum;       
+        private HumSetter SetHum;
+
+        private delegate void MainChartSetter(double val);
+        private MainChartSetter AddVal;
 
         private const string Celsius = "°C";
         private const string Percent = "%";
         private const string mmOfMerc = "мм. рт. ст.";
         private const string meter = "м.";
+
+        bool IsShowTempChart = false;
+        bool IsShowPresChart = false;
+        bool IsShowAltChart = false;
+        bool IsShowHumChart = false;
 
         public ChartForm()
         {
@@ -43,13 +53,30 @@ namespace StandApp
             SetPres = new PresSetter(SetNewPressure);
             SetHeight = new HeightSetter(SetNewHeight);
             SetHum = new HumSetter(SetNewHumidity);
+            AddVal = new MainChartSetter(AddNewValueToMainChart);
+
+            mainChart.Series.Add(new LineSeries
+            {
+                Values = new ChartValues<double> { 0.0 },
+                ScalesYAt = 0
+            });
+        }
+
+        public void DisableAllCharts()
+        {
+            IsShowTempChart = false;
+            IsShowPresChart = false;
+            IsShowAltChart = false;
+            IsShowHumChart = false;
+
+            mainChart.Series[0].Values.Clear();
         }
 
         private void SetNewTemperature(string val)
         {
             tempState.Text = val + " " + Celsius;
-        }  
-        
+        }
+
         private void SetNewHumidity(string val)
         {
             humState.Text = val + " " + Percent;
@@ -63,6 +90,16 @@ namespace StandApp
         private void SetNewHeight(string val)
         {
             heightState.Text = val + " " + meter;
+        }
+
+        private void AddNewValueToMainChart(double val)
+        {
+            if (mainChart.Series[0].Values.Count == 20)
+            {
+                mainChart.Series[0].Values.RemoveAt(0);
+            }
+
+            mainChart.Series[0].Values.Add(val);
         }
 
         private void ChartForm_Load(object sender, EventArgs e)
@@ -85,7 +122,7 @@ namespace StandApp
                     IsFileExisting = true;
                 }
             }
-            catch(FileNotFoundException ex)
+            catch (FileNotFoundException ex)
             {
                 IsFileExisting = false;
 
@@ -96,17 +133,24 @@ namespace StandApp
             {
                 ConnectionData data = JsonConvert.DeserializeObject<ConnectionData>(rawData);
 
-                serialPortMain.PortName = data.PortName;
-                serialPortMain.BaudRate = data.BaudRate;
+                try
+                {
+                    serialPortMain.PortName = data.PortName;
+                    serialPortMain.BaudRate = data.BaudRate;
 
-                if (!serialPortMain.IsOpen)
-                {
-                    serialPortMain.Open();
-                    serialPortMain.WriteLine("[Work mode]");
+                    if (!serialPortMain.IsOpen)
+                    {
+                        serialPortMain.Open();
+                        serialPortMain.WriteLine("[Work mode]");
+                    }
+                    else
+                    {
+                        Errors.ShowMessage(Errors.portIsBusy);
+                    }
                 }
-                else
+                catch(IOException ex)
                 {
-                    Errors.ShowMessage(Errors.portIsBusy);
+                    Errors.ShowMessage(Errors.deletedPort);
                 }
             }
         }
@@ -126,28 +170,85 @@ namespace StandApp
                 if (command == Commands.BMP_E280.temperature)
                 {
                     tempState.Invoke(SetTemp, value);
+
+                    if (IsShowTempChart)
+                    {
+                        mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                    }
                 }
                 else if (command == Commands.BMP_E280.pressure)
                 {
                     presState.Invoke(SetPres, value);
+
+                    if (IsShowPresChart)
+                    {
+                        mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                    }
                 }
                 else if (command == Commands.BMP_E280.altitude)
                 {
                     heightState.Invoke(SetHeight, value);
+
+                    if (IsShowAltChart)
+                    {
+                        mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                    }
                 }
                 else if (command == Commands.BMP_E280.humidity)
                 {
                     humState.Invoke(SetHum, value);
+
+                    if (IsShowHumChart)
+                    {
+                        mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                    }
                 }
-            }           
+            }
         }
 
         private void ChartForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (serialPortMain.IsOpen)
             {
+                serialPortMain.WriteLine(Commands.Arduino.shutdown);
                 serialPortMain.Close();
             }
+        }
+
+        private void showTempChart_Click(object sender, EventArgs e)
+        {
+            DisableAllCharts();
+            IsShowTempChart = true;
+
+            mainChart.AxisY[0].MinValue = -50.0;
+            mainChart.AxisY[0].MaxValue = 150.0;
+        }
+
+        private void showHumChartBtn_Click(object sender, EventArgs e)
+        {
+            DisableAllCharts();
+            IsShowHumChart = true;
+
+            mainChart.AxisY[0].MinValue = 0.0;
+            mainChart.AxisY[0].MaxValue = 100.0;
+        }
+
+        private void showPresChartBtn_Click(object sender, EventArgs e)
+        {
+            DisableAllCharts();
+            IsShowPresChart = true;
+
+            mainChart.AxisY[0].MinValue = 0.0;
+            mainChart.AxisY[0].MaxValue = 1000.0;
+        }
+
+        private void showAltChartBtn_Click(object sender, EventArgs e)
+        {
+            DisableAllCharts();
+            IsShowAltChart = true;
+
+            mainChart.AxisY[0].MinValue = -20.0;
+            mainChart.AxisY[0].MaxValue = 1000.0;
         }
     }
 }
