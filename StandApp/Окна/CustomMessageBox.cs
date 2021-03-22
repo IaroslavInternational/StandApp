@@ -12,7 +12,7 @@ namespace StandApp
 {
     public partial class CustomMessageBox : Form
     {
-        public CustomMessageBox(ErrorStruct es)
+        public CustomMessageBox(Errors.ErrorStruct es)
         {
             InitializeComponent();
 

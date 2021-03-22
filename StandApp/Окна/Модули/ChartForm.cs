@@ -26,7 +26,6 @@ namespace StandApp
             string rawData = "";
             bool IsFileExisting = false;
 
-
             try
             {
                 // чтение из файла
@@ -46,23 +45,31 @@ namespace StandApp
             {
                 IsFileExisting = false;
 
-                ErrorStruct checkConnection = new ErrorStruct
-                {
-                    header = "Ошибка",
-                    message = "Произошла ошибка во время загрузки настроек. Перейдите в" +
-                    " раздел \"Подключение\" и проведите настройку."
-                };
-
-                Form messageBox = new CustomMessageBox(checkConnection);
-                messageBox.ShowDialog();
+                Errors.ShowMessage(Errors.checkConnection);
             }
 
-            if(IsFileExisting)
+            if (IsFileExisting)
             {
                 ConnectionData data = JsonConvert.DeserializeObject<ConnectionData>(rawData);
 
-            }
+                serialPortMain.PortName = data.PortName;
+                serialPortMain.BaudRate = data.BaudRate;
 
+                if (!serialPortMain.IsOpen)
+                {
+                    serialPortMain.Open();
+
+                    serialPortMain.DataReceived += SerialPortMain_DataReceived;
+                }
+                else
+                {
+                    Errors.ShowMessage(Errors.portIsBusy);
+                }
+            }
+        }
+
+        private void SerialPortMain_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
         }
     }
 }

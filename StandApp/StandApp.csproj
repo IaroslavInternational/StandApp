@@ -70,40 +70,40 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChartForm.cs">
+    <Compile Include="Окна\Модули\ChartForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChartForm.Designer.cs">
+    <Compile Include="Окна\Модули\ChartForm.Designer.cs">
       <DependentUpon>ChartForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomMessageBox.cs">
+    <Compile Include="Окна\CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomMessageBox.Designer.cs">
+    <Compile Include="Окна\CustomMessageBox.Designer.cs">
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Errors.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Окна\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="Окна\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="setupForm.cs">
+    <Compile Include="Окна\Модули\setupForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="setupForm.Designer.cs">
+    <Compile Include="Окна\Модули\setupForm.Designer.cs">
       <DependentUpon>setupForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ChartForm.resx">
+    <EmbeddedResource Include="Окна\Модули\ChartForm.resx">
       <DependentUpon>ChartForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomMessageBox.resx">
+    <EmbeddedResource Include="Окна\CustomMessageBox.resx">
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="Окна\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -116,7 +116,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="setupForm.resx">
+    <EmbeddedResource Include="Окна\Модули\setupForm.resx">
       <DependentUpon>setupForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
