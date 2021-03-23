@@ -50,6 +50,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.showRealPresBtn = new FontAwesome.Sharp.IconButton();
+            this.weightPresInd = new LiveCharts.WinForms.AngularGauge();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -323,12 +324,24 @@
             this.showRealPresBtn.UseVisualStyleBackColor = false;
             this.showRealPresBtn.Click += new System.EventHandler(this.showRealPresBtn_Click);
             // 
+            // weightPresInd
+            // 
+            this.weightPresInd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.weightPresInd.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.weightPresInd.ForeColor = System.Drawing.Color.Gainsboro;
+            this.weightPresInd.Location = new System.Drawing.Point(340, 300);
+            this.weightPresInd.Name = "weightPresInd";
+            this.weightPresInd.Size = new System.Drawing.Size(122, 115);
+            this.weightPresInd.TabIndex = 11;
+            this.weightPresInd.Text = "Весы";
+            // 
             // ChartForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(33)))), ((int)(((byte)(74)))));
             this.ClientSize = new System.Drawing.Size(654, 427);
+            this.Controls.Add(this.weightPresInd);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.mainChart);
@@ -371,5 +384,6 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
         private FontAwesome.Sharp.IconButton showRealPresBtn;
+        private LiveCharts.WinForms.AngularGauge weightPresInd;
     }
 }

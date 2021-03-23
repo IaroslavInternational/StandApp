@@ -135,7 +135,7 @@ void loop()
   if(IsBMP_E_Valid)
   {
     Send_Device_InData_Info(BMP_E_TEMP, (String)bme.readTemperature());
-    Send_Device_InData_Info(BMP_E_PRES, (String)(bme.readPressure() / 133.0f));
+    Send_Device_InData_Info(BMP_E_PRES, (String)(bme.readPressure() / 997.5));
     Send_Device_InData_Info(BMP_E_ALT, (String)bme.readAltitude(SEALEVELPRESSURE_HPA));
     Send_Device_InData_Info(BMP_E_HUM, (String)bme.readHumidity());
   }
@@ -150,7 +150,7 @@ void loop()
       units = 0.00;
     }
     
-    kg_press = units * 0.035274;
+    kg_press = units * 0.000035274;
 
     Send_Device_InData_Info(HX711_PRES, (String)kg_press);
   }

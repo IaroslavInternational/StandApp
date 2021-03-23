@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
+﻿using LiveCharts;
+using LiveCharts.Wpf;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.IO.Ports;
-using LiveCharts;
-using LiveCharts.Wpf;
+using System.Windows.Forms;
 
 namespace StandApp
 {
     public partial class ChartForm : Form
     {
         /* Делегаты */
-        
+
         // Установка текста для температуры в другом потоке
         private delegate void TempSetter(string val);
         private TempSetter SetTemp;
@@ -36,16 +28,21 @@ namespace StandApp
         private delegate void HumSetter(string val);
         private HumSetter SetHum;
 
-        // Добавление значения к графику в другом потоке
+        // Добавление значения к главному графику в другом потоке
         private delegate void MainChartSetter(double val);
         private MainChartSetter AddVal;
+
+        // Добавление значения к графику весов в другом потоке
+        private delegate void WeightChartSetter(double val);
+        private WeightChartSetter AddWeightVal;
 
         /************/
 
         private const string Celsius = "°C";            // Постфикс для температуры в градусах
         private const string Percent = "%";             // Постфикс для влажности в процентах
-        private const string mmOfMerc = "мм. рт. ст.";  // Постфикс для давления в мм. рт. ст
+        private const string mmOfMerc = "кПа";          // Постфикс для давления в кПа
         private const string meter = "м.";              // Постфикс для высоты в метрах
+        private const string kgramm = "кг.";             // Постфикс для давления на тензодатчик в килограммах
 
         private bool IsShowTempChart = false;        // Показать график для температуры
         private bool IsShowPresChart = false;        // Показать график для давления
@@ -53,7 +50,7 @@ namespace StandApp
         private bool IsShowHumChart = false;         // Показать график для влажности
         private bool IsShowRealPresChart = false;    // Показать график для давления на тензодатчике
 
-        private const int AllowedPoints = 20;   // Кол-во одновременно отрисованных точек на графике
+        private int AllowedPoints = 100;   // Кол-во одновременно отрисованных точек на графике
 
         // Конструктор
         public ChartForm()
@@ -61,28 +58,71 @@ namespace StandApp
             InitializeComponent();
 
             /* Объявление делегат */
-            
+
             SetTemp = new TempSetter(SetNewTemperature);
             SetPres = new PresSetter(SetNewPressure);
             SetHeight = new HeightSetter(SetNewHeight);
             SetHum = new HumSetter(SetNewHumidity);
             AddVal = new MainChartSetter(AddNewValueToMainChart);
+            AddWeightVal = new WeightChartSetter(AddNewValueToWeightChart);
 
             /**********************/
+
+            /* Настройки главного графика */
 
             // Объявления пустого графика
             mainChart.Series.Add(new LineSeries
             {
                 Values = new ChartValues<double> { 0.0 },
-                ScalesYAt = 0
+                ScalesYAt = 0,
+                StrokeThickness = 1
             });
+
+            mainChart.Zoom = ZoomingOptions.X;
+
+            /******************************/
+
+            /* Настройки весового индикатора */
+
+            weightPresInd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            weightPresInd.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            weightPresInd.ForeColor = System.Drawing.Color.Gainsboro;
+            weightPresInd.Name = "weightPresInd";
+            weightPresInd.TabIndex = 11;
+            weightPresInd.Text = "Весы";
+            weightPresInd.ToValue = 1000;
+            weightPresInd.LabelsStep = weightPresInd.ToValue / 10;
+            weightPresInd.TickStep = 50;
+
+            /*********************************/
+
+            /* Подсказки */
+
+            {
+                ToolTip temp_tt = new ToolTip();
+                temp_tt.SetToolTip(showTempChartBtn, "Температура");
+
+                ToolTip hum_tt = new ToolTip();
+                hum_tt.SetToolTip(showHumChartBtn, "Влажность");
+
+                ToolTip pres_tt = new ToolTip();
+                pres_tt.SetToolTip(showPresChartBtn, "Атмосферное давление");
+
+                ToolTip alt_tt = new ToolTip();
+                alt_tt.SetToolTip(showAltChartBtn, "Относительная высота");
+
+                ToolTip realPres_tt = new ToolTip();
+                realPres_tt.SetToolTip(showRealPresBtn, "Давление на тензодатчик");
+            }
+
+            /*************/
 
             // Создание события приёма данных
             serialPortMain.DataReceived += SerialPortMain_DataReceived;
         }
 
         // Отключить отображение всех графиков и очистить график
-        public void DisableAllCharts()
+        private void DisableAllCharts()
         {
             IsShowTempChart = false;
             IsShowPresChart = false;
@@ -91,6 +131,19 @@ namespace StandApp
             IsShowRealPresChart = false;
 
             mainChart.Series[0].Values.Clear();
+        }
+
+        // Установить единицы измерения для главного графика
+        private void SetDataPostfix(string pf)
+        {
+            mainChart.Series[0].LabelPoint = point => point.Y + " " + pf;
+        }
+
+        // Установить дипазон значение для главного графика   
+        private void SetDataInterval(double lb, double ub)
+        {
+            mainChart.AxisY[0].MinValue = lb;
+            mainChart.AxisY[0].MaxValue = ub;
         }
 
         // Сеттер температуры 
@@ -126,6 +179,12 @@ namespace StandApp
             }
 
             mainChart.Series[0].Values.Add(val);
+        }
+
+        // Установить новое значение на весах
+        private void AddNewValueToWeightChart(double val)
+        {
+            weightPresInd.Value = val;
         }
 
         // При загрузке формы
@@ -175,7 +234,7 @@ namespace StandApp
                         Errors.ShowMessage(Errors.portIsBusy);
                     }
                 }
-                catch(IOException ex)
+                catch (IOException ex)
                 {
                     Errors.ShowMessage(Errors.deletedPort);
                 }
@@ -196,7 +255,7 @@ namespace StandApp
             {
                 string command = arr_data[0];   // Команда
                 string value = arr_data[1];     // Значение
-                
+
                 if (command == Commands.BMP_E280.temperature)     // Если датчик температуры
                 {
                     // Установить значение
@@ -240,12 +299,14 @@ namespace StandApp
                     {
                         mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                     }
-                }else if (command == Commands.HX711.realPressure) // Если тензодатчик
+                }
+                else if (command == Commands.HX711.realPressure) // Если тензодатчик
                 {
                     // При возможности отрисовать график
                     if (IsShowRealPresChart)
                     {
                         mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                        weightPresInd.Invoke(AddWeightVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
             }
@@ -270,8 +331,8 @@ namespace StandApp
             DisableAllCharts();
             IsShowTempChart = true;
 
-            mainChart.AxisY[0].MinValue = -50.0;
-            mainChart.AxisY[0].MaxValue = 150.0;
+            SetDataInterval(-50.0, 150.0);
+            SetDataPostfix(Celsius);
         }
 
         // При нажатии на кнопку для отрисовки влажности
@@ -280,8 +341,8 @@ namespace StandApp
             DisableAllCharts();
             IsShowHumChart = true;
 
-            mainChart.AxisY[0].MinValue = 0.0;
-            mainChart.AxisY[0].MaxValue = 100.0;
+            SetDataInterval(0.0, 100.0);
+            SetDataPostfix(Percent);
         }
 
         // При нажатии на кнопку для отрисовки давления
@@ -290,8 +351,8 @@ namespace StandApp
             DisableAllCharts();
             IsShowPresChart = true;
 
-            mainChart.AxisY[0].MinValue = 0.0;
-            mainChart.AxisY[0].MaxValue = 1000.0;
+            SetDataInterval(0.0, 133.5);
+            SetDataPostfix(mmOfMerc);
         }
 
         // При нажатии на кнопку для отрисовки высоты
@@ -300,8 +361,8 @@ namespace StandApp
             DisableAllCharts();
             IsShowAltChart = true;
 
-            mainChart.AxisY[0].MinValue = -20.0;
-            mainChart.AxisY[0].MaxValue = 1000.0;
+            SetDataInterval(-50.0, 1000.0);
+            SetDataPostfix(meter);
         }
 
         // При нажатии на кнопку для отрисовки давления на тензодатчик
@@ -310,8 +371,8 @@ namespace StandApp
             DisableAllCharts();
             IsShowRealPresChart = true;
 
-            mainChart.AxisY[0].MinValue = 0.0;
-            mainChart.AxisY[0].MaxValue = 1000.0;
+            SetDataInterval(0.0, 20.0);
+            SetDataPostfix(kgramm);
         }
     }
 }
