@@ -255,11 +255,11 @@ namespace StandApp
             this.label3.TabIndex = 0;
             this.label3.Text = "Baud-rate:";
             // 
-            // setupForm
+            // SetupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(33)))), ((int)(((byte)(74)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(36)))), ((int)(((byte)(81)))));
             this.ClientSize = new System.Drawing.Size(654, 427);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
@@ -268,7 +268,7 @@ namespace StandApp
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MinimumSize = new System.Drawing.Size(654, 427);
-            this.Name = "setupForm";
+            this.Name = "SetupForm";
             this.Text = "Подключение";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.setupForm_FormClosing);
             this.Load += new System.EventHandler(this.setupForm_Load);

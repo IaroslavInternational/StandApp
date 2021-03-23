@@ -90,9 +90,9 @@ namespace StandApp
             weightPresInd.Name = "weightPresInd";
             weightPresInd.TabIndex = 11;
             weightPresInd.Text = "Весы";
-            weightPresInd.ToValue = 1000;
+            weightPresInd.ToValue = 20;
             weightPresInd.LabelsStep = weightPresInd.ToValue / 10;
-            weightPresInd.TickStep = 50;
+            weightPresInd.TickStep = weightPresInd.ToValue / 20;
 
             /*********************************/
 
@@ -318,7 +318,7 @@ namespace StandApp
             // Если порт открыт
             if (serialPortMain.IsOpen)
             {
-                serialPortMain.DataReceived += null;
+                //serialPortMain.DataReceived += null;
 
                 serialPortMain.WriteLine(Commands.Arduino.shutdown);    // Перевести систему в спящий режим
                 serialPortMain.Close();                                 // Отключить порт

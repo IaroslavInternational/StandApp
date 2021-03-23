@@ -119,11 +119,6 @@ namespace StandApp
             OpenChildForm(new SetupForm());
         }
 
-        private void systemBtn_Click(object sender, EventArgs e)
-        {
-            ActiveButton(sender, RGBColors.color4);
-        }
-
         private void settingsBtn_Click(object sender, EventArgs e)
         {
             ActiveButton(sender, RGBColors.color5);
@@ -141,7 +136,7 @@ namespace StandApp
 
             iconCurrent.IconChar = IconChar.Home;
             iconCurrent.IconColor = Color.MediumPurple;
-            labelHome.Text = "Начало";
+            labelHome.Text = "Главная";
         }
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
@@ -154,6 +149,16 @@ namespace StandApp
         {
             ReleaseCapture();
             SendMessage(this.Handle, 0x112, 0xf012, 0);
+        }
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnHome_Load(object sender, EventArgs e)
+        {
+            OpenChildForm(new IntroForm());
         }
     }
 }
