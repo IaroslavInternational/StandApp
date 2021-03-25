@@ -24,7 +24,6 @@ namespace StandApp
         {
             public const string temperature = "[BMP/E 280 temperature]";    // Температура
             public const string pressure = "[BMP/E 280 pressure]";          // Давление
-            public const string altitude = "[BMP/E 280 altitude]";          // Высота
             public const string humidity = "[BMP/E 280 humidity]";          // Влажность
         }
 

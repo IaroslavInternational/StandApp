@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.heightState = new System.Windows.Forms.Label();
+            this.tenzoState = new System.Windows.Forms.Label();
             this.presState = new System.Windows.Forms.Label();
             this.humState = new System.Windows.Forms.Label();
             this.tempState = new System.Windows.Forms.Label();
@@ -42,27 +42,25 @@
             this.serialPortMain = new System.IO.Ports.SerialPort(this.components);
             this.mainChart = new LiveCharts.WinForms.CartesianChart();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.showAltChartBtn = new FontAwesome.Sharp.IconButton();
+            this.showRealPresBtn = new FontAwesome.Sharp.IconButton();
             this.showPresChartBtn = new FontAwesome.Sharp.IconButton();
             this.showHumChartBtn = new FontAwesome.Sharp.IconButton();
             this.showTempChartBtn = new FontAwesome.Sharp.IconButton();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.showRealPresBtn = new FontAwesome.Sharp.IconButton();
             this.weightPresInd = new LiveCharts.WinForms.AngularGauge();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
-            this.panel1.Controls.Add(this.heightState);
+            this.panel1.Controls.Add(this.tenzoState);
             this.panel1.Controls.Add(this.presState);
             this.panel1.Controls.Add(this.humState);
             this.panel1.Controls.Add(this.tempState);
@@ -76,16 +74,16 @@
             this.panel1.Size = new System.Drawing.Size(246, 116);
             this.panel1.TabIndex = 2;
             // 
-            // heightState
+            // tenzoState
             // 
-            this.heightState.AutoSize = true;
-            this.heightState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.heightState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.heightState.Location = new System.Drawing.Point(113, 86);
-            this.heightState.Name = "heightState";
-            this.heightState.Size = new System.Drawing.Size(35, 20);
-            this.heightState.TabIndex = 8;
-            this.heightState.Text = "0 м.";
+            this.tenzoState.AutoSize = true;
+            this.tenzoState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.tenzoState.ForeColor = System.Drawing.Color.Gainsboro;
+            this.tenzoState.Location = new System.Drawing.Point(113, 86);
+            this.tenzoState.Name = "tenzoState";
+            this.tenzoState.Size = new System.Drawing.Size(35, 20);
+            this.tenzoState.TabIndex = 8;
+            this.tenzoState.Text = "0 м.";
             // 
             // presState
             // 
@@ -138,9 +136,9 @@
             this.label4.ForeColor = System.Drawing.Color.Gainsboro;
             this.label4.Location = new System.Drawing.Point(4, 86);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 20);
+            this.label4.Size = new System.Drawing.Size(101, 20);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Высота:";
+            this.label4.Text = "Тензодатчик:";
             // 
             // label3
             // 
@@ -190,7 +188,7 @@
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
-            this.panel2.Controls.Add(this.showAltChartBtn);
+            this.panel2.Controls.Add(this.showRealPresBtn);
             this.panel2.Controls.Add(this.showPresChartBtn);
             this.panel2.Controls.Add(this.showHumChartBtn);
             this.panel2.Controls.Add(this.showTempChartBtn);
@@ -199,24 +197,23 @@
             this.panel2.Size = new System.Drawing.Size(26, 80);
             this.panel2.TabIndex = 4;
             // 
-            // showAltChartBtn
+            // showRealPresBtn
             // 
-            this.showAltChartBtn.BackColor = System.Drawing.Color.Maroon;
-            this.showAltChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.showAltChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.showAltChartBtn.FlatAppearance.BorderSize = 0;
-            this.showAltChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showAltChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
-            this.showAltChartBtn.IconChar = FontAwesome.Sharp.IconChar.ArrowsAltV;
-            this.showAltChartBtn.IconColor = System.Drawing.Color.Black;
-            this.showAltChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.showAltChartBtn.IconSize = 20;
-            this.showAltChartBtn.Location = new System.Drawing.Point(0, 60);
-            this.showAltChartBtn.Name = "showAltChartBtn";
-            this.showAltChartBtn.Size = new System.Drawing.Size(26, 20);
-            this.showAltChartBtn.TabIndex = 3;
-            this.showAltChartBtn.UseVisualStyleBackColor = false;
-            this.showAltChartBtn.Click += new System.EventHandler(this.showAltChartBtn_Click);
+            this.showRealPresBtn.BackColor = System.Drawing.Color.Maroon;
+            this.showRealPresBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showRealPresBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showRealPresBtn.FlatAppearance.BorderSize = 0;
+            this.showRealPresBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showRealPresBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showRealPresBtn.IconChar = FontAwesome.Sharp.IconChar.LongArrowAltDown;
+            this.showRealPresBtn.IconColor = System.Drawing.Color.Black;
+            this.showRealPresBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showRealPresBtn.IconSize = 20;
+            this.showRealPresBtn.Location = new System.Drawing.Point(0, 60);
+            this.showRealPresBtn.Name = "showRealPresBtn";
+            this.showRealPresBtn.Size = new System.Drawing.Size(26, 20);
+            this.showRealPresBtn.TabIndex = 3;
+            this.showRealPresBtn.UseVisualStyleBackColor = false;
             // 
             // showPresChartBtn
             // 
@@ -299,30 +296,10 @@
             // 
             this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
-            this.panel5.Controls.Add(this.showRealPresBtn);
             this.panel5.Location = new System.Drawing.Point(3, 25);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(26, 80);
             this.panel5.TabIndex = 4;
-            // 
-            // showRealPresBtn
-            // 
-            this.showRealPresBtn.BackColor = System.Drawing.Color.RoyalBlue;
-            this.showRealPresBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.showRealPresBtn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.showRealPresBtn.FlatAppearance.BorderSize = 0;
-            this.showRealPresBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showRealPresBtn.ForeColor = System.Drawing.Color.Gainsboro;
-            this.showRealPresBtn.IconChar = FontAwesome.Sharp.IconChar.LongArrowAltDown;
-            this.showRealPresBtn.IconColor = System.Drawing.Color.Black;
-            this.showRealPresBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.showRealPresBtn.IconSize = 20;
-            this.showRealPresBtn.Location = new System.Drawing.Point(0, 0);
-            this.showRealPresBtn.Name = "showRealPresBtn";
-            this.showRealPresBtn.Size = new System.Drawing.Size(26, 20);
-            this.showRealPresBtn.TabIndex = 0;
-            this.showRealPresBtn.UseVisualStyleBackColor = false;
-            this.showRealPresBtn.Click += new System.EventHandler(this.showRealPresBtn_Click);
             // 
             // weightPresInd
             // 
@@ -356,7 +333,6 @@
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
-            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -367,7 +343,7 @@
         private System.Windows.Forms.Label label1;
         private System.IO.Ports.SerialPort serialPortMain;
         private LiveCharts.WinForms.CartesianChart mainChart;
-        private System.Windows.Forms.Label heightState;
+        private System.Windows.Forms.Label tenzoState;
         private System.Windows.Forms.Label presState;
         private System.Windows.Forms.Label humState;
         private System.Windows.Forms.Label tempState;
@@ -377,13 +353,12 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel2;
         private FontAwesome.Sharp.IconButton showTempChartBtn;
-        private FontAwesome.Sharp.IconButton showAltChartBtn;
         private FontAwesome.Sharp.IconButton showPresChartBtn;
         private FontAwesome.Sharp.IconButton showHumChartBtn;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
-        private FontAwesome.Sharp.IconButton showRealPresBtn;
         private LiveCharts.WinForms.AngularGauge weightPresInd;
+        private FontAwesome.Sharp.IconButton showRealPresBtn;
     }
 }

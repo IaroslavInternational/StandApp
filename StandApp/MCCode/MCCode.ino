@@ -136,7 +136,6 @@ void loop()
   {
     Send_Device_InData_Info(BMP_E_TEMP, (String)bme.readTemperature());
     Send_Device_InData_Info(BMP_E_PRES, (String)(bme.readPressure() / 997.5));
-    Send_Device_InData_Info(BMP_E_ALT, (String)bme.readAltitude(SEALEVELPRESSURE_HPA));
     Send_Device_InData_Info(BMP_E_HUM, (String)bme.readHumidity());
   }
 

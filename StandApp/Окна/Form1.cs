@@ -151,14 +151,14 @@ namespace StandApp
             SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
 
-        private void exitBtn_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void btnHome_Load(object sender, EventArgs e)
         {
             OpenChildForm(new IntroForm());
+        }
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

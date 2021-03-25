@@ -20,7 +20,6 @@
 
 #define BMP_E_TEMP "[BMP/E 280 temperature]"
 #define BMP_E_PRES "[BMP/E 280 pressure]"
-#define BMP_E_ALT "[BMP/E 280 altitude]"
 #define BMP_E_HUM "[BMP/E 280 humidity]"
 
 /*************/

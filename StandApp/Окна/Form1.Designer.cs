@@ -29,23 +29,23 @@
         private void InitializeComponent()
         {
             this.panelMenu = new System.Windows.Forms.Panel();
-            this.panelLogo = new System.Windows.Forms.Panel();
-            this.titleBar = new System.Windows.Forms.Panel();
-            this.labelHome = new System.Windows.Forms.Label();
-            this.panelShadow = new System.Windows.Forms.Panel();
-            this.panelDesktop = new System.Windows.Forms.Panel();
-            this.iconCurrent = new FontAwesome.Sharp.IconPictureBox();
             this.exitBtn = new FontAwesome.Sharp.IconButton();
             this.settingsBtn = new FontAwesome.Sharp.IconButton();
             this.linkBtn = new FontAwesome.Sharp.IconButton();
             this.logBtn = new FontAwesome.Sharp.IconButton();
             this.manageBtn = new FontAwesome.Sharp.IconButton();
+            this.panelLogo = new System.Windows.Forms.Panel();
             this.homeBtn = new System.Windows.Forms.PictureBox();
+            this.titleBar = new System.Windows.Forms.Panel();
+            this.labelHome = new System.Windows.Forms.Label();
+            this.iconCurrent = new FontAwesome.Sharp.IconPictureBox();
+            this.panelShadow = new System.Windows.Forms.Panel();
+            this.panelDesktop = new System.Windows.Forms.Panel();
             this.panelMenu.SuspendLayout();
             this.panelLogo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.homeBtn)).BeginInit();
             this.titleBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconCurrent)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.homeBtn)).BeginInit();
             this.SuspendLayout();
             // 
             // panelMenu
@@ -63,71 +63,6 @@
             this.panelMenu.Size = new System.Drawing.Size(220, 511);
             this.panelMenu.TabIndex = 0;
             // 
-            // panelLogo
-            // 
-            this.panelLogo.Controls.Add(this.homeBtn);
-            this.panelLogo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelLogo.Location = new System.Drawing.Point(0, 0);
-            this.panelLogo.Name = "panelLogo";
-            this.panelLogo.Size = new System.Drawing.Size(220, 140);
-            this.panelLogo.TabIndex = 1;
-            // 
-            // titleBar
-            // 
-            this.titleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(25)))), ((int)(((byte)(62)))));
-            this.titleBar.Controls.Add(this.labelHome);
-            this.titleBar.Controls.Add(this.iconCurrent);
-            this.titleBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.titleBar.Location = new System.Drawing.Point(220, 0);
-            this.titleBar.Name = "titleBar";
-            this.titleBar.Size = new System.Drawing.Size(654, 75);
-            this.titleBar.TabIndex = 1;
-            this.titleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.titleBar_MouseDown);
-            // 
-            // labelHome
-            // 
-            this.labelHome.AutoSize = true;
-            this.labelHome.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelHome.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelHome.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelHome.Location = new System.Drawing.Point(51, 25);
-            this.labelHome.Name = "labelHome";
-            this.labelHome.Size = new System.Drawing.Size(55, 19);
-            this.labelHome.TabIndex = 1;
-            this.labelHome.Text = "Начало";
-            // 
-            // panelShadow
-            // 
-            this.panelShadow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(24)))), ((int)(((byte)(58)))));
-            this.panelShadow.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelShadow.Location = new System.Drawing.Point(220, 75);
-            this.panelShadow.Name = "panelShadow";
-            this.panelShadow.Size = new System.Drawing.Size(654, 9);
-            this.panelShadow.TabIndex = 2;
-            // 
-            // panelDesktop
-            // 
-            this.panelDesktop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(33)))), ((int)(((byte)(74)))));
-            this.panelDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDesktop.Location = new System.Drawing.Point(220, 84);
-            this.panelDesktop.Name = "panelDesktop";
-            this.panelDesktop.Size = new System.Drawing.Size(654, 427);
-            this.panelDesktop.TabIndex = 3;
-            // 
-            // iconCurrent
-            // 
-            this.iconCurrent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(25)))), ((int)(((byte)(62)))));
-            this.iconCurrent.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.iconCurrent.ForeColor = System.Drawing.Color.MediumPurple;
-            this.iconCurrent.IconChar = FontAwesome.Sharp.IconChar.Home;
-            this.iconCurrent.IconColor = System.Drawing.Color.MediumPurple;
-            this.iconCurrent.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconCurrent.Location = new System.Drawing.Point(17, 22);
-            this.iconCurrent.Name = "iconCurrent";
-            this.iconCurrent.Size = new System.Drawing.Size(32, 32);
-            this.iconCurrent.TabIndex = 0;
-            this.iconCurrent.TabStop = false;
-            // 
             // exitBtn
             // 
             this.exitBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -142,6 +77,7 @@
             this.exitBtn.Size = new System.Drawing.Size(220, 75);
             this.exitBtn.TabIndex = 7;
             this.exitBtn.UseVisualStyleBackColor = true;
+            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
             // 
             // settingsBtn
             // 
@@ -235,6 +171,15 @@
             this.manageBtn.UseVisualStyleBackColor = true;
             this.manageBtn.Click += new System.EventHandler(this.manageBtn_Click);
             // 
+            // panelLogo
+            // 
+            this.panelLogo.Controls.Add(this.homeBtn);
+            this.panelLogo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelLogo.Location = new System.Drawing.Point(0, 0);
+            this.panelLogo.Name = "panelLogo";
+            this.panelLogo.Size = new System.Drawing.Size(220, 140);
+            this.panelLogo.TabIndex = 1;
+            // 
             // homeBtn
             // 
             this.homeBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -246,6 +191,62 @@
             this.homeBtn.TabIndex = 0;
             this.homeBtn.TabStop = false;
             this.homeBtn.Click += new System.EventHandler(this.homeBtn_Click);
+            // 
+            // titleBar
+            // 
+            this.titleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(25)))), ((int)(((byte)(62)))));
+            this.titleBar.Controls.Add(this.labelHome);
+            this.titleBar.Controls.Add(this.iconCurrent);
+            this.titleBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.titleBar.Location = new System.Drawing.Point(220, 0);
+            this.titleBar.Name = "titleBar";
+            this.titleBar.Size = new System.Drawing.Size(654, 75);
+            this.titleBar.TabIndex = 1;
+            this.titleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.titleBar_MouseDown);
+            // 
+            // labelHome
+            // 
+            this.labelHome.AutoSize = true;
+            this.labelHome.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelHome.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelHome.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelHome.Location = new System.Drawing.Point(51, 25);
+            this.labelHome.Name = "labelHome";
+            this.labelHome.Size = new System.Drawing.Size(55, 19);
+            this.labelHome.TabIndex = 1;
+            this.labelHome.Text = "Начало";
+            // 
+            // iconCurrent
+            // 
+            this.iconCurrent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(25)))), ((int)(((byte)(62)))));
+            this.iconCurrent.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.iconCurrent.ForeColor = System.Drawing.Color.MediumPurple;
+            this.iconCurrent.IconChar = FontAwesome.Sharp.IconChar.Home;
+            this.iconCurrent.IconColor = System.Drawing.Color.MediumPurple;
+            this.iconCurrent.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.iconCurrent.Location = new System.Drawing.Point(17, 22);
+            this.iconCurrent.Name = "iconCurrent";
+            this.iconCurrent.Size = new System.Drawing.Size(32, 32);
+            this.iconCurrent.TabIndex = 0;
+            this.iconCurrent.TabStop = false;
+            // 
+            // panelShadow
+            // 
+            this.panelShadow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(24)))), ((int)(((byte)(58)))));
+            this.panelShadow.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelShadow.Location = new System.Drawing.Point(220, 75);
+            this.panelShadow.Name = "panelShadow";
+            this.panelShadow.Size = new System.Drawing.Size(654, 9);
+            this.panelShadow.TabIndex = 2;
+            // 
+            // panelDesktop
+            // 
+            this.panelDesktop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(33)))), ((int)(((byte)(74)))));
+            this.panelDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDesktop.Location = new System.Drawing.Point(220, 84);
+            this.panelDesktop.Name = "panelDesktop";
+            this.panelDesktop.Size = new System.Drawing.Size(654, 427);
+            this.panelDesktop.TabIndex = 3;
             // 
             // btnHome
             // 
@@ -264,10 +265,10 @@
             this.Load += new System.EventHandler(this.btnHome_Load);
             this.panelMenu.ResumeLayout(false);
             this.panelLogo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.homeBtn)).EndInit();
             this.titleBar.ResumeLayout(false);
             this.titleBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconCurrent)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.homeBtn)).EndInit();
             this.ResumeLayout(false);
 
         }

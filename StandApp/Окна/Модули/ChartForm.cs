@@ -20,13 +20,13 @@ namespace StandApp
         private delegate void PresSetter(string val);
         private PresSetter SetPres;
 
-        // Установка текста для высоты в другом потоке
-        private delegate void HeightSetter(string val);
-        private HeightSetter SetHeight;
-
         // Установка текста для влажности в другом потоке
         private delegate void HumSetter(string val);
         private HumSetter SetHum;
+
+        // Установка текста для давления на тензодатчик в другом потоке
+        private delegate void TenzoSetter(string val);
+        private TenzoSetter SetTenzo;
 
         // Добавление значения к главному графику в другом потоке
         private delegate void MainChartSetter(double val);
@@ -40,13 +40,11 @@ namespace StandApp
 
         private const string Celsius = "°C";            // Постфикс для температуры в градусах
         private const string Percent = "%";             // Постфикс для влажности в процентах
-        private const string mmOfMerc = "кПа";          // Постфикс для давления в кПа
-        private const string meter = "м.";              // Постфикс для высоты в метрах
+        private const string kpa = "кПа";               // Постфикс для давления в кПа
         private const string kgramm = "кг.";             // Постфикс для давления на тензодатчик в килограммах
 
         private bool IsShowTempChart = false;        // Показать график для температуры
         private bool IsShowPresChart = false;        // Показать график для давления
-        private bool IsShowAltChart = false;         // Показать график для высоты
         private bool IsShowHumChart = false;         // Показать график для влажности
         private bool IsShowRealPresChart = false;    // Показать график для давления на тензодатчике
 
@@ -61,7 +59,7 @@ namespace StandApp
 
             SetTemp = new TempSetter(SetNewTemperature);
             SetPres = new PresSetter(SetNewPressure);
-            SetHeight = new HeightSetter(SetNewHeight);
+            SetTenzo = new TenzoSetter(SetNewTenzoPressure);
             SetHum = new HumSetter(SetNewHumidity);
             AddVal = new MainChartSetter(AddNewValueToMainChart);
             AddWeightVal = new WeightChartSetter(AddNewValueToWeightChart);
@@ -108,9 +106,6 @@ namespace StandApp
                 ToolTip pres_tt = new ToolTip();
                 pres_tt.SetToolTip(showPresChartBtn, "Атмосферное давление");
 
-                ToolTip alt_tt = new ToolTip();
-                alt_tt.SetToolTip(showAltChartBtn, "Относительная высота");
-
                 ToolTip realPres_tt = new ToolTip();
                 realPres_tt.SetToolTip(showRealPresBtn, "Давление на тензодатчик");
             }
@@ -126,7 +121,6 @@ namespace StandApp
         {
             IsShowTempChart = false;
             IsShowPresChart = false;
-            IsShowAltChart = false;
             IsShowHumChart = false;
             IsShowRealPresChart = false;
 
@@ -161,13 +155,12 @@ namespace StandApp
         // Сеттер давления
         private void SetNewPressure(string val)
         {
-            presState.Text = val + " " + mmOfMerc;
+            presState.Text = val + " " + kpa;
         }
 
-        // Сеттер высоты
-        private void SetNewHeight(string val)
+        private void SetNewTenzoPressure(string val)
         {
-            heightState.Text = val + " " + meter;
+            tenzoState.Text = val + " " + kgramm;
         }
 
         // Добавить новое значение на график 
@@ -278,17 +271,6 @@ namespace StandApp
                         mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
-                else if (command == Commands.BMP_E280.altitude)   // Если датчик высоты
-                {
-                    // Установить значение
-                    heightState.Invoke(SetHeight, value);
-
-                    // При возможности отрисовать график
-                    if (IsShowAltChart)
-                    {
-                        mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
-                    }
-                }
                 else if (command == Commands.BMP_E280.humidity)   // Если датчик влажности
                 {
                     // Установить значение
@@ -302,11 +284,15 @@ namespace StandApp
                 }
                 else if (command == Commands.HX711.realPressure) // Если тензодатчик
                 {
+                    // Установить значение
+                    tenzoState.Invoke(SetTenzo, value);
+
+                    weightPresInd.Invoke(AddWeightVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                    
                     // При возможности отрисовать график
                     if (IsShowRealPresChart)
                     {
-                        mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
-                        weightPresInd.Invoke(AddWeightVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                        //mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
             }
@@ -352,17 +338,7 @@ namespace StandApp
             IsShowPresChart = true;
 
             SetDataInterval(0.0, 133.5);
-            SetDataPostfix(mmOfMerc);
-        }
-
-        // При нажатии на кнопку для отрисовки высоты
-        private void showAltChartBtn_Click(object sender, EventArgs e)
-        {
-            DisableAllCharts();
-            IsShowAltChart = true;
-
-            SetDataInterval(-50.0, 1000.0);
-            SetDataPostfix(meter);
+            SetDataPostfix(kpa);
         }
 
         // При нажатии на кнопку для отрисовки давления на тензодатчик
