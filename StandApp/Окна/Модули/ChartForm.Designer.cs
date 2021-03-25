@@ -50,10 +50,15 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.weightPresInd = new LiveCharts.WinForms.AngularGauge();
+            this.chartMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.анимацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.включитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выключитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.chartMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -69,7 +74,7 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(12, 299);
+            this.panel1.Location = new System.Drawing.Point(12, 349);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(246, 116);
             this.panel1.TabIndex = 2;
@@ -178,9 +183,10 @@
             this.mainChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.mainChart.ContextMenuStrip = this.chartMenu;
             this.mainChart.Location = new System.Drawing.Point(12, 12);
             this.mainChart.Name = "mainChart";
-            this.mainChart.Size = new System.Drawing.Size(630, 281);
+            this.mainChart.Size = new System.Drawing.Size(740, 331);
             this.mainChart.TabIndex = 3;
             this.mainChart.Text = "cartesianChart1";
             // 
@@ -277,7 +283,7 @@
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
             this.panel3.Controls.Add(this.panel2);
-            this.panel3.Location = new System.Drawing.Point(264, 299);
+            this.panel3.Location = new System.Drawing.Point(264, 349);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(32, 116);
             this.panel3.TabIndex = 9;
@@ -287,7 +293,7 @@
             this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
             this.panel4.Controls.Add(this.panel5);
-            this.panel4.Location = new System.Drawing.Point(302, 299);
+            this.panel4.Location = new System.Drawing.Point(302, 349);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(32, 116);
             this.panel4.TabIndex = 10;
@@ -306,24 +312,64 @@
             this.weightPresInd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.weightPresInd.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.weightPresInd.ForeColor = System.Drawing.Color.Gainsboro;
-            this.weightPresInd.Location = new System.Drawing.Point(340, 300);
+            this.weightPresInd.Location = new System.Drawing.Point(340, 350);
             this.weightPresInd.Name = "weightPresInd";
             this.weightPresInd.Size = new System.Drawing.Size(122, 115);
             this.weightPresInd.TabIndex = 11;
             this.weightPresInd.Text = "Весы";
+            // 
+            // chartMenu
+            // 
+            this.chartMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(34)))), ((int)(((byte)(77)))));
+            this.chartMenu.Font = new System.Drawing.Font("Segoe UI Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chartMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.анимацияToolStripMenuItem});
+            this.chartMenu.Name = "chartMenu";
+            this.chartMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.chartMenu.Size = new System.Drawing.Size(153, 30);
+            // 
+            // анимацияToolStripMenuItem
+            // 
+            this.анимацияToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
+            this.анимацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.включитьToolStripMenuItem,
+            this.выключитьToolStripMenuItem});
+            this.анимацияToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.анимацияToolStripMenuItem.Name = "анимацияToolStripMenuItem";
+            this.анимацияToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.анимацияToolStripMenuItem.Text = "Анимация";
+            // 
+            // включитьToolStripMenuItem
+            // 
+            this.включитьToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
+            this.включитьToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.включитьToolStripMenuItem.Name = "включитьToolStripMenuItem";
+            this.включитьToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.включитьToolStripMenuItem.Text = "Включить";
+            this.включитьToolStripMenuItem.Click += new System.EventHandler(this.включитьToolStripMenuItem_Click);
+            // 
+            // выключитьToolStripMenuItem
+            // 
+            this.выключитьToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
+            this.выключитьToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.выключитьToolStripMenuItem.Name = "выключитьToolStripMenuItem";
+            this.выключитьToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.выключитьToolStripMenuItem.Text = "Выключить";
+            this.выключитьToolStripMenuItem.Click += new System.EventHandler(this.выключитьToolStripMenuItem_Click);
             // 
             // ChartForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(36)))), ((int)(((byte)(81)))));
-            this.ClientSize = new System.Drawing.Size(654, 427);
+            this.ClientSize = new System.Drawing.Size(764, 477);
             this.Controls.Add(this.weightPresInd);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.mainChart);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MinimumSize = new System.Drawing.Size(764, 477);
             this.Name = "ChartForm";
             this.Text = "ChartForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChartForm_FormClosing);
@@ -333,6 +379,7 @@
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
+            this.chartMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -360,5 +407,9 @@
         private System.Windows.Forms.Panel panel5;
         private LiveCharts.WinForms.AngularGauge weightPresInd;
         private FontAwesome.Sharp.IconButton showRealPresBtn;
+        private System.Windows.Forms.ContextMenuStrip chartMenu;
+        private System.Windows.Forms.ToolStripMenuItem анимацияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem включитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem выключитьToolStripMenuItem;
     }
 }

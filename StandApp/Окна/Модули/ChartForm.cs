@@ -350,5 +350,15 @@ namespace StandApp
             SetDataInterval(0.0, 20.0);
             SetDataPostfix(kgramm);
         }
+
+        private void включитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mainChart.DisableAnimations = false;
+        }
+
+        private void выключитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mainChart.DisableAnimations = true;
+        }
     }
 }

@@ -140,7 +140,7 @@ namespace StandApp
             this.testCnct.Location = new System.Drawing.Point(12, 324);
             this.testCnct.Name = "testCnct";
             this.testCnct.Padding = new System.Windows.Forms.Padding(10, 0, 20, 0);
-            this.testCnct.Size = new System.Drawing.Size(228, 91);
+            this.testCnct.Size = new System.Drawing.Size(228, 141);
             this.testCnct.TabIndex = 3;
             this.testCnct.Text = "Проверить подключение";
             this.testCnct.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -157,7 +157,7 @@ namespace StandApp
             this.panel3.Controls.Add(this.console);
             this.panel3.Location = new System.Drawing.Point(255, 12);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(387, 403);
+            this.panel3.Size = new System.Drawing.Size(497, 453);
             this.panel3.TabIndex = 2;
             // 
             // console
@@ -169,7 +169,7 @@ namespace StandApp
             this.console.ForeColor = System.Drawing.Color.Gainsboro;
             this.console.Location = new System.Drawing.Point(0, 0);
             this.console.Name = "console";
-            this.console.Size = new System.Drawing.Size(387, 403);
+            this.console.Size = new System.Drawing.Size(497, 453);
             this.console.TabIndex = 10;
             this.console.Text = "";
             // 
@@ -260,14 +260,14 @@ namespace StandApp
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(36)))), ((int)(((byte)(81)))));
-            this.ClientSize = new System.Drawing.Size(654, 427);
+            this.ClientSize = new System.Drawing.Size(764, 477);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.testCnct);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MinimumSize = new System.Drawing.Size(654, 427);
+            this.MinimumSize = new System.Drawing.Size(764, 477);
             this.Name = "SetupForm";
             this.Text = "Подключение";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.setupForm_FormClosing);

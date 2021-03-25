@@ -30,7 +30,6 @@
         {
             this.panelMenu = new System.Windows.Forms.Panel();
             this.exitBtn = new FontAwesome.Sharp.IconButton();
-            this.settingsBtn = new FontAwesome.Sharp.IconButton();
             this.linkBtn = new FontAwesome.Sharp.IconButton();
             this.logBtn = new FontAwesome.Sharp.IconButton();
             this.manageBtn = new FontAwesome.Sharp.IconButton();
@@ -52,7 +51,6 @@
             // 
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(30)))), ((int)(((byte)(68)))));
             this.panelMenu.Controls.Add(this.exitBtn);
-            this.panelMenu.Controls.Add(this.settingsBtn);
             this.panelMenu.Controls.Add(this.linkBtn);
             this.panelMenu.Controls.Add(this.logBtn);
             this.panelMenu.Controls.Add(this.manageBtn);
@@ -60,7 +58,7 @@
             this.panelMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelMenu.Location = new System.Drawing.Point(0, 0);
             this.panelMenu.Name = "panelMenu";
-            this.panelMenu.Size = new System.Drawing.Size(220, 511);
+            this.panelMenu.Size = new System.Drawing.Size(220, 561);
             this.panelMenu.TabIndex = 0;
             // 
             // exitBtn
@@ -72,35 +70,12 @@
             this.exitBtn.IconChar = FontAwesome.Sharp.IconChar.SignOutAlt;
             this.exitBtn.IconColor = System.Drawing.Color.DarkOrange;
             this.exitBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.exitBtn.Location = new System.Drawing.Point(0, 436);
+            this.exitBtn.Location = new System.Drawing.Point(0, 486);
             this.exitBtn.Name = "exitBtn";
             this.exitBtn.Size = new System.Drawing.Size(220, 75);
             this.exitBtn.TabIndex = 7;
             this.exitBtn.UseVisualStyleBackColor = true;
             this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
-            // 
-            // settingsBtn
-            // 
-            this.settingsBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.settingsBtn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.settingsBtn.FlatAppearance.BorderSize = 0;
-            this.settingsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingsBtn.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.settingsBtn.ForeColor = System.Drawing.Color.Gainsboro;
-            this.settingsBtn.IconChar = FontAwesome.Sharp.IconChar.Cog;
-            this.settingsBtn.IconColor = System.Drawing.Color.Gainsboro;
-            this.settingsBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.settingsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.settingsBtn.Location = new System.Drawing.Point(0, 320);
-            this.settingsBtn.Name = "settingsBtn";
-            this.settingsBtn.Padding = new System.Windows.Forms.Padding(10, 0, 20, 0);
-            this.settingsBtn.Size = new System.Drawing.Size(220, 60);
-            this.settingsBtn.TabIndex = 6;
-            this.settingsBtn.Text = "Настройки";
-            this.settingsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.settingsBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.settingsBtn.UseVisualStyleBackColor = true;
-            this.settingsBtn.Click += new System.EventHandler(this.settingsBtn_Click);
             // 
             // linkBtn
             // 
@@ -200,7 +175,7 @@
             this.titleBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.titleBar.Location = new System.Drawing.Point(220, 0);
             this.titleBar.Name = "titleBar";
-            this.titleBar.Size = new System.Drawing.Size(654, 75);
+            this.titleBar.Size = new System.Drawing.Size(764, 75);
             this.titleBar.TabIndex = 1;
             this.titleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.titleBar_MouseDown);
             // 
@@ -236,7 +211,7 @@
             this.panelShadow.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelShadow.Location = new System.Drawing.Point(220, 75);
             this.panelShadow.Name = "panelShadow";
-            this.panelShadow.Size = new System.Drawing.Size(654, 9);
+            this.panelShadow.Size = new System.Drawing.Size(764, 9);
             this.panelShadow.TabIndex = 2;
             // 
             // panelDesktop
@@ -245,14 +220,14 @@
             this.panelDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelDesktop.Location = new System.Drawing.Point(220, 84);
             this.panelDesktop.Name = "panelDesktop";
-            this.panelDesktop.Size = new System.Drawing.Size(654, 427);
+            this.panelDesktop.Size = new System.Drawing.Size(764, 477);
             this.panelDesktop.TabIndex = 3;
             // 
             // btnHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(874, 511);
+            this.ClientSize = new System.Drawing.Size(984, 561);
             this.Controls.Add(this.panelDesktop);
             this.Controls.Add(this.panelShadow);
             this.Controls.Add(this.titleBar);
@@ -278,7 +253,6 @@
         private System.Windows.Forms.Panel panelMenu;
         private FontAwesome.Sharp.IconButton manageBtn;
         private System.Windows.Forms.Panel panelLogo;
-        private FontAwesome.Sharp.IconButton settingsBtn;
         private FontAwesome.Sharp.IconButton linkBtn;
         private FontAwesome.Sharp.IconButton logBtn;
         private System.Windows.Forms.PictureBox homeBtn;

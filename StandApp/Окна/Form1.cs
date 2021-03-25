@@ -119,11 +119,6 @@ namespace StandApp
             OpenChildForm(new SetupForm());
         }
 
-        private void settingsBtn_Click(object sender, EventArgs e)
-        {
-            ActiveButton(sender, RGBColors.color5);
-        }
-
         private void homeBtn_Click(object sender, EventArgs e)
         {
             Reset();

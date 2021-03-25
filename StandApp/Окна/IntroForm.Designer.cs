@@ -46,7 +46,7 @@ namespace StandApp
             this.panel3.Controls.Add(this.mainTxt);
             this.panel3.Location = new System.Drawing.Point(12, 40);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(630, 375);
+            this.panel3.Size = new System.Drawing.Size(764, 593);
             this.panel3.TabIndex = 3;
             // 
             // mainTxt
@@ -61,7 +61,7 @@ namespace StandApp
             this.mainTxt.Location = new System.Drawing.Point(3, 3);
             this.mainTxt.Name = "mainTxt";
             this.mainTxt.ReadOnly = true;
-            this.mainTxt.Size = new System.Drawing.Size(624, 369);
+            this.mainTxt.Size = new System.Drawing.Size(758, 587);
             this.mainTxt.TabIndex = 0;
             this.mainTxt.Text = resources.GetString("mainTxt.Text");
             // 
@@ -72,7 +72,7 @@ namespace StandApp
             this.panel1.Controls.Add(this.textBox1);
             this.panel1.Location = new System.Drawing.Point(87, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(479, 32);
+            this.panel1.Size = new System.Drawing.Size(613, 32);
             this.panel1.TabIndex = 1;
             // 
             // textBox1
@@ -86,7 +86,7 @@ namespace StandApp
             this.textBox1.Location = new System.Drawing.Point(0, 0);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(479, 32);
+            this.textBox1.Size = new System.Drawing.Size(613, 32);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "Добро пожаловать в приложение StandApp!";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -96,7 +96,7 @@ namespace StandApp
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(36)))), ((int)(((byte)(81)))));
-            this.ClientSize = new System.Drawing.Size(654, 427);
+            this.ClientSize = new System.Drawing.Size(788, 645);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
