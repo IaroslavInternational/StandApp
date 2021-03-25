@@ -237,6 +237,9 @@ namespace StandApp
         // При получении данных с МК
         private void SerialPortMain_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            if (!serialPortMain.IsOpen)
+                return;
+
             var data = serialPortMain.ReadLine();   // Данные
             data = Commands.DeleteSpecSymb(data);   // Очистка от спец. символов
 
@@ -304,8 +307,6 @@ namespace StandApp
             // Если порт открыт
             if (serialPortMain.IsOpen)
             {
-                //serialPortMain.DataReceived += null;
-
                 serialPortMain.WriteLine(Commands.Arduino.shutdown);    // Перевести систему в спящий режим
                 serialPortMain.Close();                                 // Отключить порт
             }

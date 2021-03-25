@@ -237,7 +237,7 @@
             this.Name = "btnHome";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
-            this.Load += new System.EventHandler(this.btnHome_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.btnHome_FormClosing);
             this.panelMenu.ResumeLayout(false);
             this.panelLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.homeBtn)).EndInit();

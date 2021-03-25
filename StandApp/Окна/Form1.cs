@@ -31,7 +31,9 @@ namespace StandApp
             this.ControlBox = false;
             this.DoubleBuffered = true;
             
-            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea; 
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+
+            currentChildForm = new IntroForm();
         }
 
         private struct RGBColors
@@ -146,14 +148,15 @@ namespace StandApp
             SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
 
-        private void btnHome_Load(object sender, EventArgs e)
-        {
-            OpenChildForm(new IntroForm());
-        }
-
         private void exitBtn_Click(object sender, EventArgs e)
         {
+            currentChildForm.Close();
             this.Close();
+        }
+
+        private void btnHome_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            currentChildForm.Close();
         }
     }
 }
