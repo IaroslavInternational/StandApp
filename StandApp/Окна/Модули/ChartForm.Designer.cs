@@ -94,9 +94,9 @@
             this.tenzoState.ForeColor = System.Drawing.Color.Gainsboro;
             this.tenzoState.Location = new System.Drawing.Point(113, 86);
             this.tenzoState.Name = "tenzoState";
-            this.tenzoState.Size = new System.Drawing.Size(35, 20);
+            this.tenzoState.Size = new System.Drawing.Size(40, 20);
             this.tenzoState.TabIndex = 8;
-            this.tenzoState.Text = "0 м.";
+            this.tenzoState.Text = "0 гр.";
             // 
             // presState
             // 

@@ -42,7 +42,8 @@ namespace StandApp
         private const string Percent = "%";             // Постфикс для влажности в процентах
         private const string kpa = "кПа";               // Постфикс для давления в кПа
         private const string kgramm = "кг.";            // Постфикс для давления на тензодатчик в килограммах
-        private const string microsec = "мк. с.";       // Постфикс для давления на тензодатчик в килограммах
+        private const string gramm = "гр.";             // Постфикс для давления на тензодатчик в килограммах
+        private const string microsec = "мк. с.";       // Постфикс для ШИМ-сигнала для двигателя в микросекундах
 
         private bool IsShowTempChart = false;        // Показать график для температуры
         private bool IsShowPresChart = false;        // Показать график для давления
@@ -166,7 +167,7 @@ namespace StandApp
 
         private void SetNewTenzoPressure(string val)
         {
-            tenzoState.Text = val + " " + kgramm;
+            tenzoState.Text = val + " " + gramm;
         }
 
         // Добавить новое значение на график 
@@ -183,7 +184,7 @@ namespace StandApp
         // Установить новое значение на весах
         private void AddNewValueToWeightChart(double val)
         {
-            weightPresInd.Value = val;
+            weightPresInd.Value = val / 1000;
         }
 
         // При загрузке формы

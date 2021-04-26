@@ -22,6 +22,8 @@
 
 #include "Headers/commands.h" // Команды
 
+String sub_command = "";
+
 /* Настройки для АЦП HX711 */
 
 // Пин данных для АЦП HX711
@@ -36,6 +38,7 @@ HX711 hx711;
 float calibration_factor = 10.50; // Калибровочный множитель
 float units;                      // Значение
 float kg_press;                   // Кг
+float hx_scale = 0.035274;        // Множитель для перевода в граммы
 
 // Если АЦП доступен
 bool IsHX_Valid = false;
@@ -94,11 +97,15 @@ void hxSetup()
   IsHX_Valid = true;
 }
 
+// Инициализация двигателя
 void EngineSetup()
 {
   engine.attach(ENGINE_PIN);
 
-  IsEngine_Valid = true;
+  if(engine.attached())
+  {
+    IsEngine_Valid = true; 
+  }
 }
 
 // Метод для отправки данных с датчиков, АЦП и пр.
@@ -158,9 +165,14 @@ void loop()
     {
       setup();
     } 
-    else if(command.indexOf(SPLITTER_SIGN) != -1) // Если команда двигателя
+    else if(command.indexOf(SPLITTER_SIGN) != -1) 
     {
-      engine_value = command.substring(command.indexOf(SPLITTER_SIGN) + 1).toInt();
+      sub_command = command.substring(0, command.indexOf(SPLITTER_SIGN));
+
+      if(sub_command == ENGINE_WRITE) // Если команда двигателя
+      {
+        engine_value = command.substring(command.indexOf(SPLITTER_SIGN) + 1).toInt();
+      }
     }
   }
 
@@ -173,7 +185,7 @@ void loop()
   }
 
   // Если доступен АЦП HX711
-  /*if(IsHX_Valid)
+  if(IsHX_Valid)
   {
     units = hx711.get_units(), 10;
     
@@ -182,10 +194,10 @@ void loop()
       units = 0.00;
     }
     
-    kg_press = units * 0.000035274;
+    kg_press = units * hx_scale;
 
     Send_Device_InData_Info(HX711_PRES, (String)kg_press);
-  }*/
+  }
 
   if(IsEngine_Valid)
   {
@@ -193,5 +205,5 @@ void loop()
     engine.writeMicroseconds(new_value);
   }
   
-  delay(250);
+  delay(10);
 }
