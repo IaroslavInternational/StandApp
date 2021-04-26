@@ -33,7 +33,7 @@ namespace StandApp
             
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
 
-            currentChildForm = new IntroForm();
+            OpenChildForm(new IntroForm());
         }
 
         private struct RGBColors
@@ -157,6 +157,11 @@ namespace StandApp
         private void btnHome_FormClosing(object sender, FormClosingEventArgs e)
         {
             currentChildForm.Close();
+        }
+
+        private void btnHome_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -12,6 +12,12 @@
 
 /**********************************************/
 
+/* Библиотека для работы с двигателем */
+
+#include <Servo.h>
+
+/**************************************/
+
 /* Настройки */
 
 #include "Headers/commands.h" // Команды
@@ -33,6 +39,7 @@ float kg_press;                   // Кг
 
 // Если АЦП доступен
 bool IsHX_Valid = false;
+
 /****************************/
 
 /* Настройки для датчика BMP/E 280 */
@@ -47,6 +54,19 @@ Adafruit_BME280 bme;
 bool IsBMP_E_Valid = false;
  
 /***********************************/
+
+/* Настройки для двигателя */
+
+#define ENGINE_PIN 8
+
+Servo engine;
+
+int engine_value = 0;
+int new_value = 0;
+
+bool IsEngine_Valid = false;
+
+/***************************/
 
 /*************/
 
@@ -72,6 +92,13 @@ void hxSetup()
   hx711.tare();
   
   IsHX_Valid = true;
+}
+
+void EngineSetup()
+{
+  engine.attach(ENGINE_PIN);
+
+  IsEngine_Valid = true;
 }
 
 // Метод для отправки данных с датчиков, АЦП и пр.
@@ -112,35 +139,41 @@ void setup()
     }
   }
 
-  bmeSetup(); // Установка датчика BMP/E 280
-  hxSetup();  // Установка АЦП HX711
+  bmeSetup();     // Установка датчика BMP/E 280
+  hxSetup();      // Установка АЦП HX711
+  EngineSetup();  // Установка двигателя
 }
 
 // Главный цикл
 void loop()
 {
+
   // Если порт доступен
   if (Serial.available() > 0) 
   {
     String command = Serial.readString();
-
+    
     // Если спящий режим
     if(command == SHUTDOWN)
     {
       setup();
+    } 
+    else if(command.indexOf(SPLITTER_SIGN) != -1) // Если команда двигателя
+    {
+      engine_value = command.substring(command.indexOf(SPLITTER_SIGN) + 1).toInt();
     }
   }
 
   // Если доступен датчик BMP/E 280
   if(IsBMP_E_Valid)
   {
-    Send_Device_InData_Info(BMP_E_TEMP, (String)bme.readTemperature());
+    Send_Device_InData_Info(BMP_E_TEMP, (String) bme.readTemperature());
     Send_Device_InData_Info(BMP_E_PRES, (String)(bme.readPressure() / 997.5));
-    Send_Device_InData_Info(BMP_E_HUM, (String)bme.readHumidity());
+    Send_Device_InData_Info(BMP_E_HUM,  (String) bme.readHumidity());
   }
 
   // Если доступен АЦП HX711
-  if(IsHX_Valid)
+  /*if(IsHX_Valid)
   {
     units = hx711.get_units(), 10;
     
@@ -152,6 +185,12 @@ void loop()
     kg_press = units * 0.000035274;
 
     Send_Device_InData_Info(HX711_PRES, (String)kg_press);
+  }*/
+
+  if(IsEngine_Valid)
+  {
+    new_value = map(engine_value, 0, 1000, 544, 2400);
+    engine.writeMicroseconds(new_value);
   }
   
   delay(250);

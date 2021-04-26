@@ -41,6 +41,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.serialPortMain = new System.IO.Ports.SerialPort(this.components);
             this.mainChart = new LiveCharts.WinForms.CartesianChart();
+            this.chartMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.анимацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.включитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выключитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.showRealPresBtn = new FontAwesome.Sharp.IconButton();
             this.showPresChartBtn = new FontAwesome.Sharp.IconButton();
@@ -50,15 +54,19 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.weightPresInd = new LiveCharts.WinForms.AngularGauge();
-            this.chartMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.анимацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.включитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.выключитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.engineTrackBar = new System.Windows.Forms.TrackBar();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.showEngineChartBtn = new FontAwesome.Sharp.IconButton();
+            this.engineSpeedState = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            this.chartMenu.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.chartMenu.SuspendLayout();
+            this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.engineTrackBar)).BeginInit();
+            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -190,6 +198,45 @@
             this.mainChart.TabIndex = 3;
             this.mainChart.Text = "cartesianChart1";
             // 
+            // chartMenu
+            // 
+            this.chartMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(34)))), ((int)(((byte)(77)))));
+            this.chartMenu.Font = new System.Drawing.Font("Segoe UI Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chartMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.анимацияToolStripMenuItem});
+            this.chartMenu.Name = "chartMenu";
+            this.chartMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.chartMenu.Size = new System.Drawing.Size(153, 30);
+            // 
+            // анимацияToolStripMenuItem
+            // 
+            this.анимацияToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
+            this.анимацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.включитьToolStripMenuItem,
+            this.выключитьToolStripMenuItem});
+            this.анимацияToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.анимацияToolStripMenuItem.Name = "анимацияToolStripMenuItem";
+            this.анимацияToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
+            this.анимацияToolStripMenuItem.Text = "Анимация";
+            // 
+            // включитьToolStripMenuItem
+            // 
+            this.включитьToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
+            this.включитьToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.включитьToolStripMenuItem.Name = "включитьToolStripMenuItem";
+            this.включитьToolStripMenuItem.Size = new System.Drawing.Size(157, 26);
+            this.включитьToolStripMenuItem.Text = "Включить";
+            this.включитьToolStripMenuItem.Click += new System.EventHandler(this.включитьToolStripMenuItem_Click);
+            // 
+            // выключитьToolStripMenuItem
+            // 
+            this.выключитьToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
+            this.выключитьToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.выключитьToolStripMenuItem.Name = "выключитьToolStripMenuItem";
+            this.выключитьToolStripMenuItem.Size = new System.Drawing.Size(157, 26);
+            this.выключитьToolStripMenuItem.Text = "Выключить";
+            this.выключитьToolStripMenuItem.Click += new System.EventHandler(this.выключитьToolStripMenuItem_Click);
+            // 
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -261,7 +308,7 @@
             // 
             // showTempChartBtn
             // 
-            this.showTempChartBtn.BackColor = System.Drawing.Color.Goldenrod;
+            this.showTempChartBtn.BackColor = System.Drawing.Color.SpringGreen;
             this.showTempChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.showTempChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
             this.showTempChartBtn.FlatAppearance.BorderSize = 0;
@@ -302,6 +349,7 @@
             // 
             this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
+            this.panel5.Controls.Add(this.showEngineChartBtn);
             this.panel5.Location = new System.Drawing.Point(3, 25);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(26, 80);
@@ -318,44 +366,70 @@
             this.weightPresInd.TabIndex = 11;
             this.weightPresInd.Text = "Весы";
             // 
-            // chartMenu
+            // engineTrackBar
             // 
-            this.chartMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(34)))), ((int)(((byte)(77)))));
-            this.chartMenu.Font = new System.Drawing.Font("Segoe UI Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.chartMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.анимацияToolStripMenuItem});
-            this.chartMenu.Name = "chartMenu";
-            this.chartMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.chartMenu.Size = new System.Drawing.Size(153, 30);
+            this.engineTrackBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.engineTrackBar.Location = new System.Drawing.Point(0, 0);
+            this.engineTrackBar.Maximum = 1000;
+            this.engineTrackBar.Name = "engineTrackBar";
+            this.engineTrackBar.Size = new System.Drawing.Size(284, 45);
+            this.engineTrackBar.TabIndex = 12;
+            this.engineTrackBar.TickFrequency = 20;
+            this.engineTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.engineTrackBar.Scroll += new System.EventHandler(this.engineTrackBar_Scroll);
             // 
-            // анимацияToolStripMenuItem
+            // panel6
             // 
-            this.анимацияToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
-            this.анимацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.включитьToolStripMenuItem,
-            this.выключитьToolStripMenuItem});
-            this.анимацияToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.анимацияToolStripMenuItem.Name = "анимацияToolStripMenuItem";
-            this.анимацияToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
-            this.анимацияToolStripMenuItem.Text = "Анимация";
+            this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
+            this.panel6.Controls.Add(this.label6);
+            this.panel6.Controls.Add(this.engineSpeedState);
+            this.panel6.Controls.Add(this.engineTrackBar);
+            this.panel6.Location = new System.Drawing.Point(468, 349);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(284, 116);
+            this.panel6.TabIndex = 11;
             // 
-            // включитьToolStripMenuItem
+            // showEngineChartBtn
             // 
-            this.включитьToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
-            this.включитьToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.включитьToolStripMenuItem.Name = "включитьToolStripMenuItem";
-            this.включитьToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
-            this.включитьToolStripMenuItem.Text = "Включить";
-            this.включитьToolStripMenuItem.Click += new System.EventHandler(this.включитьToolStripMenuItem_Click);
+            this.showEngineChartBtn.BackColor = System.Drawing.Color.White;
+            this.showEngineChartBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showEngineChartBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.showEngineChartBtn.FlatAppearance.BorderSize = 0;
+            this.showEngineChartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showEngineChartBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.showEngineChartBtn.IconChar = FontAwesome.Sharp.IconChar.Play;
+            this.showEngineChartBtn.IconColor = System.Drawing.Color.Black;
+            this.showEngineChartBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.showEngineChartBtn.IconSize = 20;
+            this.showEngineChartBtn.Location = new System.Drawing.Point(0, 0);
+            this.showEngineChartBtn.Name = "showEngineChartBtn";
+            this.showEngineChartBtn.Size = new System.Drawing.Size(26, 20);
+            this.showEngineChartBtn.TabIndex = 1;
+            this.showEngineChartBtn.UseVisualStyleBackColor = false;
+            this.showEngineChartBtn.Click += new System.EventHandler(this.showEngineChartBtn_Click);
             // 
-            // выключитьToolStripMenuItem
+            // engineSpeedState
             // 
-            this.выключитьToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
-            this.выключитьToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.выключитьToolStripMenuItem.Name = "выключитьToolStripMenuItem";
-            this.выключитьToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
-            this.выключитьToolStripMenuItem.Text = "Выключить";
-            this.выключитьToolStripMenuItem.Click += new System.EventHandler(this.выключитьToolStripMenuItem_Click);
+            this.engineSpeedState.AutoSize = true;
+            this.engineSpeedState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.engineSpeedState.ForeColor = System.Drawing.Color.Gainsboro;
+            this.engineSpeedState.Location = new System.Drawing.Point(113, 44);
+            this.engineSpeedState.Name = "engineSpeedState";
+            this.engineSpeedState.Size = new System.Drawing.Size(79, 20);
+            this.engineSpeedState.TabIndex = 9;
+            this.engineSpeedState.Text = "1000 мк. с.";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label6.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label6.Location = new System.Drawing.Point(3, 44);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(104, 20);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "ШИМ-сигнал:";
             // 
             // ChartForm
             // 
@@ -363,6 +437,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(36)))), ((int)(((byte)(81)))));
             this.ClientSize = new System.Drawing.Size(764, 477);
+            this.Controls.Add(this.panel6);
             this.Controls.Add(this.weightPresInd);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
@@ -376,10 +451,14 @@
             this.Load += new System.EventHandler(this.ChartForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.chartMenu.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
-            this.chartMenu.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.engineTrackBar)).EndInit();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -411,5 +490,10 @@
         private System.Windows.Forms.ToolStripMenuItem анимацияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem включитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem выключитьToolStripMenuItem;
+        private FontAwesome.Sharp.IconButton showEngineChartBtn;
+        private System.Windows.Forms.TrackBar engineTrackBar;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Label engineSpeedState;
+        private System.Windows.Forms.Label label6;
     }
 }

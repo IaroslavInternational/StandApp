@@ -34,6 +34,13 @@ namespace StandApp
             public const string realPressure = "[HX 711 pressure]";  // Давление на тензодатчике
         }
 
+        // Команды от
+        // двигателя
+        public struct Engine
+        {
+            public const string write = "[Engine write]";   // Скорость вращения
+        }
+
         // Команды для Ардуино
         public struct Arduino
         {

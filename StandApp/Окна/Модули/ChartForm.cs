@@ -41,12 +41,14 @@ namespace StandApp
         private const string Celsius = "°C";            // Постфикс для температуры в градусах
         private const string Percent = "%";             // Постфикс для влажности в процентах
         private const string kpa = "кПа";               // Постфикс для давления в кПа
-        private const string kgramm = "кг.";             // Постфикс для давления на тензодатчик в килограммах
+        private const string kgramm = "кг.";            // Постфикс для давления на тензодатчик в килограммах
+        private const string microsec = "мк. с.";       // Постфикс для давления на тензодатчик в килограммах
 
         private bool IsShowTempChart = false;        // Показать график для температуры
         private bool IsShowPresChart = false;        // Показать график для давления
         private bool IsShowHumChart = false;         // Показать график для влажности
         private bool IsShowRealPresChart = false;    // Показать график для давления на тензодатчике
+        private bool IsShowEngineChart = false;      // Показать график для скорости оборотов
 
         private int AllowedPoints = 100;   // Кол-во одновременно отрисованных точек на графике
 
@@ -81,7 +83,7 @@ namespace StandApp
             /******************************/
 
             /* Настройки весового индикатора */
-
+           
             weightPresInd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             weightPresInd.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             weightPresInd.ForeColor = System.Drawing.Color.Gainsboro;
@@ -94,8 +96,10 @@ namespace StandApp
 
             /*********************************/
 
-            /* Подсказки */
+            // Обнуление скорости
+            engineSpeedState.Text = "0";
 
+            /* Подсказки */
             {
                 ToolTip temp_tt = new ToolTip();
                 temp_tt.SetToolTip(showTempChartBtn, "Температура");
@@ -107,9 +111,11 @@ namespace StandApp
                 pres_tt.SetToolTip(showPresChartBtn, "Атмосферное давление");
 
                 ToolTip realPres_tt = new ToolTip();
-                realPres_tt.SetToolTip(showRealPresBtn, "Давление на тензодатчик");
+                realPres_tt.SetToolTip(showRealPresBtn, "Давление на тензодатчик");   
+                
+                ToolTip engine_tt = new ToolTip();
+                engine_tt.SetToolTip(engineTrackBar, "Скороcть вращения двигателя");
             }
-
             /*************/
 
             // Создание события приёма данных
@@ -360,6 +366,23 @@ namespace StandApp
         private void выключитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainChart.DisableAnimations = true;
+        }
+
+        private void showEngineChartBtn_Click(object sender, EventArgs e)
+        {
+            DisableAllCharts();
+
+            IsShowEngineChart = true;
+            IsShowRealPresChart = true;
+        }
+
+        private void engineTrackBar_Scroll(object sender, EventArgs e)
+        {
+            if(IsShowEngineChart)
+            {
+                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + Convert.ToString(engineTrackBar.Value));
+                engineSpeedState.Text = Convert.ToString(engineTrackBar.Value) + " " + microsec;
+            }
         }
     }
 }
