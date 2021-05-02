@@ -38,20 +38,33 @@ namespace StandApp
 
         /************/
 
-        private const string Celsius = "°C";            // Постфикс для температуры в градусах
-        private const string Percent = "%";             // Постфикс для влажности в процентах
-        private const string kpa = "кПа";               // Постфикс для давления в кПа
-        private const string kgramm = "кг.";            // Постфикс для давления на тензодатчик в килограммах
-        private const string gramm = "гр.";             // Постфикс для давления на тензодатчик в килограммах
-        private const string microsec = "мк. с.";       // Постфикс для ШИМ-сигнала для двигателя в микросекундах
+        /* Настройки */
+        
+        private const string Celsius =  "°C";            // Постфикс для температуры в                     градусах
+        private const string Percent =  "%";             // Постфикс для влажности в                       процентах
+        private const string kpa =      "кПа";           // Постфикс для давления в                        килопаскалях
+        private const string kgramm =   "кг";            // Постфикс для давления на тензодатчик в         килограммах
+        private const string gramm =    "гр.";           // Постфикс для давления на тензодатчик в         граммах
+        private const string ue =       "у. е.";         // Постфикс для ШИМ-сигнала для двигателя в       условных единицах
+        private const string microsec = "мкс";           // Постфикс для ШИМ-сигнала для двигателя в       микросекундах
+        private const string current =  "А";             // Постфикс для тока потребления двигателем в     амперах
+        private const string voltage=  "А";              // Постфикс для падения напряжения на двигателе в вольтах
 
-        private bool IsShowTempChart = false;        // Показать график для температуры
-        private bool IsShowPresChart = false;        // Показать график для давления
-        private bool IsShowHumChart = false;         // Показать график для влажности
-        private bool IsShowRealPresChart = false;    // Показать график для давления на тензодатчике
-        private bool IsShowEngineChart = false;      // Показать график для скорости оборотов
+        private bool IsShowTempChart =     false;        // Показать график для температуры
+        private bool IsShowPresChart =     false;        // Показать график для давления
+        private bool IsShowHumChart =      false;        // Показать график для влажности
+        private bool IsShowRealPresChart = false;        // Показать график для давления на тензодатчике
+        private bool IsShowEngineChart =   false;        // Показать график для скорости оборотов
+        private bool IsShowCurrentChart =  false;        // Показать график для потребелния тока
+        private bool IsShowVoltageChart =  false;        // Показать график для падения напряжения
 
-        private int AllowedPoints = 100;   // Кол-во одновременно отрисованных точек на графике
+        private int AllowedPoints = 100;                 // Кол-во одновременно отрисованных точек на графике
+
+        private int CurrentEngineWrite_Exp = 0;          // Текущий ШИМ-сигнал для эксперимента
+
+        private bool IsExp = false;                      // Если эксперимент
+
+        /*************/
 
         // Конструктор
         public ChartForm()
@@ -98,24 +111,31 @@ namespace StandApp
             /*********************************/
 
             // Обнуление скорости
-            engineSpeedState.Text = "0";
+            engineSpeedState.Text = "0 " + ue;
 
             /* Подсказки */
             {
                 ToolTip temp_tt = new ToolTip();
-                temp_tt.SetToolTip(showTempChartBtn, "Температура");
+                temp_tt.SetToolTip(showTempChartBtn,    "Температура");
 
                 ToolTip hum_tt = new ToolTip();
-                hum_tt.SetToolTip(showHumChartBtn, "Влажность");
+                hum_tt.SetToolTip(showHumChartBtn,      "Влажность");
 
                 ToolTip pres_tt = new ToolTip();
-                pres_tt.SetToolTip(showPresChartBtn, "Атмосферное давление");
+                pres_tt.SetToolTip(showPresChartBtn,    "Атмосферное давление");
 
                 ToolTip realPres_tt = new ToolTip();
                 realPres_tt.SetToolTip(showRealPresBtn, "Давление на тензодатчик");   
                 
                 ToolTip engine_tt = new ToolTip();
-                engine_tt.SetToolTip(engineTrackBar, "Скороcть вращения двигателя");
+                engine_tt.SetToolTip(engineTrackBar,    "Скороcть вращения двигателя");   
+                engine_tt.SetToolTip(showEngineChartBtn,"Скороcть вращения двигателя");   
+                
+                ToolTip current_tt = new ToolTip();
+                current_tt.SetToolTip(showCurrentChart, "Ток потребления");    
+                
+                ToolTip voltage_tt = new ToolTip();
+                voltage_tt.SetToolTip(showVoltageChart, "Падение напряжения");
             }
             /*************/
 
@@ -130,6 +150,7 @@ namespace StandApp
             IsShowPresChart = false;
             IsShowHumChart = false;
             IsShowRealPresChart = false;
+            IsShowEngineChart = false;
 
             mainChart.Series[0].Values.Clear();
         }
@@ -165,6 +186,7 @@ namespace StandApp
             presState.Text = val + " " + kpa;
         }
 
+        // Сеттер давления на тензодатчик
         private void SetNewTenzoPressure(string val)
         {
             tenzoState.Text = val + " " + gramm;
@@ -359,30 +381,113 @@ namespace StandApp
             SetDataPostfix(kgramm);
         }
 
+        // При нажатии на кнопку для отрисовки кол-ва оборотов двигателя
+        private void showEngineChartBtn_Click(object sender, EventArgs e)
+        {
+            if(!IsShowEngineChart)
+            {
+                DisableAllCharts();
+                IsShowEngineChart = true;
+
+                showEngineChartBtn.IconChar = FontAwesome.Sharp.IconChar.Pause;
+
+                SetDataInterval(0.0, 10000.0);
+                SetDataPostfix(ue);
+            }
+            else
+            {
+                IsShowEngineChart = false;
+
+                showEngineChartBtn.IconChar = FontAwesome.Sharp.IconChar.Play;
+            }
+        }
+
+        // При нажатии на кнопку для отрисовки тока потребления
+        private void showCurrentChart_Click(object sender, EventArgs e)
+        {
+            DisableAllCharts();
+            IsShowCurrentChart = true;
+
+            SetDataInterval(0.0, 120.0);
+            SetDataPostfix(current);
+        }
+
+        // При изменении ШИМ-сигнала на двигатель
+        private void engineTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (IsShowEngineChart)
+            {
+                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + Convert.ToString(engineTrackBar.Value));
+                engineSpeedState.Text = Convert.ToString(engineTrackBar.Value) + " " + ue;
+                engineSpeedStateMcs.Text = Convert.ToString(Commands.Map(engineTrackBar.Value, 0, 1000, 544, 2400)) + " " + microsec;
+            }
+        }
+
+        // При нажатии на кнопку для включения анимации графика
         private void включитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainChart.DisableAnimations = false;
         }
 
+        // При нажатии на кнопку для выключения анимации графика
         private void выключитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mainChart.DisableAnimations = true;
         }
 
-        private void showEngineChartBtn_Click(object sender, EventArgs e)
+        // При нажатии на кнопку для старта эксперимента
+        private void startExpOne_Click(object sender, EventArgs e)
         {
-            DisableAllCharts();
+            if (!IsExp)
+            {
+                MainTimer.Interval = Convert.ToInt32(intervalUE_Exp.Text);
+                CurrentEngineWrite_Exp = Convert.ToInt32(startUE_Exp.Text);
 
-            IsShowEngineChart = true;
-            IsShowRealPresChart = true;
+                IsExp = true;
+
+                startExpOne.BackColor = System.Drawing.Color.BlueViolet;
+                startExpOne.IconChar = FontAwesome.Sharp.IconChar.PlaneDeparture;
+
+                if (!checkBoxLog.Checked)
+                {
+                    // Выключение двигателя
+                    //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
+
+                    // Запуск таймера
+                    MainTimer.Start();
+                }
+            }
+            else
+            {
+                // Остановка таймера
+                MainTimer.Stop();
+
+                // Выключение двигателя
+                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
+
+                IsExp = false;
+
+                startExpOne.BackColor = System.Drawing.Color.DodgerBlue;
+                startExpOne.IconChar = FontAwesome.Sharp.IconChar.Rocket;
+            }
         }
 
-        private void engineTrackBar_Scroll(object sender, EventArgs e)
+        private void MainTimer_Tick(object sender, EventArgs e)
         {
-            if(IsShowEngineChart)
+            if(CurrentEngineWrite_Exp != Convert.ToInt32(endUE_Exp.Text))
+            {                
+                CurrentEngineWrite_Exp += Convert.ToInt32(stepUE_Exp.Text);
+
+                testExp.Text = CurrentEngineWrite_Exp.ToString();
+                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + CurrentEngineWrite_Exp);
+            }
+            else
             {
-                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + Convert.ToString(engineTrackBar.Value));
-                engineSpeedState.Text = Convert.ToString(engineTrackBar.Value) + " " + microsec;
+                // Остановка таймера
+                MainTimer.Stop();
+
+                startExpOne.BackColor = System.Drawing.Color.DodgerBlue;
+                startExpOne.IconChar = FontAwesome.Sharp.IconChar.Rocket;
             }
         }
     }

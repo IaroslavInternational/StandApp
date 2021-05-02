@@ -59,5 +59,12 @@ namespace StandApp
         {
             return Regex.Replace(str, @"[\u0000-\u001F]", string.Empty);
         }
+
+        // Метод для переноса в новый диапазон значений
+        public static int Map(int x, int in_min, int in_max, int out_min, int out_max)
+        {
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+
+        }
     }
 }

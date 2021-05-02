@@ -175,7 +175,7 @@
             this.titleBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.titleBar.Location = new System.Drawing.Point(220, 0);
             this.titleBar.Name = "titleBar";
-            this.titleBar.Size = new System.Drawing.Size(764, 75);
+            this.titleBar.Size = new System.Drawing.Size(877, 75);
             this.titleBar.TabIndex = 1;
             this.titleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.titleBar_MouseDown);
             // 
@@ -211,7 +211,7 @@
             this.panelShadow.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelShadow.Location = new System.Drawing.Point(220, 75);
             this.panelShadow.Name = "panelShadow";
-            this.panelShadow.Size = new System.Drawing.Size(764, 9);
+            this.panelShadow.Size = new System.Drawing.Size(877, 9);
             this.panelShadow.TabIndex = 2;
             // 
             // panelDesktop
@@ -220,20 +220,20 @@
             this.panelDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelDesktop.Location = new System.Drawing.Point(220, 84);
             this.panelDesktop.Name = "panelDesktop";
-            this.panelDesktop.Size = new System.Drawing.Size(764, 477);
+            this.panelDesktop.Size = new System.Drawing.Size(877, 477);
             this.panelDesktop.TabIndex = 3;
             // 
             // btnHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 561);
+            this.ClientSize = new System.Drawing.Size(1097, 561);
             this.Controls.Add(this.panelDesktop);
             this.Controls.Add(this.panelShadow);
             this.Controls.Add(this.titleBar);
             this.Controls.Add(this.panelMenu);
             this.ForeColor = System.Drawing.Color.Gainsboro;
-            this.MinimumSize = new System.Drawing.Size(890, 550);
+            this.MinimumSize = new System.Drawing.Size(1113, 600);
             this.Name = "btnHome";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
