@@ -28,20 +28,14 @@
 #define DELAY_TIME			 1			// Время задержки выполнения программы
 #define HX711_DOUT			 7			// Пин данных для АЦП HX711
 #define HX711_CLK			 6			// Пин clock для АЦП HX711
-#define HX711_CAL_FACTOR	 10.50		// Калибровочный коэффициент для АЦП HX711
-#define HX711_SCALE			 0.035274	// Коэффициент для перевода е. и. в граммы для АЦП HX711
+#define HX711_CAL_FACTOR	 10.50f		// Калибровочный коэффициент для АЦП HX711
+#define HX711_SCALE			 0.035274f	// Коэффициент для перевода е. и. в граммы для АЦП HX711
 #define BMP_E_ADR			 0x76		// Пин I2C для датчика BMP/E 280
 #define ENGINE_PIN			 12			// Пин управления для двигателя
 #define S_BAUD_RATE			 9600		// Скорость обмена данными
 #define S_TIMEOUT			 10			// Время приёма данных
 
 /*************/
-
-class Serial;
-class String;
-class HX711;
-class Adafruit_BME280;
-class Servo;
 
 // Объект управления АЦП HX711
 class hx711_adc
@@ -98,18 +92,18 @@ class System
 {
 public:
 	System();
+public:	
+	void InitiliazeModules();												// Инициализация модулей
+public:	
+	void PreProcess(size_t b_rate = S_BAUD_RATE, size_t t_out = S_TIMEOUT); // Предпроцесс, ожидание запуска
+	void ProcessCommands();													// Обработка входных команд
 public:
-	void InitiliazeModules();
-public:
-	void PreProcess(size_t b_rate = S_BAUD_RATE, size_t t_out = S_TIMEOUT);
-	void ProcessCommands();
-public:
-	void Tick();
-public:
-	hx711_adc tenzo;	// Тензодатчик
-	bmp_e_280 bmp;		// Датчик
-	Engine engine;		// Двигатель
+	void Tick();															// Событие итерации
 private:
-	size_t current_modules_time = 0;	// Текущий отсчёт времени перед отправкой данных переферийных модулей
-	String sub_command = "";			// Подкоманда 
+	hx711_adc tenzo;														// Тензодатчик
+	bmp_e_280 bmp;															// Датчик
+	Engine engine;															// Двигатель
+private:
+	size_t current_modules_time = 0;										// Текущий отсчёт времени перед отправкой данных переферийных модулей
+	String sub_command = "";												// Подкоманда 
 };

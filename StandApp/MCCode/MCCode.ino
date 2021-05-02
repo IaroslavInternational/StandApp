@@ -1,17 +1,18 @@
 #include "System.h"
 
+// Объект системы
 System sys;
 
 void setup() 
 {
-  sys.PreProcess();
-  sys.InitiliazeModules();
+  sys.PreProcess();         // Предпроцессор
+  sys.InitiliazeModules();  // Инициализация 
 }
 
 void loop() 
 {
-  sys.ProcessCommands();
-  sys.Tick();
+  sys.ProcessCommands();  // Обработка входящих команд
+  sys.Tick();             // Событие итерации
   
-  delay(DELAY_TIME);
+  delay(DELAY_TIME);      // Задержка
 }

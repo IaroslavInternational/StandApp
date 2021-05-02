@@ -53,17 +53,17 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.iconButton1 = new FontAwesome.Sharp.IconButton();
+            this.stopAll = new FontAwesome.Sharp.IconButton();
             this.showCurrentChart = new FontAwesome.Sharp.IconButton();
             this.showVoltageChart = new FontAwesome.Sharp.IconButton();
             this.showEngineChartBtn = new FontAwesome.Sharp.IconButton();
             this.weightPresInd = new LiveCharts.WinForms.AngularGauge();
             this.engineTrackBar = new System.Windows.Forms.TrackBar();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
+            this.voltageState = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.engineSpeedStateMcs = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.currentState = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.PWM = new System.Windows.Forms.Label();
             this.engineSpeedState = new System.Windows.Forms.Label();
@@ -371,7 +371,7 @@
             // 
             this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
-            this.panel5.Controls.Add(this.iconButton1);
+            this.panel5.Controls.Add(this.stopAll);
             this.panel5.Controls.Add(this.showCurrentChart);
             this.panel5.Controls.Add(this.showVoltageChart);
             this.panel5.Controls.Add(this.showEngineChartBtn);
@@ -380,23 +380,24 @@
             this.panel5.Size = new System.Drawing.Size(26, 80);
             this.panel5.TabIndex = 4;
             // 
-            // iconButton1
+            // stopAll
             // 
-            this.iconButton1.BackColor = System.Drawing.Color.Red;
-            this.iconButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.iconButton1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.iconButton1.FlatAppearance.BorderSize = 0;
-            this.iconButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton1.ForeColor = System.Drawing.Color.Gainsboro;
-            this.iconButton1.IconChar = FontAwesome.Sharp.IconChar.Stop;
-            this.iconButton1.IconColor = System.Drawing.Color.Black;
-            this.iconButton1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButton1.IconSize = 20;
-            this.iconButton1.Location = new System.Drawing.Point(0, 60);
-            this.iconButton1.Name = "iconButton1";
-            this.iconButton1.Size = new System.Drawing.Size(26, 20);
-            this.iconButton1.TabIndex = 5;
-            this.iconButton1.UseVisualStyleBackColor = false;
+            this.stopAll.BackColor = System.Drawing.Color.Red;
+            this.stopAll.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.stopAll.Dock = System.Windows.Forms.DockStyle.Top;
+            this.stopAll.FlatAppearance.BorderSize = 0;
+            this.stopAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.stopAll.ForeColor = System.Drawing.Color.Gainsboro;
+            this.stopAll.IconChar = FontAwesome.Sharp.IconChar.Stop;
+            this.stopAll.IconColor = System.Drawing.Color.Black;
+            this.stopAll.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.stopAll.IconSize = 20;
+            this.stopAll.Location = new System.Drawing.Point(0, 60);
+            this.stopAll.Name = "stopAll";
+            this.stopAll.Size = new System.Drawing.Size(26, 20);
+            this.stopAll.TabIndex = 5;
+            this.stopAll.UseVisualStyleBackColor = false;
+            this.stopAll.Click += new System.EventHandler(this.stopAll_Click);
             // 
             // showCurrentChart
             // 
@@ -481,10 +482,10 @@
             // 
             this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
-            this.panel6.Controls.Add(this.label13);
+            this.panel6.Controls.Add(this.voltageState);
             this.panel6.Controls.Add(this.label14);
             this.panel6.Controls.Add(this.engineSpeedStateMcs);
-            this.panel6.Controls.Add(this.label8);
+            this.panel6.Controls.Add(this.currentState);
             this.panel6.Controls.Add(this.label7);
             this.panel6.Controls.Add(this.PWM);
             this.panel6.Controls.Add(this.engineSpeedState);
@@ -494,16 +495,16 @@
             this.panel6.Size = new System.Drawing.Size(276, 116);
             this.panel6.TabIndex = 11;
             // 
-            // label13
+            // voltageState
             // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label13.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label13.Location = new System.Drawing.Point(113, 92);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(45, 20);
-            this.label13.TabIndex = 17;
-            this.label13.Text = "100 А";
+            this.voltageState.AutoSize = true;
+            this.voltageState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.voltageState.ForeColor = System.Drawing.Color.Gainsboro;
+            this.voltageState.Location = new System.Drawing.Point(113, 92);
+            this.voltageState.Name = "voltageState";
+            this.voltageState.Size = new System.Drawing.Size(45, 20);
+            this.voltageState.TabIndex = 17;
+            this.voltageState.Text = "100 А";
             // 
             // label14
             // 
@@ -527,16 +528,16 @@
             this.engineSpeedStateMcs.TabIndex = 15;
             this.engineSpeedStateMcs.Text = "2400 мк. с.";
             // 
-            // label8
+            // currentState
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label8.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label8.Location = new System.Drawing.Point(113, 72);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(36, 20);
-            this.label8.TabIndex = 14;
-            this.label8.Text = "12 В";
+            this.currentState.AutoSize = true;
+            this.currentState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.currentState.ForeColor = System.Drawing.Color.Gainsboro;
+            this.currentState.Location = new System.Drawing.Point(113, 72);
+            this.currentState.Name = "currentState";
+            this.currentState.Size = new System.Drawing.Size(36, 20);
+            this.currentState.TabIndex = 14;
+            this.currentState.Text = "12 В";
             // 
             // label7
             // 
@@ -787,7 +788,7 @@
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label engineSpeedState;
         private System.Windows.Forms.Label PWM;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label currentState;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label engineSpeedStateMcs;
         private System.Windows.Forms.Panel panel7;
@@ -802,11 +803,11 @@
         private System.Windows.Forms.Label label9;
         private FontAwesome.Sharp.IconButton showCurrentChart;
         private FontAwesome.Sharp.IconButton showVoltageChart;
-        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label voltageState;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Timer MainTimer;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.CheckBox checkBoxLog;
-        private FontAwesome.Sharp.IconButton iconButton1;
+        private FontAwesome.Sharp.IconButton stopAll;
     }
 }

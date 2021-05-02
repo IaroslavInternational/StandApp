@@ -1,5 +1,7 @@
 #include "System.h"
 
+/*   System stuff   */
+
 System::System()
 	:
 	tenzo()
@@ -81,6 +83,8 @@ void System::Tick()
 
 	engine.Process();
 }
+
+/* end System stuff */
 
 /*   HX 711 stuff   */
 

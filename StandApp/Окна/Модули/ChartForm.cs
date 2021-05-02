@@ -62,7 +62,13 @@ namespace StandApp
 
         private int CurrentEngineWrite_Exp = 0;          // Текущий ШИМ-сигнал для эксперимента
 
-        private bool IsExp = false;                      // Если эксперимент
+        private bool IsExp = false;                      // Индикатор эксперимента
+
+        private static string logPath = "log.txt";       // Имя файла с логом 
+        private FileStream logFileStream =
+        new FileStream(logPath, FileMode.OpenOrCreate);  // Поток работы с файлом
+
+        private UInt32 exp_num = 1;                      // Номер эксперимента
 
         /*************/
 
@@ -135,7 +141,10 @@ namespace StandApp
                 current_tt.SetToolTip(showCurrentChart, "Ток потребления");    
                 
                 ToolTip voltage_tt = new ToolTip();
-                voltage_tt.SetToolTip(showVoltageChart, "Падение напряжения");
+                voltage_tt.SetToolTip(showVoltageChart, "Падение напряжения");          
+                
+                ToolTip exp_tt = new ToolTip();
+                exp_tt.SetToolTip(startExpOne, "Начать эксперимент");
             }
             /*************/
 
@@ -144,6 +153,13 @@ namespace StandApp
 
             // Установка заддержки отправки данных
             serialPortMain.WriteTimeout = 10;
+        }
+
+        // Добавить лог
+        private void AddLog(string message)
+        {            
+            byte[] array = System.Text.Encoding.Default.GetBytes(message);
+            logFileStream.Write(array, 0, array.Length);
         }
 
         // Отключить отображение всех графиков и очистить график
@@ -463,14 +479,21 @@ namespace StandApp
 
                 PWM.ForeColor = System.Drawing.Color.Gainsboro;
 
-                if (!checkBoxLog.Checked)
-                {
-                    // Выключение двигателя
-                    serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
+                // Выключение двигателя
+                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
 
-                    // Запуск таймера
-                    MainTimer.Start();
-                }
+                DateTime dateTime = DateTime.Now;
+
+                AddLog("Эксперимент: " + exp_num + "\n");
+                AddLog(dateTime.ToString("dd.MM.yyyy") + "\n" + dateTime.ToString("HH:mm:ss") + "\n");
+                AddLog("Начальный уровень ШИМ: " + Commands.Map(Convert.ToInt32(startUE_Exp.Text), 0, 1000, 544, 2400).ToString() + " " + microsec + "\n");
+                AddLog("Шаг: " + Convert.ToInt32(stepUE_Exp.Text).ToString() + " " + ue + "\n");
+                AddLog("Интервал: " + Convert.ToInt32(intervalUE_Exp.Text).ToString() + " " + "мс" + "\n");
+
+                exp_num++;
+
+                // Запуск таймера
+                 MainTimer.Start();         
             }
             else
             {
@@ -478,7 +501,7 @@ namespace StandApp
                 MainTimer.Stop();
 
                 // Выключение двигателя
-                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
+                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
 
                 IsExp = false;
 
@@ -495,20 +518,25 @@ namespace StandApp
         // Событие таймера при экспиременте
         private void MainTimer_Tick(object sender, EventArgs e)
         {
-            if(CurrentEngineWrite_Exp != Convert.ToInt32(endUE_Exp.Text))
+            if(CurrentEngineWrite_Exp <= Convert.ToInt32(endUE_Exp.Text) && CurrentEngineWrite_Exp != Convert.ToInt32(endUE_Exp.Text))
             {                
                 CurrentEngineWrite_Exp += Convert.ToInt32(stepUE_Exp.Text);
 
                 engineTrackBar.Value = CurrentEngineWrite_Exp;
 
-                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + CurrentEngineWrite_Exp.ToString());
+                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + CurrentEngineWrite_Exp.ToString());
+
+                AddLog("ШИМ|"   + CurrentEngineWrite_Exp.ToString() + "|");
+                AddLog("Тяга|"  + tenzoState.Text + "|");
+                AddLog("Ток|"   + currentState.Text + "|");
+                AddLog("Напр.|" + voltageState.Text + "\n");
             }
             else
             {
                 // Остановка таймера
                 MainTimer.Stop();
 
-                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + '0');
+                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + '0');
 
                 IsExp = false;
 
@@ -518,6 +546,15 @@ namespace StandApp
                 engineTrackBar.Enabled = true;
                 engineTrackBar.Value = 0;
             }
+        }
+
+        // При нажатии на кнопку отключения всего
+        private void stopAll_Click(object sender, EventArgs e)
+        {
+            DisableAllCharts();
+            MainTimer.Stop();
+
+            engineTrackBar.Value = 0;
         }
     }
 }

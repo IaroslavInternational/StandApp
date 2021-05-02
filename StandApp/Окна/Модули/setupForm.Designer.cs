@@ -169,6 +169,7 @@ namespace StandApp
             this.console.ForeColor = System.Drawing.Color.Gainsboro;
             this.console.Location = new System.Drawing.Point(0, 0);
             this.console.Name = "console";
+            this.console.ReadOnly = true;
             this.console.Size = new System.Drawing.Size(497, 453);
             this.console.TabIndex = 10;
             this.console.Text = "";
