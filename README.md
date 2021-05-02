@@ -17,9 +17,20 @@ SCK -> Цифр. 6 <br/>
 VCC -> 5.0v
 </pre>
 
+Bluetooth-модуль -> Arduino Mega: <br/>
+<pre>
+RX  -> TX0 <br/>
+TX  -> RX0 <br/>
+VCC -> 5.0v <br/>
+GND -> GND <br/>
+</pre>
+
 Двигатель -> Arduino Mega: <br/>
 <pre>
-Сигн. провод (жёлтый)  -> Цифр. 8 <br/>
+Сигн. провод (жёлтый)  -> Цифр. 12 <br/>
 GND                    -> GND <br/>
 VCC                    -> 3.3v
 </pre>
+
+## Советы.
+1) При прошивке отключить питание Bluetooth-модуля.
