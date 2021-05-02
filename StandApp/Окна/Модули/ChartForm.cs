@@ -142,6 +142,7 @@ namespace StandApp
             // Создание события приёма данных
             serialPortMain.DataReceived += SerialPortMain_DataReceived;
 
+            // Установка заддержки отправки данных
             serialPortMain.WriteTimeout = 10;
         }
 

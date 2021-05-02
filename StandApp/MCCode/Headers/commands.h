@@ -1,3 +1,5 @@
+#pragma once
+
 #define SPLITTER_SIGN "|"
 
 /* Список команд */
