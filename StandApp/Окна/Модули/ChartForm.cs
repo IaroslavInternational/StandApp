@@ -141,6 +141,8 @@ namespace StandApp
 
             // Создание события приёма данных
             serialPortMain.DataReceived += SerialPortMain_DataReceived;
+
+            serialPortMain.WriteTimeout = 10;
         }
 
         // Отключить отображение всех графиков и очистить график
@@ -390,6 +392,8 @@ namespace StandApp
                 IsShowEngineChart = true;
 
                 showEngineChartBtn.IconChar = FontAwesome.Sharp.IconChar.Pause;
+                
+                PWM.ForeColor = System.Drawing.Color.Gainsboro;
 
                 SetDataInterval(0.0, 10000.0);
                 SetDataPostfix(ue);
@@ -399,6 +403,8 @@ namespace StandApp
                 IsShowEngineChart = false;
 
                 showEngineChartBtn.IconChar = FontAwesome.Sharp.IconChar.Play;
+
+                PWM.ForeColor = System.Drawing.Color.DarkOrange;
             }
         }
 
@@ -415,11 +421,13 @@ namespace StandApp
         // При изменении ШИМ-сигнала на двигатель
         private void engineTrackBar_ValueChanged(object sender, EventArgs e)
         {
+            engineSpeedState.Text = Convert.ToString(engineTrackBar.Value) + " " + ue;
+            engineSpeedStateMcs.Text = Convert.ToString(Commands.Map(engineTrackBar.Value, 0, 1000, 544, 2400)) + " " + microsec;
+
             if (IsShowEngineChart)
             {
-                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + Convert.ToString(engineTrackBar.Value));
-                engineSpeedState.Text = Convert.ToString(engineTrackBar.Value) + " " + ue;
-                engineSpeedStateMcs.Text = Convert.ToString(Commands.Map(engineTrackBar.Value, 0, 1000, 544, 2400)) + " " + microsec;
+                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + Convert.ToString(engineTrackBar.Value));
+                PWM.ForeColor = System.Drawing.Color.Gainsboro;
             }
         }
 
@@ -440,6 +448,8 @@ namespace StandApp
         {
             if (!IsExp)
             {
+                DisableAllCharts();
+
                 MainTimer.Interval = Convert.ToInt32(intervalUE_Exp.Text);
                 CurrentEngineWrite_Exp = Convert.ToInt32(startUE_Exp.Text);
 
@@ -448,10 +458,14 @@ namespace StandApp
                 startExpOne.BackColor = System.Drawing.Color.BlueViolet;
                 startExpOne.IconChar = FontAwesome.Sharp.IconChar.PlaneDeparture;
 
+                engineTrackBar.Enabled = false;
+
+                PWM.ForeColor = System.Drawing.Color.Gainsboro;
+
                 if (!checkBoxLog.Checked)
                 {
                     // Выключение двигателя
-                    //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
+                    serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
 
                     // Запуск таймера
                     MainTimer.Start();
@@ -463,31 +477,45 @@ namespace StandApp
                 MainTimer.Stop();
 
                 // Выключение двигателя
-                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
+                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
 
                 IsExp = false;
 
                 startExpOne.BackColor = System.Drawing.Color.DodgerBlue;
                 startExpOne.IconChar = FontAwesome.Sharp.IconChar.Rocket;
+
+                engineTrackBar.Enabled = true;
+                engineTrackBar.Value = 0;
+
+                PWM.ForeColor = System.Drawing.Color.DarkOrange;
             }
         }
 
+        // Событие таймера при экспиременте
         private void MainTimer_Tick(object sender, EventArgs e)
         {
             if(CurrentEngineWrite_Exp != Convert.ToInt32(endUE_Exp.Text))
             {                
                 CurrentEngineWrite_Exp += Convert.ToInt32(stepUE_Exp.Text);
 
-                testExp.Text = CurrentEngineWrite_Exp.ToString();
-                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + CurrentEngineWrite_Exp);
+                engineTrackBar.Value = CurrentEngineWrite_Exp;
+
+                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + CurrentEngineWrite_Exp.ToString());
             }
             else
             {
                 // Остановка таймера
                 MainTimer.Stop();
 
+                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + '0');
+
+                IsExp = false;
+
                 startExpOne.BackColor = System.Drawing.Color.DodgerBlue;
                 startExpOne.IconChar = FontAwesome.Sharp.IconChar.Rocket;
+
+                engineTrackBar.Enabled = true;
+                engineTrackBar.Value = 0;
             }
         }
     }

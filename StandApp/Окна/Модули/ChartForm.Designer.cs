@@ -65,7 +65,7 @@
             this.engineSpeedStateMcs = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.PWM = new System.Windows.Forms.Label();
             this.engineSpeedState = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
@@ -80,7 +80,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.startExpOne = new FontAwesome.Sharp.IconButton();
             this.MainTimer = new System.Windows.Forms.Timer(this.components);
-            this.testExp = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.chartMenu.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -482,13 +481,12 @@
             // 
             this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
-            this.panel6.Controls.Add(this.testExp);
             this.panel6.Controls.Add(this.label13);
             this.panel6.Controls.Add(this.label14);
             this.panel6.Controls.Add(this.engineSpeedStateMcs);
             this.panel6.Controls.Add(this.label8);
             this.panel6.Controls.Add(this.label7);
-            this.panel6.Controls.Add(this.label6);
+            this.panel6.Controls.Add(this.PWM);
             this.panel6.Controls.Add(this.engineSpeedState);
             this.panel6.Controls.Add(this.engineTrackBar);
             this.panel6.Location = new System.Drawing.Point(410, 349);
@@ -551,16 +549,16 @@
             this.label7.TabIndex = 13;
             this.label7.Text = "Напряжение:";
             // 
-            // label6
+            // PWM
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label6.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label6.Location = new System.Drawing.Point(3, 50);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(104, 20);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "ШИМ-сигнал:";
+            this.PWM.AutoSize = true;
+            this.PWM.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.PWM.ForeColor = System.Drawing.Color.DarkOrange;
+            this.PWM.Location = new System.Drawing.Point(3, 50);
+            this.PWM.Name = "PWM";
+            this.PWM.Size = new System.Drawing.Size(104, 20);
+            this.PWM.TabIndex = 9;
+            this.PWM.Text = "ШИМ-сигнал:";
             // 
             // engineSpeedState
             // 
@@ -624,6 +622,7 @@
             this.intervalUE_Exp.Name = "intervalUE_Exp";
             this.intervalUE_Exp.Size = new System.Drawing.Size(50, 21);
             this.intervalUE_Exp.TabIndex = 23;
+            this.intervalUE_Exp.Text = "2000";
             // 
             // stepUE_Exp
             // 
@@ -632,6 +631,7 @@
             this.stepUE_Exp.Name = "stepUE_Exp";
             this.stepUE_Exp.Size = new System.Drawing.Size(50, 21);
             this.stepUE_Exp.TabIndex = 22;
+            this.stepUE_Exp.Text = "10";
             // 
             // endUE_Exp
             // 
@@ -640,14 +640,17 @@
             this.endUE_Exp.Name = "endUE_Exp";
             this.endUE_Exp.Size = new System.Drawing.Size(50, 21);
             this.endUE_Exp.TabIndex = 21;
+            this.endUE_Exp.Text = "1000";
             // 
             // startUE_Exp
             // 
+            this.startUE_Exp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.startUE_Exp.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.startUE_Exp.Location = new System.Drawing.Point(61, 5);
             this.startUE_Exp.Name = "startUE_Exp";
             this.startUE_Exp.Size = new System.Drawing.Size(50, 21);
             this.startUE_Exp.TabIndex = 20;
+            this.startUE_Exp.Text = "0";
             // 
             // label11
             // 
@@ -695,9 +698,10 @@
             // 
             // startExpOne
             // 
+            this.startExpOne.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.startExpOne.BackColor = System.Drawing.Color.DodgerBlue;
             this.startExpOne.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.startExpOne.Dock = System.Windows.Forms.DockStyle.Right;
             this.startExpOne.FlatAppearance.BorderSize = 0;
             this.startExpOne.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.startExpOne.ForeColor = System.Drawing.Color.Gainsboro;
@@ -715,17 +719,6 @@
             // MainTimer
             // 
             this.MainTimer.Tick += new System.EventHandler(this.MainTimer_Tick);
-            // 
-            // testExp
-            // 
-            this.testExp.AutoSize = true;
-            this.testExp.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.testExp.ForeColor = System.Drawing.Color.Gainsboro;
-            this.testExp.Location = new System.Drawing.Point(189, 92);
-            this.testExp.Name = "testExp";
-            this.testExp.Size = new System.Drawing.Size(17, 20);
-            this.testExp.TabIndex = 18;
-            this.testExp.Text = "0";
             // 
             // ChartForm
             // 
@@ -793,7 +786,7 @@
         private System.Windows.Forms.TrackBar engineTrackBar;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label engineSpeedState;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label PWM;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label engineSpeedStateMcs;
@@ -815,6 +808,5 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.CheckBox checkBoxLog;
         private FontAwesome.Sharp.IconButton iconButton1;
-        private System.Windows.Forms.Label testExp;
     }
 }

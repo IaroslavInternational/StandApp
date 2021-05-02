@@ -24,6 +24,11 @@
 
 String sub_command = "";
 
+#define MODULES_UPDATE_TIME 5000
+#define DELAY_TIME 1
+
+float current_modules_time = 0;
+
 /* Настройки для АЦП HX711 */
 
 // Пин данных для АЦП HX711
@@ -60,7 +65,7 @@ bool IsBMP_E_Valid = false;
 
 /* Настройки для двигателя */
 
-#define ENGINE_PIN 8
+#define ENGINE_PIN 12
 
 Servo engine;
 
@@ -123,7 +128,8 @@ void setup()
 {    
   // Установка скорости обмена данными
   Serial.begin(9600);
-
+  Serial.setTimeout(10);
+  
   // Цикл для тестового подключения
   while(true)
   {
@@ -169,34 +175,46 @@ void loop()
     {
       sub_command = command.substring(0, command.indexOf(SPLITTER_SIGN));
 
-      if(sub_command == ENGINE_WRITE) // Если команда двигателя
+      // Если команда двигателя
+      if(sub_command == ENGINE_WRITE)
       {
         engine_value = command.substring(command.indexOf(SPLITTER_SIGN) + 1).toInt();
       }
     }
   }
 
-  // Если доступен датчик BMP/E 280
-  if(IsBMP_E_Valid)
   {
-    Send_Device_InData_Info(BMP_E_TEMP, (String) bme.readTemperature());
-    Send_Device_InData_Info(BMP_E_PRES, (String)(bme.readPressure() / 997.5));
-    Send_Device_InData_Info(BMP_E_HUM,  (String) bme.readHumidity());
-  }
-
-  // Если доступен АЦП HX711
-  if(IsHX_Valid)
-  {
-    units = hx711.get_units(), 10;
-    
-    if (units < 0)
+    current_modules_time = current_modules_time + DELAY_TIME;
+    // Если доступен датчик BMP/E 280
+    if(IsBMP_E_Valid)
     {
-      units = 0.00;
+      if(current_modules_time == MODULES_UPDATE_TIME)
+      {
+        Send_Device_InData_Info(BMP_E_TEMP, (String) bme.readTemperature());
+        Send_Device_InData_Info(BMP_E_PRES, (String)(bme.readPressure() / 997.5));
+        Send_Device_InData_Info(BMP_E_HUM,  (String) bme.readHumidity()); 
+      }
     }
+  
+    // Если доступен АЦП HX711
+    if(IsHX_Valid)
+    {
+      if(current_modules_time == MODULES_UPDATE_TIME)
+      {
+        units = hx711.get_units(), 10;
+        
+        if (units < 0)
+        {
+          units = 0.00;
+        }
+        
+        kg_press = units * hx_scale;
     
-    kg_press = units * hx_scale;
+        Send_Device_InData_Info(HX711_PRES, (String)kg_press);
 
-    Send_Device_InData_Info(HX711_PRES, (String)kg_press);
+        current_modules_time = 0;
+      }
+    }
   }
 
   if(IsEngine_Valid)
@@ -205,5 +223,5 @@ void loop()
     engine.writeMicroseconds(new_value);
   }
   
-  delay(10);
+  delay(DELAY_TIME);
 }
