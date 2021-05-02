@@ -16,3 +16,10 @@ DT  -> Цифр. 7 <br/>
 SCK -> Цифр. 6 <br/>
 VCC -> 5.0v
 </pre>
+
+Двигатель -> Arduino Mega: <br/>
+<pre>
+Сигн. провод (жёлтый)  -> Цифр. 8 <br/>
+GND                    -> GND <br/>
+VCC                    -> 3.3v
+</pre>
