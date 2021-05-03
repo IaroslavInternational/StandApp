@@ -80,6 +80,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.startExpOne = new FontAwesome.Sharp.IconButton();
             this.MainTimer = new System.Windows.Forms.Timer(this.components);
+            this.label6 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.chartMenu.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -388,7 +390,7 @@
             this.stopAll.FlatAppearance.BorderSize = 0;
             this.stopAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.stopAll.ForeColor = System.Drawing.Color.Gainsboro;
-            this.stopAll.IconChar = FontAwesome.Sharp.IconChar.Stop;
+            this.stopAll.IconChar = FontAwesome.Sharp.IconChar.PowerOff;
             this.stopAll.IconColor = System.Drawing.Color.Black;
             this.stopAll.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.stopAll.IconSize = 20;
@@ -434,6 +436,7 @@
             this.showVoltageChart.Size = new System.Drawing.Size(26, 20);
             this.showVoltageChart.TabIndex = 3;
             this.showVoltageChart.UseVisualStyleBackColor = false;
+            this.showVoltageChart.Click += new System.EventHandler(this.showVoltageChart_Click);
             // 
             // showEngineChartBtn
             // 
@@ -462,7 +465,7 @@
             this.weightPresInd.ForeColor = System.Drawing.Color.Gainsboro;
             this.weightPresInd.Location = new System.Drawing.Point(282, 350);
             this.weightPresInd.Name = "weightPresInd";
-            this.weightPresInd.Size = new System.Drawing.Size(122, 115);
+            this.weightPresInd.Size = new System.Drawing.Size(50, 50);
             this.weightPresInd.TabIndex = 11;
             this.weightPresInd.Text = "Весы";
             // 
@@ -472,7 +475,7 @@
             this.engineTrackBar.Location = new System.Drawing.Point(0, 0);
             this.engineTrackBar.Maximum = 1000;
             this.engineTrackBar.Name = "engineTrackBar";
-            this.engineTrackBar.Size = new System.Drawing.Size(276, 45);
+            this.engineTrackBar.Size = new System.Drawing.Size(312, 45);
             this.engineTrackBar.TabIndex = 12;
             this.engineTrackBar.TickFrequency = 20;
             this.engineTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
@@ -482,6 +485,8 @@
             // 
             this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
+            this.panel6.Controls.Add(this.label6);
+            this.panel6.Controls.Add(this.label8);
             this.panel6.Controls.Add(this.voltageState);
             this.panel6.Controls.Add(this.label14);
             this.panel6.Controls.Add(this.engineSpeedStateMcs);
@@ -490,9 +495,9 @@
             this.panel6.Controls.Add(this.PWM);
             this.panel6.Controls.Add(this.engineSpeedState);
             this.panel6.Controls.Add(this.engineTrackBar);
-            this.panel6.Location = new System.Drawing.Point(410, 349);
+            this.panel6.Location = new System.Drawing.Point(338, 349);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(276, 116);
+            this.panel6.Size = new System.Drawing.Size(312, 116);
             this.panel6.TabIndex = 11;
             // 
             // voltageState
@@ -500,11 +505,11 @@
             this.voltageState.AutoSize = true;
             this.voltageState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.voltageState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.voltageState.Location = new System.Drawing.Point(113, 92);
+            this.voltageState.Location = new System.Drawing.Point(113, 72);
             this.voltageState.Name = "voltageState";
-            this.voltageState.Size = new System.Drawing.Size(45, 20);
+            this.voltageState.Size = new System.Drawing.Size(38, 20);
             this.voltageState.TabIndex = 17;
-            this.voltageState.Text = "100 А";
+            this.voltageState.Text = "50 В";
             // 
             // label14
             // 
@@ -522,22 +527,22 @@
             this.engineSpeedStateMcs.AutoSize = true;
             this.engineSpeedStateMcs.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.engineSpeedStateMcs.ForeColor = System.Drawing.Color.Gainsboro;
-            this.engineSpeedStateMcs.Location = new System.Drawing.Point(189, 50);
+            this.engineSpeedStateMcs.Location = new System.Drawing.Point(197, 50);
             this.engineSpeedStateMcs.Name = "engineSpeedStateMcs";
-            this.engineSpeedStateMcs.Size = new System.Drawing.Size(82, 20);
+            this.engineSpeedStateMcs.Size = new System.Drawing.Size(70, 20);
             this.engineSpeedStateMcs.TabIndex = 15;
-            this.engineSpeedStateMcs.Text = "2400 мк. с.";
+            this.engineSpeedStateMcs.Text = "2400 мкс";
             // 
             // currentState
             // 
             this.currentState.AutoSize = true;
             this.currentState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.currentState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.currentState.Location = new System.Drawing.Point(113, 72);
+            this.currentState.Location = new System.Drawing.Point(113, 92);
             this.currentState.Name = "currentState";
-            this.currentState.Size = new System.Drawing.Size(36, 20);
+            this.currentState.Size = new System.Drawing.Size(45, 20);
             this.currentState.TabIndex = 14;
-            this.currentState.Text = "12 В";
+            this.currentState.Text = "100 А";
             // 
             // label7
             // 
@@ -588,9 +593,9 @@
             this.panel7.Controls.Add(this.label12);
             this.panel7.Controls.Add(this.label9);
             this.panel7.Controls.Add(this.startExpOne);
-            this.panel7.Location = new System.Drawing.Point(692, 349);
+            this.panel7.Location = new System.Drawing.Point(656, 349);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(173, 116);
+            this.panel7.Size = new System.Drawing.Size(209, 116);
             this.panel7.TabIndex = 16;
             // 
             // label15
@@ -612,7 +617,7 @@
             this.checkBoxLog.ForeColor = System.Drawing.Color.Gainsboro;
             this.checkBoxLog.Location = new System.Drawing.Point(61, 94);
             this.checkBoxLog.Name = "checkBoxLog";
-            this.checkBoxLog.Size = new System.Drawing.Size(47, 18);
+            this.checkBoxLog.Size = new System.Drawing.Size(16, 18);
             this.checkBoxLog.TabIndex = 24;
             this.checkBoxLog.UseVisualStyleBackColor = true;
             // 
@@ -710,9 +715,9 @@
             this.startExpOne.IconColor = System.Drawing.Color.Black;
             this.startExpOne.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.startExpOne.IconSize = 20;
-            this.startExpOne.Location = new System.Drawing.Point(114, 0);
+            this.startExpOne.Location = new System.Drawing.Point(117, 0);
             this.startExpOne.Name = "startExpOne";
-            this.startExpOne.Size = new System.Drawing.Size(59, 116);
+            this.startExpOne.Size = new System.Drawing.Size(92, 116);
             this.startExpOne.TabIndex = 2;
             this.startExpOne.UseVisualStyleBackColor = false;
             this.startExpOne.Click += new System.EventHandler(this.startExpOne_Click);
@@ -720,6 +725,28 @@
             // MainTimer
             // 
             this.MainTimer.Tick += new System.EventHandler(this.MainTimer_Tick);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label6.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label6.Location = new System.Drawing.Point(206, 72);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(82, 20);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "10000 об/с";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label8.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label8.Location = new System.Drawing.Point(164, 72);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(44, 20);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "RPM:";
             // 
             // ChartForm
             // 
@@ -809,5 +836,7 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.CheckBox checkBoxLog;
         private FontAwesome.Sharp.IconButton stopAll;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label8;
     }
 }

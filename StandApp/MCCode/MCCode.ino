@@ -13,6 +13,6 @@ void loop()
 {
   sys.ProcessCommands();  // Обработка входящих команд
   sys.Tick();             // Событие итерации
-  
+
   delay(DELAY_TIME);      // Задержка
 }

@@ -32,8 +32,10 @@
 #define HX711_SCALE			 0.035274f	// Коэффициент для перевода е. и. в граммы для АЦП HX711
 #define BMP_E_ADR			 0x76		// Пин I2C для датчика BMP/E 280
 #define ENGINE_PIN			 12			// Пин управления для двигателя
+#define V_PIN				 A5			// При вольтметра
 #define S_BAUD_RATE			 9600		// Скорость обмена данными
 #define S_TIMEOUT			 10			// Время приёма данных
+#define MAX_V				 50			// Максимальное измерямое напряжение
 
 /*************/
 
@@ -87,6 +89,19 @@ private:
 	bool IsEngine_Valid = false;			// Если двигатель доступен
 };
 
+// Объект вольтметра
+class voltmeter
+{
+public:
+	voltmeter(size_t pin = V_PIN);
+public:
+	void Process();								// Обработка и отправка данных
+private:
+	void SendData(String header, String value);	// Отправка данных
+private:
+	bool IsVoltmeter_Vaild = false;				// Если вольтметр доступен
+};
+
 // Система управления
 class System
 {
@@ -103,6 +118,7 @@ private:
 	hx711_adc tenzo;														// Тензодатчик
 	bmp_e_280 bmp;															// Датчик
 	Engine engine;															// Двигатель
+	voltmeter vm;															// Вольтметр
 private:
 	size_t current_modules_time = 0;										// Текущий отсчёт времени перед отправкой данных переферийных модулей
 	String sub_command = "";												// Подкоманда 

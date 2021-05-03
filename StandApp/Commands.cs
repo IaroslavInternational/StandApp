@@ -41,6 +41,14 @@ namespace StandApp
             public const string write = "[Engine write]";   // Скорость вращения
         }
 
+
+        // Команды от
+        // вольметра
+        public struct Voltmeter
+        {
+            public const string data = "[Voltmeter]";   // Напряжение
+        }
+
         // Команды для Ардуино
         public struct Arduino
         {

@@ -28,6 +28,10 @@ namespace StandApp
         private delegate void TenzoSetter(string val);
         private TenzoSetter SetTenzo;
 
+        // Установка текста для напряжения в другом потоке
+        private delegate void VoltageSetter(string val);
+        private VoltageSetter SetVoltage;
+
         // Добавление значения к главному графику в другом потоке
         private delegate void MainChartSetter(double val);
         private MainChartSetter AddVal;
@@ -48,7 +52,7 @@ namespace StandApp
         private const string ue =       "у. е.";         // Постфикс для ШИМ-сигнала для двигателя в       условных единицах
         private const string microsec = "мкс";           // Постфикс для ШИМ-сигнала для двигателя в       микросекундах
         private const string current =  "А";             // Постфикс для тока потребления двигателем в     амперах
-        private const string voltage=  "А";              // Постфикс для падения напряжения на двигателе в вольтах
+        private const string voltage =  "В";              // Постфикс для падения напряжения на двигателе в вольтах
 
         private bool IsShowTempChart =     false;        // Показать график для температуры
         private bool IsShowPresChart =     false;        // Показать график для давления
@@ -83,9 +87,10 @@ namespace StandApp
             SetPres = new PresSetter(SetNewPressure);
             SetTenzo = new TenzoSetter(SetNewTenzoPressure);
             SetHum = new HumSetter(SetNewHumidity);
+            SetVoltage = new VoltageSetter(SetNewVoltage);
             AddVal = new MainChartSetter(AddNewValueToMainChart);
             AddWeightVal = new WeightChartSetter(AddNewValueToWeightChart);
-
+         
             /**********************/
 
             /* Настройки главного графика */
@@ -111,7 +116,8 @@ namespace StandApp
             weightPresInd.TabIndex = 11;
             weightPresInd.Text = "Весы";
             weightPresInd.ToValue = 20;
-            weightPresInd.LabelsStep = weightPresInd.ToValue / 10;
+            weightPresInd.Wedge = 180;
+            weightPresInd.LabelsStep = weightPresInd.ToValue / 4;
             weightPresInd.TickStep = weightPresInd.ToValue / 20;
 
             /*********************************/
@@ -144,7 +150,7 @@ namespace StandApp
                 voltage_tt.SetToolTip(showVoltageChart, "Падение напряжения");          
                 
                 ToolTip exp_tt = new ToolTip();
-                exp_tt.SetToolTip(startExpOne, "Начать эксперимент");
+                exp_tt.SetToolTip(startExpOne,          "Начать эксперимент");
             }
             /*************/
 
@@ -170,6 +176,8 @@ namespace StandApp
             IsShowHumChart = false;
             IsShowRealPresChart = false;
             IsShowEngineChart = false;
+            IsShowCurrentChart = false;
+            IsShowVoltageChart = false;
 
             mainChart.Series[0].Values.Clear();
         }
@@ -209,6 +217,12 @@ namespace StandApp
         private void SetNewTenzoPressure(string val)
         {
             tenzoState.Text = val + " " + gramm;
+        }
+
+        // Сеттер падения напряжения
+        private void SetNewVoltage(string val)
+        {
+            voltageState.Text = val + " " + voltage;
         }
 
         // Добавить новое значение на график 
@@ -343,7 +357,18 @@ namespace StandApp
                     // При возможности отрисовать график
                     if (IsShowRealPresChart)
                     {
-                        //mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                        mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+                    }
+                }
+                else if(command == Commands.Voltmeter.data) // Если вольтметр
+                {
+                    // Установить значение
+                    voltageState.Invoke(SetVoltage, value);
+
+                    // При возможности отрисовать график
+                    if (IsShowVoltageChart)
+                    {
+                        mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
             }
@@ -358,6 +383,8 @@ namespace StandApp
                 serialPortMain.WriteLine(Commands.Arduino.shutdown);    // Перевести систему в спящий режим
                 serialPortMain.Close();                                 // Отключить порт
             }
+
+            logFileStream.Close();  // Закрытие лог-файла
         }
 
         // При нажатии на кнопку для отрисовки температуры
@@ -435,6 +462,16 @@ namespace StandApp
             SetDataPostfix(current);
         }
 
+        // При нажатии на кнопку для отрисовки падения напряжения
+        private void showVoltageChart_Click(object sender, EventArgs e)
+        {
+            DisableAllCharts();
+            IsShowVoltageChart = true;
+
+            SetDataInterval(0.0, 50.0);
+            SetDataPostfix(voltage);
+        }
+
         // При изменении ШИМ-сигнала на двигатель
         private void engineTrackBar_ValueChanged(object sender, EventArgs e)
         {
@@ -480,17 +517,21 @@ namespace StandApp
                 PWM.ForeColor = System.Drawing.Color.Gainsboro;
 
                 // Выключение двигателя
-                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
+                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
 
-                DateTime dateTime = DateTime.Now;
+                if (checkBoxLog.Checked)
+                {
+                    DateTime dateTime = DateTime.Now;
 
-                AddLog("Эксперимент: " + exp_num + "\n");
-                AddLog(dateTime.ToString("dd.MM.yyyy") + "\n" + dateTime.ToString("HH:mm:ss") + "\n");
-                AddLog("Начальный уровень ШИМ: " + Commands.Map(Convert.ToInt32(startUE_Exp.Text), 0, 1000, 544, 2400).ToString() + " " + microsec + "\n");
-                AddLog("Шаг: " + Convert.ToInt32(stepUE_Exp.Text).ToString() + " " + ue + "\n");
-                AddLog("Интервал: " + Convert.ToInt32(intervalUE_Exp.Text).ToString() + " " + "мс" + "\n");
+                    AddLog("Эксперимент: " + exp_num + "\n");
+                    AddLog(dateTime.ToString("dd.MM.yyyy") + "\n" + dateTime.ToString("HH:mm:ss") + "\n");
+                    AddLog("Начальный уровень ШИМ: " + Commands.Map(Convert.ToInt32(startUE_Exp.Text), 0, 1000, 544, 2400).ToString() + " " + microsec + "\n");
+                    AddLog("Конечный уровень ШИМ: " + Commands.Map(Convert.ToInt32(endUE_Exp.Text), 0, 1000, 544, 2400).ToString() + " " + microsec + "\n");
+                    AddLog("Шаг: " + Convert.ToInt32(stepUE_Exp.Text).ToString() + " " + ue + "\n");
+                    AddLog("Интервал: " + Convert.ToInt32(intervalUE_Exp.Text).ToString() + " " + "мс" + "\n");
 
-                exp_num++;
+                    exp_num++;
+                }
 
                 // Запуск таймера
                  MainTimer.Start();         
@@ -501,7 +542,7 @@ namespace StandApp
                 MainTimer.Stop();
 
                 // Выключение двигателя
-                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
+                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + 0);
 
                 IsExp = false;
 
@@ -524,19 +565,22 @@ namespace StandApp
 
                 engineTrackBar.Value = CurrentEngineWrite_Exp;
 
-                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + CurrentEngineWrite_Exp.ToString());
+                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + CurrentEngineWrite_Exp.ToString());
 
-                AddLog("ШИМ|"   + CurrentEngineWrite_Exp.ToString() + "|");
-                AddLog("Тяга|"  + tenzoState.Text + "|");
-                AddLog("Ток|"   + currentState.Text + "|");
-                AddLog("Напр.|" + voltageState.Text + "\n");
+                if (checkBoxLog.Checked)
+                {
+                    AddLog("ШИМ|" + CurrentEngineWrite_Exp.ToString() + "|");
+                    AddLog("Тяга|" + tenzoState.Text + "|");
+                    AddLog("Ток|" + currentState.Text + "|");
+                    AddLog("Напр.|" + voltageState.Text + "\n");
+                }
             }
             else
             {
                 // Остановка таймера
                 MainTimer.Stop();
 
-                //serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + '0');
+                serialPortMain.WriteLine(Commands.Engine.write + Commands.SPLITTER + '0');
 
                 IsExp = false;
 

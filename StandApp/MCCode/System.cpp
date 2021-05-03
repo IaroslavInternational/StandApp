@@ -81,6 +81,7 @@ void System::Tick()
 		current_modules_time = 0;
 	}
 
+	vm.Process();
 	engine.Process();
 }
 
@@ -195,3 +196,31 @@ void Engine::SetVal(size_t value)
 }
 
 /* end Engine stuff */
+
+/*   voltmeter stuff   */
+
+voltmeter::voltmeter(size_t pin)
+{
+	pinMode(pin, INPUT);
+
+	IsVoltmeter_Vaild = true;
+}
+
+void voltmeter::SendData(String header, String value)
+{
+	Serial.print(header);
+	Serial.print(SPLITTER_SIGN);
+	Serial.print(value);
+
+	Serial.println();
+}
+
+void voltmeter::Process()
+{
+	if (IsVoltmeter_Vaild)
+	{
+		SendData(V_DATA, (String)map(analogRead(V_PIN), 0, 1024, 0, MAX_V));
+	}
+}
+
+/* end voltmeter stuff */
