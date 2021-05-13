@@ -11,8 +11,8 @@ void setup()
 
 void loop() 
 {
-  sys.ProcessCommands();  // Обработка входящих команд
-  sys.Tick();             // Событие итерации
+  sys.ProcessCommands();    // Обработка входящих команд
+  sys.Tick();               // Событие итерации
 
-  delay(DELAY_TIME);      // Задержка
+  delay(DELAY_TIME);        // Задержка
 }

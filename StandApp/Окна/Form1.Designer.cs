@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(btnHome));
             this.panelMenu = new System.Windows.Forms.Panel();
             this.exitBtn = new FontAwesome.Sharp.IconButton();
             this.linkBtn = new FontAwesome.Sharp.IconButton();
-            this.logBtn = new FontAwesome.Sharp.IconButton();
             this.manageBtn = new FontAwesome.Sharp.IconButton();
             this.panelLogo = new System.Windows.Forms.Panel();
             this.homeBtn = new System.Windows.Forms.PictureBox();
@@ -40,6 +40,7 @@
             this.iconCurrent = new FontAwesome.Sharp.IconPictureBox();
             this.panelShadow = new System.Windows.Forms.Panel();
             this.panelDesktop = new System.Windows.Forms.Panel();
+            this.settingsBtn = new FontAwesome.Sharp.IconButton();
             this.panelMenu.SuspendLayout();
             this.panelLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.homeBtn)).BeginInit();
@@ -50,9 +51,9 @@
             // panelMenu
             // 
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(30)))), ((int)(((byte)(68)))));
+            this.panelMenu.Controls.Add(this.settingsBtn);
             this.panelMenu.Controls.Add(this.exitBtn);
             this.panelMenu.Controls.Add(this.linkBtn);
-            this.panelMenu.Controls.Add(this.logBtn);
             this.panelMenu.Controls.Add(this.manageBtn);
             this.panelMenu.Controls.Add(this.panelLogo);
             this.panelMenu.Dock = System.Windows.Forms.DockStyle.Left;
@@ -89,7 +90,7 @@
             this.linkBtn.IconColor = System.Drawing.Color.Gainsboro;
             this.linkBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.linkBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkBtn.Location = new System.Drawing.Point(0, 260);
+            this.linkBtn.Location = new System.Drawing.Point(0, 200);
             this.linkBtn.Name = "linkBtn";
             this.linkBtn.Padding = new System.Windows.Forms.Padding(10, 0, 20, 0);
             this.linkBtn.Size = new System.Drawing.Size(220, 60);
@@ -99,29 +100,6 @@
             this.linkBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.linkBtn.UseVisualStyleBackColor = true;
             this.linkBtn.Click += new System.EventHandler(this.linkBtn_Click);
-            // 
-            // logBtn
-            // 
-            this.logBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.logBtn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.logBtn.FlatAppearance.BorderSize = 0;
-            this.logBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.logBtn.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.logBtn.ForeColor = System.Drawing.Color.Gainsboro;
-            this.logBtn.IconChar = FontAwesome.Sharp.IconChar.FileContract;
-            this.logBtn.IconColor = System.Drawing.Color.Gainsboro;
-            this.logBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.logBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.logBtn.Location = new System.Drawing.Point(0, 200);
-            this.logBtn.Name = "logBtn";
-            this.logBtn.Padding = new System.Windows.Forms.Padding(10, 0, 20, 0);
-            this.logBtn.Size = new System.Drawing.Size(220, 60);
-            this.logBtn.TabIndex = 3;
-            this.logBtn.Text = "Лог";
-            this.logBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.logBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.logBtn.UseVisualStyleBackColor = true;
-            this.logBtn.Click += new System.EventHandler(this.logBtn_Click);
             // 
             // manageBtn
             // 
@@ -223,6 +201,29 @@
             this.panelDesktop.Size = new System.Drawing.Size(877, 477);
             this.panelDesktop.TabIndex = 3;
             // 
+            // settingsBtn
+            // 
+            this.settingsBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.settingsBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.settingsBtn.FlatAppearance.BorderSize = 0;
+            this.settingsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.settingsBtn.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.settingsBtn.ForeColor = System.Drawing.Color.Gainsboro;
+            this.settingsBtn.IconChar = FontAwesome.Sharp.IconChar.SdCard;
+            this.settingsBtn.IconColor = System.Drawing.Color.Gainsboro;
+            this.settingsBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.settingsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.settingsBtn.Location = new System.Drawing.Point(0, 260);
+            this.settingsBtn.Name = "settingsBtn";
+            this.settingsBtn.Padding = new System.Windows.Forms.Padding(10, 0, 20, 0);
+            this.settingsBtn.Size = new System.Drawing.Size(220, 60);
+            this.settingsBtn.TabIndex = 8;
+            this.settingsBtn.Text = "Настройки";
+            this.settingsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.settingsBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.settingsBtn.UseVisualStyleBackColor = true;
+            this.settingsBtn.Click += new System.EventHandler(this.settingsBtn_Click);
+            // 
             // btnHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -233,12 +234,12 @@
             this.Controls.Add(this.titleBar);
             this.Controls.Add(this.panelMenu);
             this.ForeColor = System.Drawing.Color.Gainsboro;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1113, 600);
             this.Name = "btnHome";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MainForm";
+            this.Text = "StandApp";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.btnHome_FormClosing);
-            this.Load += new System.EventHandler(this.btnHome_Load);
             this.panelMenu.ResumeLayout(false);
             this.panelLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.homeBtn)).EndInit();
@@ -255,7 +256,6 @@
         private FontAwesome.Sharp.IconButton manageBtn;
         private System.Windows.Forms.Panel panelLogo;
         private FontAwesome.Sharp.IconButton linkBtn;
-        private FontAwesome.Sharp.IconButton logBtn;
         private System.Windows.Forms.PictureBox homeBtn;
         private System.Windows.Forms.Panel titleBar;
         private System.Windows.Forms.Label labelHome;
@@ -263,6 +263,7 @@
         private System.Windows.Forms.Panel panelShadow;
         private System.Windows.Forms.Panel panelDesktop;
         private FontAwesome.Sharp.IconButton exitBtn;
+        private FontAwesome.Sharp.IconButton settingsBtn;
     }
 }
 

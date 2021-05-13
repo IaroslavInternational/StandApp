@@ -2,17 +2,12 @@
 
 /*   System stuff   */
 
-System::System()
-	:
-	tenzo()
-{
-}
-
 void System::InitiliazeModules()
 {
 	tenzo.Setup();
 	bmp.Setup();
 	engine.Setup();
+	am.Setup();
 }
 
 void System::PreProcess(size_t b_rate, size_t t_out)
@@ -75,14 +70,18 @@ void System::Tick()
 
 	if (current_modules_time == MODULES_UPDATE_TIME)
 	{
-		tenzo.Process();
 		bmp.Process();
 
 		current_modules_time = 0;
 	}
-
-	vm.Process();
-	engine.Process();
+	else
+	{
+		rpmv.Process();
+		am.Process();
+		vm.Process();
+		tenzo.Process();
+		engine.Process();
+	}
 }
 
 /* end System stuff */
@@ -185,7 +184,7 @@ void Engine::Process()
 {
 	if (IsEngine_Valid)
 	{
-		new_value = map(engine_value, 0, 1000, 544, 2400);
+		new_value = map(engine_value, 0, 100, ENGINE_MIN_MCS, ENGINE_MAX_MCS);
 		engine.writeMicroseconds(new_value);
 	}
 }
@@ -224,3 +223,100 @@ void voltmeter::Process()
 }
 
 /* end voltmeter stuff */
+
+/*   ampermeter stuff   */
+
+volatile bool drdyIntrFlag = true;
+
+void drdyInterruptHndlr()
+{
+	drdyIntrFlag = true;
+}
+
+void enableInterruptPin()
+{
+	attachInterrupt(digitalPinToInterrupt(ADS1220_DRDY_PIN), drdyInterruptHndlr, FALLING);
+}
+
+void ampermeter::Setup()
+{
+	pc_ads1220.begin(ADS1220_CS_PIN, ADS1220_DRDY_PIN);
+
+	pc_ads1220.set_data_rate(DR_330SPS);
+	pc_ads1220.set_pga_gain(PGA_GAIN_1);
+
+	pc_ads1220.set_conv_mode_single_shot(); 
+}
+
+void ampermeter::Process()
+{
+	adc_data = pc_ads1220.Read_SingleShot_SingleEnded_WaitForData(MUX_SE_CH0);
+
+	if(convertToMilliV(adc_data) != 0.0)
+		SendData(A0_DATA, (String)(convertToMilliV(adc_data) / SHUNT_1_RESISTANCE / 1000));
+
+	adc_data = pc_ads1220.Read_SingleShot_SingleEnded_WaitForData(MUX_SE_CH1);
+
+	if (convertToMilliV(adc_data) != 0.0)
+		SendData(A1_DATA, (String)(convertToMilliV(adc_data) / SHUNT_2_RESISTANCE / 1000));
+}
+
+void ampermeter::SendData(String header, String value)
+{
+	Serial.print(header);
+	Serial.print(SPLITTER_SIGN);
+	Serial.print(value);
+
+	Serial.println();
+}
+
+float ampermeter::convertToMilliV(int32_t i32data)
+{
+	return (float)((i32data * VFSR * 1000) / FULL_SCALE);
+}
+
+/* end ampermeter stuff */
+
+/*   rpm stuff   */
+
+bool haveData = false;
+volatile int rpmvalue;
+
+void receiveEvent(int howMany)
+{
+	if (howMany >= (sizeof rpmvalue))
+	{
+		I2C_read(rpmvalue);
+
+		haveData = true;
+	}
+}
+
+rpm_viewer::rpm_viewer(byte adr)
+{
+	Wire.begin(adr);
+	Wire.onReceive(receiveEvent);
+
+	IsRpm_Valid = true;
+}
+
+void rpm_viewer::Process()
+{
+	if (IsRpm_Valid && haveData)
+	{	
+		SendData(RPM_DATA, (String)rpmvalue);
+
+		haveData = false;
+	}
+}
+
+void rpm_viewer::SendData(String header, String value)
+{
+	Serial.print(header);
+	Serial.print(SPLITTER_SIGN);
+	Serial.print(value);
+
+	Serial.println();
+}
+
+/* end rpm stuff */

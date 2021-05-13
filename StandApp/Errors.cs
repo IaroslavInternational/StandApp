@@ -40,6 +40,12 @@ namespace StandApp
             message = "COM-порт был отключён, проверьте подключение."
         };
 
+        public static ErrorStruct succesSave = new ErrorStruct
+        {
+            header = "Сообщение",
+            message = "Настройки успешно сохранены."
+        };
+
         // Метод для вывода сообщения 
         public static void ShowMessage(ErrorStruct es)
         {

@@ -23,8 +23,8 @@ namespace StandApp
         public struct BMP_E280
         {
             public const string temperature = "[BMP/E 280 temperature]";    // Температура
-            public const string pressure = "[BMP/E 280 pressure]";          // Давление
-            public const string humidity = "[BMP/E 280 humidity]";          // Влажность
+            public const string pressure =    "[BMP/E 280 pressure]";       // Давление
+            public const string humidity =    "[BMP/E 280 humidity]";       // Влажность
         }
 
         // Команды от
@@ -38,7 +38,8 @@ namespace StandApp
         // двигателя
         public struct Engine
         {
-            public const string write = "[Engine write]";   // Скорость вращения
+            public const string write = "[Engine write]";   // Задание ШИМ
+            public const string rpm =   "[RPM]";            // Скорость вращения
         }
 
 
@@ -47,12 +48,20 @@ namespace StandApp
         public struct Voltmeter
         {
             public const string data = "[Voltmeter]";   // Напряжение
+        }        
+        
+        // Команды от
+        // амперметра
+        public struct Ampermeter
+        {
+            public const string data =  "[Ampermeter 0]";   // Ток 1
+            public const string data2 = "[Ampermeter 1]";   // Ток 2
         }
 
         // Команды для Ардуино
         public struct Arduino
         {
-            public const string shutdown = "[Reset]";                   // Спящий режим
+            public const string shutdown =       "[Reset]";             // Спящий режим
             public const string testConnection = "[Test connection]";   // Проверка соединения
         }
 

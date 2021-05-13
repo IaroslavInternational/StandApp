@@ -1,25 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using System.Text.RegularExpressions;
 using System.IO;
 using System.IO.Ports;
 using Newtonsoft.Json;
 
 namespace StandApp
 {
-    // Данные для подключения к COM-порту
+    // Данные для подключения к COM-порту и настройки
     struct ConnectionData
     {
         public string PortName;
-        public int BaudRate;
+        public int    BaudRate;
+        public int    Timeout;
+        public double TenzoCalFactor1;
+        public double TenzoCalFactor2;
+        public string LogSplitter;
+        public int    WorkInterval_low;
+        public int    WorkInterval_high;
+        public bool   IsChartAnimationActive;
+        public int    WeightChartMax;
+        public double Shoulder;
     }
 
     // Форма настроек и тестирования подключения
@@ -62,6 +63,9 @@ namespace StandApp
 
             // Создание события приёма данных
             serialTestPort.DataReceived += SerialTestPort_DataReceived;
+
+            // Установка заддержки отправки данных
+            serialTestPort.WriteTimeout = 10;
         }
 
         // Добавить лог
@@ -99,6 +103,8 @@ namespace StandApp
                 }
                 else
                 {
+                    comList.SelectedItem = comList.Items[0];
+
                     AddLog("Добавлены порты");
                     IsSuccessLoad = true;
                 }
@@ -107,7 +113,6 @@ namespace StandApp
             {
                 AddLog(ex.ToString());
             }
-
         }
 
         // Загрузка списка возможных скоростей
@@ -124,6 +129,7 @@ namespace StandApp
             }
 
             baudRateList.Items.Add(57600);
+            
             for (int i = 57600; i < 230400; i += i)
             {
                 baudRateList.Items.Add(i * 2);
@@ -135,6 +141,8 @@ namespace StandApp
             {
                 baudRateList.Items.Add(i * 2);
             }
+
+            baudRateList.SelectedItem = 9600;
 
             AddLog("Добавлен список скоростей");
         }

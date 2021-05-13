@@ -134,6 +134,8 @@ namespace StandApp
             iconCurrent.IconChar = IconChar.Home;
             iconCurrent.IconColor = Color.MediumPurple;
             labelHome.Text = "Главная";
+
+            OpenChildForm(new IntroForm());
         }
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
@@ -159,9 +161,10 @@ namespace StandApp
             currentChildForm.Close();
         }
 
-        private void btnHome_Load(object sender, EventArgs e)
+        private void settingsBtn_Click(object sender, EventArgs e)
         {
-
+            ActiveButton(sender, RGBColors.color3);
+            OpenChildForm(new SettingsForm());
         }
     }
 }
