@@ -42,7 +42,11 @@ namespace StandApp
 
         // Установка текста для скорости в другом потоке
         private delegate void RpmSetter(string val);
-        private RpmSetter SetRpm;
+        private RpmSetter SetRpm;   
+        
+        // Установка текста для момента в другом потоке
+        private delegate void MomentSetter(string val);
+        private MomentSetter SetMoment;
 
         // Добавление значения к главному графику в другом потоке
         private delegate void MainChartSetter(double val);
@@ -69,6 +73,7 @@ namespace StandApp
         private const string current =  "А";             // Постфикс для тока потребления двигателем в     амперах
         private const string voltage =  "В";             // Постфикс для падения напряжения на двигателе в вольтах
         private const string rpm =      "об/м";          // Постфикс для скорости оборотов в минуту
+        private const string nMm =      "Н*м";           // Постфикс для момента двигателя
 
         private bool IsShowTempChart =     false;        // Показать график для температуры
         private bool IsShowPresChart =     false;        // Показать график для давления
@@ -93,6 +98,7 @@ namespace StandApp
         private uint dLog_num = 1;                       // Номер динамичного лога
 
         private bool DynamicLog = false;                 // Если динамичный лог доступен
+        private uint DynamicLogString = 0;               // Текущая строка динамичного лога
 
         /* Настроечные данные */
 
@@ -100,14 +106,20 @@ namespace StandApp
         private int    sBaudRate;
         private int    sTimeout;
         private double sTenzoCalFactor1;
-        private double sTenzoCalFactor2;
+        private double sTenzoCalFactor2;      
+        private double sCurrentCalFactor1;
+        private double sCurrentCalFactor2;
+        private double sVoltageCalFactor;
         private string sLogSplitter;
         private int    sWorkInterval_low;
         private int    sWorkInterval_high;
         private bool   sIsChartAnimationActive;
         private int    sWeightChartMax;
         private double sShoulder;
-        
+        private string sProp;
+        private string sEngine;
+        private string sEsc;
+
         /**********************/
 
         /*************/
@@ -125,8 +137,9 @@ namespace StandApp
             SetHum =       new HumSetter(SetNewHumidity);
             SetVoltage =   new VoltageSetter(SetNewVoltage);
             SetCurrent =   new CurrentSetter(SetNewCurrent);
-            SetCurrent2 =   new CurrentSetter2(SetNewCurrent2);
+            SetCurrent2 =  new CurrentSetter2(SetNewCurrent2);
             SetRpm =       new RpmSetter(SetNewRpm);
+            SetMoment =    new MomentSetter(SetNewMoment);
             AddVal =       new MainChartSetter(AddNewValueToMainChart);
             AddVal2 =      new ChartSetter(AddNewValueTo2MainChart);
             AddWeightVal = new WeightChartSetter(AddNewValueToWeightChart);
@@ -242,12 +255,18 @@ namespace StandApp
                 sTimeout = data.Timeout;
                 sTenzoCalFactor1 = data.TenzoCalFactor1;
                 sTenzoCalFactor2 = data.TenzoCalFactor2;
+                sCurrentCalFactor1 = data.CurrentCalFactor1;
+                sCurrentCalFactor2 = data.CurrentCalFactor2;
+                sVoltageCalFactor = data.VoltageCalFactor;
                 sLogSplitter = data.LogSplitter;
                 sWorkInterval_low = data.WorkInterval_low;
                 sWorkInterval_high = data.WorkInterval_high;
                 sIsChartAnimationActive = data.IsChartAnimationActive;
                 sWeightChartMax = data.WeightChartMax;
                 sShoulder = data.Shoulder;
+                sProp = data.prop;
+                sEngine = data.engine;
+                sEsc = data.esc;
 
                 weightPresInd.ToValue = sWeightChartMax;
                 
@@ -333,32 +352,38 @@ namespace StandApp
 
         // Сеттер давления на тензодатчик
         private void SetNewTenzoPressure(string val)
-        {           
-            tenzoState.Text = Convert.ToString((int)(double.Parse(val, System.Globalization.CultureInfo.InvariantCulture) * sTenzoCalFactor1)) + " " + gramm;
+        {
+            tenzoState.Text = Commands.ProcessTenzoValue(val, sTenzoCalFactor1) + " " + gramm;
         }
 
         // Сеттер напряжения
         private void SetNewVoltage(string val)
         {
-            voltageState.Text = val + " " + voltage;
+            voltageState.Text = Commands.ProcessValue(val, sVoltageCalFactor) + " " + voltage;
         }
 
-        // Сеттер напряжения
+        // Сеттер тока 1
         private void SetNewCurrent(string val)
         {
-            currentState.Text = val + " " + current;
+            currentState.Text = Commands.ProcessValue(val, sCurrentCalFactor1) + " " + current;
         }
 
-        // Сеттер напряжения
+        // Сеттер тока 2
         private void SetNewCurrent2(string val)
         {
-            currentState2.Text = val + " " + current;
+            currentState2.Text = Commands.ProcessValue(val, sCurrentCalFactor2) + " " + current;
         }
 
         // Сеттер скорости оборотов
         private void SetNewRpm(string val)
         {
             rpm_state.Text = val + " " + rpm;
+        }
+        
+        // Сеттер скорости оборотов
+        private void SetNewMoment(string val)
+        {
+            moment_state.Text = Commands.ProcessEngineMoment(val, sTenzoCalFactor2, sShoulder) + " " + nMm;
         }
 
         // Добавить новое значение на график 
@@ -387,6 +412,13 @@ namespace StandApp
         private void AddNewValueToWeightChart(double val)
         {
             weightPresInd.Value = val * sTenzoCalFactor1 / 1000.0;
+        }
+
+        // Установить номер строки в логе
+        private void SetStringNumber()
+        {
+            DynamicLogString++;
+            AddLog(DynamicLogString.ToString() + ". ");
         }
 
         // При получении данных с МК
@@ -444,6 +476,19 @@ namespace StandApp
                     }
                     else if (command == Commands.HX711.realPressure) // Если тензодатчик
                     {
+                        if (DynamicLog)
+                        {
+                            SetStringNumber();
+                            AddLog("PWM" + sLogSplitter + engineSpeedStateMcs.Text.Replace(microsec, "") + sLogSplitter);
+                            AddLog("RPM" + sLogSplitter + rpm_state.Text.Replace(rpm, "") + sLogSplitter);
+                            AddLog("TR" + sLogSplitter + tenzoState.Text.Replace(gramm, "") + sLogSplitter);
+                            AddLog("MOM" + sLogSplitter + moment_state.Text.Replace(nMm, "") + sLogSplitter);
+                            AddLog("CUR1" + sLogSplitter + currentState.Text.Replace(current, "") + sLogSplitter);
+                            if (IfCurrent2Enabled.Checked)
+                                AddLog("CUR2" + sLogSplitter + currentState2.Text.Replace(current, "") + sLogSplitter);
+                            AddLog("VOLT" + sLogSplitter + voltageState.Text.Replace(voltage, "") + "\n");
+                        }
+
                         // Установить значение
                         tenzoState.Invoke(SetTenzo, value);
 
@@ -454,6 +499,11 @@ namespace StandApp
                         {
                             mainChart.Invoke(AddVal, double.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
                         }
+                    }
+                    else if(command == Commands.HX711.momentPressure) // Если момент
+                    {
+                        // Установить значение
+                        moment_state.Invoke(SetMoment, value);
                     }
                     else if (command == Commands.Voltmeter.data) // Если вольтметр
                     {
@@ -490,16 +540,6 @@ namespace StandApp
                     }
                     else if (command == Commands.Engine.rpm) // Если скорость оборотов
                     {
-                        if(DynamicLog)
-                        {
-                            AddLog("ШИМ" + sLogSplitter + engineSpeedStateMcs.Text + sLogSplitter);
-                            AddLog("RPM" + sLogSplitter + rpm_state.Text + sLogSplitter);
-                            AddLog("Тяга" + sLogSplitter + tenzoState.Text + sLogSplitter);
-                            AddLog("Ток 1" + sLogSplitter + currentState.Text + sLogSplitter);
-                            AddLog("Ток 2" + sLogSplitter + currentState2.Text + sLogSplitter);
-                            AddLog("Напр." + sLogSplitter + voltageState.Text + "\n");
-                        }
-
                         // Установить значение
                         rpm_state.Invoke(SetRpm, value);
 
@@ -622,9 +662,17 @@ namespace StandApp
             if (DynamicLog)
             {              
                 DynamicLog = false;
+                DynamicLogString = 0;
+
                 logAcceptBtn.IconChar = FontAwesome.Sharp.IconChar.File;
 
+                DateTime dateTime = DateTime.Now;
+
+                AddLog("Конец:\n");
+                AddLog(dateTime.ToString("dd.MM.yyyy") + "\n" + dateTime.ToString("HH:mm:ss") + "\n");
+
                 AddLog("Динамичный лог " + (dLog_num - 1) + " окончен.\n");
+
                 logFileStream.Close();
             }
             else
@@ -636,6 +684,15 @@ namespace StandApp
                 logAcceptBtn.IconChar = FontAwesome.Sharp.IconChar.FileAlt;
 
                 AddLog("Динамичный лог " + dLog_num + "\n");
+
+                DateTime dateTime = DateTime.Now;
+
+                AddLog("Начало:\n");
+                AddLog(dateTime.ToString("dd.MM.yyyy") + "\n" + dateTime.ToString("HH:mm:ss") + "\n");
+
+                AddLog("Двигатель: " + sEngine + "\n");
+                AddLog("Регулятор: " + sEsc + "\n");
+                AddLog("Пропеллер: " + sProp + "\n");
 
                 dLog_num++;
             }
@@ -689,6 +746,7 @@ namespace StandApp
 
                 IsExp = true;
                 DynamicLog = false;
+                IsShowRealPresChart = true;
 
                 startExpOne.BackColor = System.Drawing.Color.BlueViolet;
                 startExpOne.IconChar = FontAwesome.Sharp.IconChar.PlaneDeparture;
@@ -712,6 +770,9 @@ namespace StandApp
                     AddLog("Конечный уровень ШИМ: " + Commands.Map(Convert.ToInt32(endUE_Exp.Text), 0, 100, sWorkInterval_low, sWorkInterval_high).ToString() + " " + microsec + "\n");
                     AddLog("Шаг: " + Convert.ToInt32(stepUE_Exp.Text).ToString() + " " + Percent + "\n");
                     AddLog("Интервал: " + Convert.ToInt32(intervalUE_Exp.Text).ToString() + " " + "с" + "\n");
+                    AddLog("Двигатель: " + sEngine + "\n");
+                    AddLog("Регулятор: " + sEsc + "\n");
+                    AddLog("Пропеллер: " + sProp + "\n");
                     AddLog("Атмосферные показатели:\n");
                     AddLog("Температура: " + tempState.Text + "\n");
                     AddLog("Влажность: " + humState.Text + "\n");
@@ -765,12 +826,14 @@ namespace StandApp
 
                 if (checkBoxLog.Checked)
                 {
-                    AddLog("ШИМ" + sLogSplitter + CurrentEngineWrite_Exp.ToString() + sLogSplitter);
-                    AddLog("RPM" + sLogSplitter + rpm_state.Text + sLogSplitter);
-                    AddLog("Тяга" + sLogSplitter + tenzoState.Text + sLogSplitter);
-                    AddLog("Ток 1" + sLogSplitter + currentState.Text + sLogSplitter);
-                    AddLog("Ток 2" + sLogSplitter + currentState2.Text + sLogSplitter);
-                    AddLog("Напр." + sLogSplitter + voltageState.Text + "\n");
+                    AddLog("PWM" + sLogSplitter + engineSpeedStateMcs.Text.Replace(microsec, "") + sLogSplitter);
+                    AddLog("RPM" + sLogSplitter + rpm_state.Text.Replace(rpm, "") + sLogSplitter);
+                    AddLog("TR" + sLogSplitter + tenzoState.Text.Replace(gramm, "") + sLogSplitter);
+                    AddLog("MOM" + sLogSplitter + moment_state.Text.Replace(nMm, "") + sLogSplitter);
+                    AddLog("CUR1" + sLogSplitter + currentState.Text.Replace(current, "") + sLogSplitter);
+                    if (IfCurrent2Enabled.Checked)
+                        AddLog("CUR2" + sLogSplitter + currentState2.Text.Replace(current, "") + sLogSplitter);
+                    AddLog("VOLT" + sLogSplitter + voltageState.Text.Replace(voltage, "") + "\n");
                 }
             }
             else
@@ -826,7 +889,7 @@ namespace StandApp
 
             PWM.ForeColor = System.Drawing.Color.DarkOrange;
 
-            engineTrackBar.Value = 0;
+            engineTrackBar.Value = engineTrackBar.Minimum;
         }
 
         /* Текстовые обработчики */

@@ -4,10 +4,10 @@
 
 /* Список команд */
 
-#define TEST_QUERY			"[Test connection]\n"
-#define WORK_MODE_ACTIVE	"[Work mode]\n"
-#define SHUTDOWN			"[Reset]\n"
-#define ENGINE_WRITE		"[Engine write]"
+#define TEST_QUERY		 "[Test connection]\n"
+#define WORK_MODE_ACTIVE "[Work mode]\n"
+#define SHUTDOWN		 "[Reset]\n"
+#define ENGINE_WRITE	 "[Engine write]"
 
 /*****************/
 
@@ -29,7 +29,8 @@
 
 /* HX711 */
 
-#define HX711_PRES "[HX 711 pressure]"
+#define HX711_PRES	 "[HX 711 pressure]"
+#define HX711_M_PRES "[HX 711 moment]"
 
 /*********/
 
@@ -48,7 +49,7 @@
 
 /* Скорость оборотов */
 
-#define RPM_DATA	"[RPM]"
+#define RPM_DATA "[RPM]"
 
 /*********************/
 

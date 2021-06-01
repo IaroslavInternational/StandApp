@@ -3,11 +3,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.Text.RegularExpressions;
 
 namespace StandApp
@@ -31,7 +26,8 @@ namespace StandApp
         // АЦП с тензодатчика
         public struct HX711
         {
-            public const string realPressure = "[HX 711 pressure]";  // Давление на тензодатчике
+            public const string realPressure =   "[HX 711 pressure]";  // Давление на тензодатчике
+            public const string momentPressure = "[HX 711 moment]";    // Момент (тензодатчик)
         }
 
         // Команды от
@@ -81,7 +77,21 @@ namespace StandApp
         public static int Map(int x, int in_min, int in_max, int out_min, int out_max)
         {
             return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }
 
+        public static string ProcessValue(string val, double koef)
+        {
+            return Convert.ToString((double.Parse(val, System.Globalization.CultureInfo.InvariantCulture) * koef));
+        }    
+        
+        public static string ProcessTenzoValue(string val, double koef)
+        {
+            return Convert.ToString((int)(double.Parse(val, System.Globalization.CultureInfo.InvariantCulture) * koef));
+        }
+
+        public static string ProcessEngineMoment(string val, double koef, double shoulder)
+        {
+            return Convert.ToString((int)(double.Parse(val, System.Globalization.CultureInfo.InvariantCulture) * koef * 9.81 * shoulder));
         }
     }
 }

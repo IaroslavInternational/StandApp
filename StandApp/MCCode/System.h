@@ -2,213 +2,234 @@
 
 #include "Headers/commands.h"
 
-/* Библиотеки для работы с АЦП HX711 */
+/* Библиотека для работы с АЦП */
+
+#include <Adafruit_INA219.h>
+
+ /******************************/
+
+/* Библиотека для работы с BMP180 */
+
+#include <Adafruit_BMP085.h>
+
+/*************************************/
+
+/* Библиотека для работы с HTU21D */
+
+#include "SparkFunHTU21D.h"
+
+/**********************************/
+
+/* Библиотека для работы с АЦП HX711 */
 
 #include <HX711.h>
 
 /*************************************/
 
-/* Библиотеки для работы с датчиком BMP/E 280 */
-
-#include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BME280.h>
-
-/**********************************************/
-
-/* Библиотека для работы с двигателем */
-
-#include <Servo.h>
-
-/**************************************/
-
-/* Библиотека для работы с передачей данных */
-
-#include "I2CTrans.h"
-
-/********************************************/
-
-/* Библиотека для работы с АЦП */
-
-#include <Protocentral_ADS1220.h>
-
- /******************************/
-
 /* Настройки */
-
-byte MY_ADDRESS = 42;					// Адрес платы
 
 /* Общие настройки */
 
-#define MODULES_UPDATE_TIME	 5000		// Время отправки данных переферийных модулей в мс
-#define DELAY_TIME			 1			// Время задержки выполнения программы в мс
+// Кол-во итерация считывания данных с INA219 для усреднения
+#define C_DELAY				 50	
+
+// Время отправки данных переферийных модулей в мс
+#define MODULES_UPDATE_TIME	 5000		
+
+// Время задержки выполнения программы в мс
+#define DELAY_TIME			 1			
 
 /*******************/
 
 /* Настройки подключения */
 
-#define S_BAUD_RATE			 9600		// Скорость обмена данными
-#define S_TIMEOUT			 10			// Время ожидания приёма данных
+// Скорость обмена данными c SerialPort
+#define S_BAUD_RATE			 9600	
+
+// Время ожидания приёма данных от SerialPort
+#define S_TIMEOUT			 10			
 
 /*************************/
 
 /* Цифровые пины */
 
-#define HX711_CLK			 6			// Пин clock для АЦП HX711
-#define HX711_DOUT			 7			// Пин данных для АЦП HX711
-#define ENGINE_PIN			 12			// Пин управления для двигателя
-#define ADS1220_DRDY_PIN	 4			// Пин для АЦП
-#define ADS1220_CS_PIN		 53			// Пин для АЦП
+// Пин clock для АЦП HX711 1
+#define HX711_CLK			 6			
+
+// Пин данных для АЦП HX711 1
+#define HX711_DOUT			 7			
+
+// Пин clock для АЦП HX711 2
+#define HX711_M_CLK			 10			
+
+// Пин данных для АЦП HX711 2
+#define HX711_M_DOUT		 11			
 
 /*****************/
 
 /* Аналоговые пины */
 
-#define V_PIN				 A5			// Пин вольтметра
+// Пин вольтметра
+#define V_PIN				 A0			
 
 /*******************/
 
 /* Шина I2C */
 
-#define BMP_E_ADR			 0x76		// Пин I2C для датчика BMP/E 280 (адрес)
+// 0x77 - BMP180
+// 0x40 - INA219
+
+// Скорость передачи по I2C 400 кБ/с
+#define	   I2CSpeed			 400000
+
+// Адрес I2C для Arduino nano
+#define	   NANO_ADR 		 0x20		
+
+// Адрес I2C для Arduino Uno
+#define    MAIN_ADDRESS 	 0x50		
 
 /************/
 
 /* Настройки модулей */
 
-#define HX711_CAL_FACTOR	 1.0f		// Калибровочный коэффициент для АЦП HX711
-#define HX711_SCALE			 0.035274f	// Коэффициент для перевода е. и. в граммы для АЦП HX711
-#define MAX_V				 50			// Максимальное измерямое напряжение в вольтах
-#define SHUNT_1_RESISTANCE	 0.0005		// Сопротивление первого шунта (R = U / I) в Ом
-#define SHUNT_2_RESISTANCE	 0.0005		// Сопротивление второго шунта (R = U / I) в Ом
-#define ENGINE_MIN_MCS		 1000		// Минимальный барьер ШИМ-сигнала для двигателя в мкс
-#define ENGINE_MAX_MCS		 2000		// Максимальный барьер ШИМ-сигнала для двигателя в мкс
-#define PGA					 1			// Коэф-т усиления АЦП
-#define VREF				 2.048		// Допустимое напряжение на входе
-#define VFSR				 VREF/PGA
-#define FULL_SCALE			 (((long int)1<<23)-1)
+// Калибровочный коэффициент для АЦП HX711
+#define HX711_CAL_FACTOR	 1.0f		
+
+// Коэффициент для перевода е. и. в граммы для АЦП HX711
+#define HX711_SCALE			 0.035274f	
+
+// Максимальное измерямое напряжение в вольтах
+#define MAX_V				 50			
+
+// Сопротивление первого шунта (R = U / I) в Ом
+#define SHUNT_1_RESISTANCE	 0.0005		
+
+// Сопротивление второго шунта (R = U / I) в Ом
+#define SHUNT_2_RESISTANCE	 0.0005		
 
 /*********************/
 
 /*************/
 
-// Объект управления АЦП HX711
-class hx711_adc
-{
-public:
-	hx711_adc(float cal_factor = HX711_CAL_FACTOR, float scale = HX711_SCALE);
-public:
-	void Setup(size_t data_pin = HX711_DOUT, size_t clock_pin = HX711_CLK);	// Установка АЦП HX711
-	void Process();															// Обработка и отправка данных
-private:
-	void SendData(String header, String value);								// Отправка данных
-private:
-	HX711 hx711;															// Объект АЦП	
-	float calibration_factor;												// Калибровочный множитель
-	float scale;															// Множитель для перевода в граммы
-	float units = 0.0f;														// Принятое значение
-	float kg_press = 0.0f;													// Давление в кг
-private:
-	bool IsHX_Valid = false;												// Если АЦП доступен
-};
-
-// Объект управления датчиком давления, влажности и температуры
-class bmp_e_280
-{
-public:
-	bmp_e_280() = default;
-public:
-	void Setup(size_t adr = BMP_E_ADR);			// Установка датчика BMP/E 280
-	void Process();								// Обработка и отправка данных
-private:
-	void SendData(String header, String value);	// Отправка данных
-private:
-	Adafruit_BME280 bme;						// Объект датчика
-private:
-	bool IsBMP_E_Valid = false;					// Если датчик доступен
-};
-
-// Объект управления двигателем
-class Engine
-{
-public:
-	Engine() = default;
-public:
-	void Setup(size_t pin = ENGINE_PIN);	// Установка двигателя
-	void Process();							// Обработка данных
-	void SetVal(size_t value);				// Установить принятое значение
-private:
-	Servo engine;							// Объект двигателя
-	size_t engine_value = 0;				// Принятое значение для ШИМ-сигнала
-	size_t new_value = 0;					// Масштабированное значение для ШИМ-сигнала
-private:
-	bool IsEngine_Valid = false;			// Если двигатель доступен
-};
-
-// Объект вольтметра
+// Вольтметр
 class voltmeter
 {
 public:
-	voltmeter(size_t pin = V_PIN);
+	voltmeter(uint8_t pin);
 public:
-	void Process();								// Обработка и отправка данных
+	void Process(String header);
 private:
-	void SendData(String header, String value);	// Отправка данных
-private:
-	bool IsVoltmeter_Vaild = false;				// Если вольтметр доступен
+	uint8_t pin;
 };
 
-// Объект амперметра
+// Амперметр
 class ampermeter
 {
 public:
-	ampermeter() = default;
-public:
 	void Setup();
-	void Process();
+public:
+	void Process(String header);
+	float GetVoltage();
 private:
-	void SendData(String header, String value);
-	float convertToMilliV(int32_t i32data);
-private:
-	Protocentral_ADS1220 pc_ads1220;
-	int32_t adc_data;
-private:
-	bool IsAmpermeter_Valid = false;
+	Adafruit_INA219 ina219;
 };
 
-// Объект обработчика скорости оборотов
+// Обработчик скорости оборотов
 class rpm_viewer
 {
 public:
-	rpm_viewer(byte adr = MY_ADDRESS);
+	void Process(String header);
+};
+
+// Менеджер датчика давления, влажности и температуры
+class BarHumManager
+{
 public:
-	void Process();
+	void Setup();					
+	void Process(String t_header, String p_header, String hum_header);	
 private:
-	void SendData(String header, String value);
+	Adafruit_BMP085 bmp;			
+	HTU21D htu;
 private:
-	bool IsRpm_Valid = false;
+	bool IsBMP_E_Valid = false;		
+};
+
+// Управление АЦП HX711
+class hx711_adc
+{
+public:
+	hx711_adc(float cal_factor, float scale);
+public:
+	void Setup(size_t data_pin, size_t clock_pin);	
+	void Process(String header);					
+private:
+	HX711 hx711;									
+	float calibration_factor;						
+	float scale;									
+	float units =	 0.0f;								
+	float kg_press = 0.0f;							
+private:
+	bool IsHX_Valid = false;						
+};
+
+// Управления двигателем
+class Engine
+{
+public:
+	void Process(const byte& adr);
+	void SetVal(int value);		
+private:
+	int engine_value = 0;		
+	int new_value = 0;			
+private:
+	bool IsEngine_Valid = false;
 };
 
 // Система управления
 class System
 {
 public:
-	System() = default;
+	System();
 public:	
-	void InitiliazeModules();												// Инициализация модулей
+	// Инициализатор модулей
+	void InitiliazeModules();												
 public:	
-	void PreProcess(size_t b_rate = S_BAUD_RATE, size_t t_out = S_TIMEOUT); // Предпроцесс, ожидание запуска
-	void ProcessCommands();													// Обработка входных команд
+	// Предпроцессор
+	void PreProcess(size_t b_rate = S_BAUD_RATE, size_t t_out = S_TIMEOUT); 
+
+	// Обработчик входных команд
+	void ProcessCommands();													
 public:
-	void Tick();															// Событие итерации
+	// Событие итерации
+	void Tick();															
 private:
-	hx711_adc tenzo;														// Тензодатчик
-	bmp_e_280 bmp;															// Датчик
-	Engine engine;															// Двигатель
-	voltmeter vm;															// Вольтметр
-	ampermeter am;															// Амперметр
-	rpm_viewer rpmv;														// Обработчик оборотов
+	// Тензодатчик 1
+	hx711_adc tenzo1;
+
+	// Тензодатчик 2
+	hx711_adc tenzo2;		
+
+	// Двигатель
+	Engine engine;															
+	
+	// Датчик давления, температуры и влажности
+	BarHumManager bmp;	
+
+	// Вольтметр
+	voltmeter vm;			
+
+	// Амперметр
+	ampermeter amp;			
+
+	// Обработчик оборотов
+	rpm_viewer rpmv;														
 private:
-	size_t current_modules_time = 4990;										// Текущий отсчёт времени перед отправкой данных переферийных модулей
-	String sub_command = "";												// Подкоманда 
+	// Текущий отсчёт времени перед отправкой данных переферийных модулей
+	size_t current_modules_time = 4990;			
+
+	// Текущий отсчёт времени перед усреднением данных с шунта
+	size_t current_time = 0;				
+
+	// Подкоманда 
+	String sub_command = "";												
 };

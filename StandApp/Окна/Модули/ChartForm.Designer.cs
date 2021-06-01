@@ -59,6 +59,10 @@
             this.showEngineChartBtn = new FontAwesome.Sharp.IconButton();
             this.weightPresInd = new LiveCharts.WinForms.AngularGauge();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.checkBoxLog = new System.Windows.Forms.CheckBox();
             this.intervalUE_Exp = new System.Windows.Forms.TextBox();
@@ -74,22 +78,21 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.stopAll = new FontAwesome.Sharp.IconButton();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.moment_state = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.IfCurrent2Enabled = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.currentState2 = new System.Windows.Forms.Label();
             this.rpm_state = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.voltageState = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.engineSpeedStateMcs = new System.Windows.Forms.Label();
             this.currentState = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.PWM = new System.Windows.Forms.Label();
             this.engineSpeedState = new System.Windows.Forms.Label();
             this.engineTrackBar = new System.Windows.Forms.TrackBar();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.chartMenu.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -500,10 +503,54 @@
             this.panel7.Controls.Add(this.label12);
             this.panel7.Controls.Add(this.label9);
             this.panel7.Controls.Add(this.startExpOne);
-            this.panel7.Location = new System.Drawing.Point(656, 349);
+            this.panel7.Location = new System.Drawing.Point(699, 349);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(209, 116);
+            this.panel7.Size = new System.Drawing.Size(166, 116);
             this.panel7.TabIndex = 16;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label18.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label18.Location = new System.Drawing.Point(96, 72);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(16, 20);
+            this.label18.TabIndex = 28;
+            this.label18.Text = "c";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label17.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label17.Location = new System.Drawing.Point(93, 50);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(22, 20);
+            this.label17.TabIndex = 27;
+            this.label17.Text = "%";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label16.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label16.Location = new System.Drawing.Point(93, 28);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(22, 20);
+            this.label16.TabIndex = 26;
+            this.label16.Text = "%";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label13.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label13.Location = new System.Drawing.Point(93, 6);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(22, 20);
+            this.label13.TabIndex = 22;
+            this.label13.Text = "%";
             // 
             // label15
             // 
@@ -634,9 +681,9 @@
             this.startExpOne.IconColor = System.Drawing.Color.Black;
             this.startExpOne.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.startExpOne.IconSize = 20;
-            this.startExpOne.Location = new System.Drawing.Point(117, 0);
+            this.startExpOne.Location = new System.Drawing.Point(121, 0);
             this.startExpOne.Name = "startExpOne";
-            this.startExpOne.Size = new System.Drawing.Size(92, 116);
+            this.startExpOne.Size = new System.Drawing.Size(45, 116);
             this.startExpOne.TabIndex = 2;
             this.startExpOne.UseVisualStyleBackColor = false;
             this.startExpOne.Click += new System.EventHandler(this.startExpOne_Click);
@@ -678,12 +725,15 @@
             // 
             this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(18)))), ((int)(((byte)(40)))));
+            this.panel6.Controls.Add(this.moment_state);
+            this.panel6.Controls.Add(this.label19);
+            this.panel6.Controls.Add(this.IfCurrent2Enabled);
             this.panel6.Controls.Add(this.label6);
             this.panel6.Controls.Add(this.currentState2);
             this.panel6.Controls.Add(this.rpm_state);
-            this.panel6.Controls.Add(this.label8);
             this.panel6.Controls.Add(this.voltageState);
             this.panel6.Controls.Add(this.label14);
+            this.panel6.Controls.Add(this.label8);
             this.panel6.Controls.Add(this.engineSpeedStateMcs);
             this.panel6.Controls.Add(this.currentState);
             this.panel6.Controls.Add(this.label7);
@@ -692,15 +742,49 @@
             this.panel6.Controls.Add(this.engineTrackBar);
             this.panel6.Location = new System.Drawing.Point(338, 349);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(312, 116);
+            this.panel6.Size = new System.Drawing.Size(358, 116);
             this.panel6.TabIndex = 11;
+            // 
+            // moment_state
+            // 
+            this.moment_state.AutoSize = true;
+            this.moment_state.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.moment_state.ForeColor = System.Drawing.Color.Gainsboro;
+            this.moment_state.Location = new System.Drawing.Point(77, 71);
+            this.moment_state.Name = "moment_state";
+            this.moment_state.Size = new System.Drawing.Size(57, 20);
+            this.moment_state.TabIndex = 27;
+            this.moment_state.Text = "50 Н*м";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label19.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label19.Location = new System.Drawing.Point(3, 71);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(68, 20);
+            this.label19.TabIndex = 26;
+            this.label19.Text = "Момент:";
+            // 
+            // IfCurrent2Enabled
+            // 
+            this.IfCurrent2Enabled.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.IfCurrent2Enabled.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.IfCurrent2Enabled.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.IfCurrent2Enabled.ForeColor = System.Drawing.Color.Gainsboro;
+            this.IfCurrent2Enabled.Location = new System.Drawing.Point(294, 72);
+            this.IfCurrent2Enabled.Name = "IfCurrent2Enabled";
+            this.IfCurrent2Enabled.Size = new System.Drawing.Size(16, 18);
+            this.IfCurrent2Enabled.TabIndex = 25;
+            this.IfCurrent2Enabled.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.label6.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label6.Location = new System.Drawing.Point(113, 92);
+            this.label6.Location = new System.Drawing.Point(190, 71);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(49, 20);
             this.label6.TabIndex = 21;
@@ -711,7 +795,7 @@
             this.currentState2.AutoSize = true;
             this.currentState2.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.currentState2.ForeColor = System.Drawing.Color.Gainsboro;
-            this.currentState2.Location = new System.Drawing.Point(166, 92);
+            this.currentState2.Location = new System.Drawing.Point(243, 71);
             this.currentState2.Name = "currentState2";
             this.currentState2.Size = new System.Drawing.Size(45, 20);
             this.currentState2.TabIndex = 20;
@@ -722,29 +806,18 @@
             this.rpm_state.AutoSize = true;
             this.rpm_state.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.rpm_state.ForeColor = System.Drawing.Color.Gainsboro;
-            this.rpm_state.Location = new System.Drawing.Point(209, 72);
+            this.rpm_state.Location = new System.Drawing.Point(245, 92);
             this.rpm_state.Name = "rpm_state";
             this.rpm_state.Size = new System.Drawing.Size(76, 20);
             this.rpm_state.TabIndex = 19;
             this.rpm_state.Text = "5000 об/с";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label8.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label8.Location = new System.Drawing.Point(167, 72);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(44, 20);
-            this.label8.TabIndex = 18;
-            this.label8.Text = "RPM:";
             // 
             // voltageState
             // 
             this.voltageState.AutoSize = true;
             this.voltageState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.voltageState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.voltageState.Location = new System.Drawing.Point(113, 72);
+            this.voltageState.Location = new System.Drawing.Point(113, 92);
             this.voltageState.Name = "voltageState";
             this.voltageState.Size = new System.Drawing.Size(38, 20);
             this.voltageState.TabIndex = 17;
@@ -755,18 +828,29 @@
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.label14.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label14.Location = new System.Drawing.Point(3, 92);
+            this.label14.Location = new System.Drawing.Point(190, 49);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(47, 20);
             this.label14.TabIndex = 16;
             this.label14.Text = "Ток 1:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
+            this.label8.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label8.Location = new System.Drawing.Point(190, 92);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(44, 20);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "RPM:";
             // 
             // engineSpeedStateMcs
             // 
             this.engineSpeedStateMcs.AutoSize = true;
             this.engineSpeedStateMcs.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.engineSpeedStateMcs.ForeColor = System.Drawing.Color.Gainsboro;
-            this.engineSpeedStateMcs.Location = new System.Drawing.Point(209, 49);
+            this.engineSpeedStateMcs.Location = new System.Drawing.Point(114, 50);
             this.engineSpeedStateMcs.Name = "engineSpeedStateMcs";
             this.engineSpeedStateMcs.Size = new System.Drawing.Size(70, 20);
             this.engineSpeedStateMcs.TabIndex = 15;
@@ -777,7 +861,7 @@
             this.currentState.AutoSize = true;
             this.currentState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.currentState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.currentState.Location = new System.Drawing.Point(56, 92);
+            this.currentState.Location = new System.Drawing.Point(243, 49);
             this.currentState.Name = "currentState";
             this.currentState.Size = new System.Drawing.Size(45, 20);
             this.currentState.TabIndex = 14;
@@ -788,7 +872,7 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.label7.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label7.Location = new System.Drawing.Point(3, 72);
+            this.label7.Location = new System.Drawing.Point(4, 92);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(103, 20);
             this.label7.TabIndex = 13;
@@ -801,16 +885,16 @@
             this.PWM.ForeColor = System.Drawing.Color.DarkOrange;
             this.PWM.Location = new System.Drawing.Point(3, 50);
             this.PWM.Name = "PWM";
-            this.PWM.Size = new System.Drawing.Size(104, 20);
+            this.PWM.Size = new System.Drawing.Size(51, 20);
             this.PWM.TabIndex = 9;
-            this.PWM.Text = "ШИМ-сигнал:";
+            this.PWM.Text = "ШИМ:";
             // 
             // engineSpeedState
             // 
             this.engineSpeedState.AutoSize = true;
             this.engineSpeedState.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
             this.engineSpeedState.ForeColor = System.Drawing.Color.Gainsboro;
-            this.engineSpeedState.Location = new System.Drawing.Point(113, 50);
+            this.engineSpeedState.Location = new System.Drawing.Point(60, 50);
             this.engineSpeedState.Name = "engineSpeedState";
             this.engineSpeedState.Size = new System.Drawing.Size(48, 20);
             this.engineSpeedState.TabIndex = 9;
@@ -822,55 +906,11 @@
             this.engineTrackBar.Location = new System.Drawing.Point(0, 0);
             this.engineTrackBar.Maximum = 100;
             this.engineTrackBar.Name = "engineTrackBar";
-            this.engineTrackBar.Size = new System.Drawing.Size(312, 45);
+            this.engineTrackBar.Size = new System.Drawing.Size(358, 45);
             this.engineTrackBar.TabIndex = 12;
             this.engineTrackBar.TickFrequency = 2;
             this.engineTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.engineTrackBar.ValueChanged += new System.EventHandler(this.engineTrackBar_ValueChanged);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label13.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label13.Location = new System.Drawing.Point(93, 6);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(22, 20);
-            this.label13.TabIndex = 22;
-            this.label13.Text = "%";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label16.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label16.Location = new System.Drawing.Point(93, 28);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(22, 20);
-            this.label16.TabIndex = 26;
-            this.label16.Text = "%";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label17.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label17.Location = new System.Drawing.Point(93, 50);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(22, 20);
-            this.label17.TabIndex = 27;
-            this.label17.Text = "%";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 11F);
-            this.label18.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label18.Location = new System.Drawing.Point(96, 72);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(16, 20);
-            this.label18.TabIndex = 28;
-            this.label18.Text = "c";
             // 
             // ChartForm
             // 
@@ -972,5 +1012,8 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox IfCurrent2Enabled;
+        private System.Windows.Forms.Label moment_state;
+        private System.Windows.Forms.Label label19;
     }
 }

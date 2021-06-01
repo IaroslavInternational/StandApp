@@ -1,13 +1,42 @@
 #include "System.h"
+#include "Headers\SpecialFuntions.hpp"
+
+// Массив с данными падения напряжения на шунте за 
+// C_DELAY итераций
+float cData[C_DELAY];
 
 /*   System stuff   */
 
+bool haveData = false;
+volatile int rpmvalue;
+
+void receiveEvent(int howMany)
+{
+	if (howMany >= (sizeof rpmvalue))
+	{
+		SpecialFunctions::I2C_read(rpmvalue);
+
+		haveData = true;
+	}
+}
+
+System::System()
+	:
+	tenzo1(HX711_CAL_FACTOR, HX711_SCALE),
+	tenzo2(HX711_CAL_FACTOR, HX711_SCALE),
+	vm(V_PIN)
+{
+	Wire.begin(MAIN_ADDRESS);
+	Wire.setClock(I2CSpeed);
+	Wire.onReceive(receiveEvent);
+}
+
 void System::InitiliazeModules()
 {
-	tenzo.Setup();
+	tenzo1.Setup(HX711_DOUT, HX711_CLK);
+	tenzo2.Setup(HX711_M_DOUT, HX711_M_CLK);
 	bmp.Setup();
-	engine.Setup();
-	am.Setup();
+	amp.Setup();
 }
 
 void System::PreProcess(size_t b_rate, size_t t_out)
@@ -70,21 +99,76 @@ void System::Tick()
 
 	if (current_modules_time == MODULES_UPDATE_TIME)
 	{
-		bmp.Process();
+		bmp.Process(BMP_E_TEMP, BMP_E_PRES, BMP_E_HUM);
 
 		current_modules_time = 0;
 	}
-	else
+
+	cData[current_time] = amp.GetVoltage();
+	current_time = current_time + DELAY_TIME;
+
+	if (current_time == C_DELAY)
 	{
-		rpmv.Process();
-		am.Process();
-		vm.Process();
-		tenzo.Process();
-		engine.Process();
+		amp.Process(A0_DATA);
+
+		current_time = 0;
 	}
+
+	engine.Process(NANO_ADR);
+	tenzo1.Process(HX711_PRES);
+	tenzo2.Process(HX711_M_PRES);
+	rpmv.Process(RPM_DATA);
+	vm.Process(V_DATA);
 }
 
 /* end System stuff */
+
+/*   BMP180 stuff   */
+
+void BarHumManager::Setup()
+{
+	if (!bmp.begin())
+	{
+		Serial.println(BMP_E_NOT_VALID);
+	}
+	else
+	{
+		Serial.println(BMP_E_VALID);
+		IsBMP_E_Valid = true;
+	}
+
+	htu.begin();
+}
+
+void BarHumManager::Process(String t_header, String p_header, String hum_header)
+{
+	if (IsBMP_E_Valid)
+	{
+		SpecialFunctions::SendData(t_header, (String)bmp.readTemperature());
+		SpecialFunctions::SendData(p_header, (String)(bmp.readPressure() / 997.5));
+		SpecialFunctions::SendData(hum_header, (String)htu.readHumidity());
+	}
+}
+
+/* end BMP180 stuff */
+
+/*   Engine stuff   */
+
+void Engine::Process(const byte& adr)
+{
+	new_value = map(engine_value, 0, 100, 544, 2400);
+
+	Wire.beginTransmission(adr);
+	SpecialFunctions::I2C_write(new_value);
+	Wire.endTransmission();
+}
+
+void Engine::SetVal(int value)
+{
+	engine_value = value;
+}
+
+/* end Engine stuff */
 
 /*   HX 711 stuff   */
 
@@ -100,223 +184,69 @@ void hx711_adc::Setup(size_t data_pin, size_t clock_pin)
 	hx711.begin(data_pin, clock_pin);
 	hx711.set_scale(calibration_factor);
 	hx711.tare();
-
-	IsHX_Valid = true;
 }
 
-void hx711_adc::SendData(String header, String value)
+void hx711_adc::Process(String header)
 {
-	Serial.print(header);
-	Serial.print(SPLITTER_SIGN);
-	Serial.print(value);
+	units = hx711.get_units(), 10;
 
-	Serial.println();
-}
-
-void hx711_adc::Process()
-{
-	if (IsHX_Valid)
+	if (units < 0)
 	{
-		units = hx711.get_units(), 10;
-
-		if (units < 0)
-		{
-			units = 0.00;
-		}
-
-		kg_press = units * scale;
-
-		SendData(HX711_PRES, (String)kg_press);
+		units = 0.00;
 	}
+
+	kg_press = units * scale;
+
+	SpecialFunctions::SendData(header, (String)kg_press);
 }
 
 /* end HX 711 stuff */
 
-/*   BMP/E 280 stuff   */
-
-void bmp_e_280::Setup(size_t adr)
-{
-	if (!bme.begin(adr))
-	{
-		Serial.println(BMP_E_NOT_VALID);
-	}
-	else
-	{
-		Serial.println(BMP_E_VALID);
-		IsBMP_E_Valid = true;
-	}
-}
-
-void bmp_e_280::SendData(String header, String value)
-{
-	Serial.print(header);
-	Serial.print(SPLITTER_SIGN);
-	Serial.print(value);
-
-	Serial.println();
-}
-
-void bmp_e_280::Process()
-{
-	if (IsBMP_E_Valid)
-	{
-		SendData(BMP_E_TEMP, (String)bme.readTemperature());
-		SendData(BMP_E_PRES, (String)(bme.readPressure() / 997.5));
-		SendData(BMP_E_HUM,  (String)bme.readHumidity());
-	}
-}
-
-/* end BMP/E 280 stuff */
-
-/*   Engine stuff   */
-
-void Engine::Setup(size_t pin)
-{
-	engine.attach(pin);
-
-	if (engine.attached())
-	{
-		IsEngine_Valid = true;
-	}
-}
-
-void Engine::Process()
-{
-	if (IsEngine_Valid)
-	{
-		new_value = map(engine_value, 0, 100, ENGINE_MIN_MCS, ENGINE_MAX_MCS);
-		engine.writeMicroseconds(new_value);
-	}
-}
-
-void Engine::SetVal(size_t value)
-{
-	engine_value = value;
-}
-
-/* end Engine stuff */
-
 /*   voltmeter stuff   */
 
-voltmeter::voltmeter(size_t pin)
+voltmeter::voltmeter(uint8_t pin)
 {
 	pinMode(pin, INPUT);
-
-	IsVoltmeter_Vaild = true;
 }
 
-void voltmeter::SendData(String header, String value)
+void voltmeter::Process(String header)
 {
-	Serial.print(header);
-	Serial.print(SPLITTER_SIGN);
-	Serial.print(value);
-
-	Serial.println();
-}
-
-void voltmeter::Process()
-{
-	if (IsVoltmeter_Vaild)
-	{
-		SendData(V_DATA, (String)map(analogRead(V_PIN), 0, 1024, 0, MAX_V));
-	}
+	SpecialFunctions::SendData(header, (String)map(analogRead(this->pin), 0, 1023, 0, MAX_V));
 }
 
 /* end voltmeter stuff */
 
 /*   ampermeter stuff   */
 
-volatile bool drdyIntrFlag = true;
-
-void drdyInterruptHndlr()
-{
-	drdyIntrFlag = true;
-}
-
-void enableInterruptPin()
-{
-	attachInterrupt(digitalPinToInterrupt(ADS1220_DRDY_PIN), drdyInterruptHndlr, FALLING);
-}
-
 void ampermeter::Setup()
 {
-	pc_ads1220.begin(ADS1220_CS_PIN, ADS1220_DRDY_PIN);
-
-	pc_ads1220.set_data_rate(DR_330SPS);
-	pc_ads1220.set_pga_gain(PGA_GAIN_1);
-
-	pc_ads1220.set_conv_mode_single_shot(); 
+	if (!ina219.begin()) {
+		Serial.println("Failed to find INA219 chip");
+	}
 }
 
-void ampermeter::Process()
+void ampermeter::Process(String header)
 {
-	adc_data = pc_ads1220.Read_SingleShot_SingleEnded_WaitForData(MUX_SE_CH0);
-
-	if(convertToMilliV(adc_data) != 0.0)
-		SendData(A0_DATA, (String)(convertToMilliV(adc_data) / SHUNT_1_RESISTANCE / 1000));
-
-	adc_data = pc_ads1220.Read_SingleShot_SingleEnded_WaitForData(MUX_SE_CH1);
-
-	if (convertToMilliV(adc_data) != 0.0)
-		SendData(A1_DATA, (String)(convertToMilliV(adc_data) / SHUNT_2_RESISTANCE / 1000));
+	SpecialFunctions::SendData(header, (String)SpecialFunctions::mean(cData, C_DELAY));
 }
 
-void ampermeter::SendData(String header, String value)
+float ampermeter::GetVoltage()
 {
-	Serial.print(header);
-	Serial.print(SPLITTER_SIGN);
-	Serial.print(value);
-
-	Serial.println();
-}
-
-float ampermeter::convertToMilliV(int32_t i32data)
-{
-	return (float)((i32data * VFSR * 1000) / FULL_SCALE);
+	return ina219.getShuntVoltage_mV();
 }
 
 /* end ampermeter stuff */
 
 /*   rpm stuff   */
 
-bool haveData = false;
-volatile int rpmvalue;
-
-void receiveEvent(int howMany)
+void rpm_viewer::Process(String header)
 {
-	if (howMany >= (sizeof rpmvalue))
-	{
-		I2C_read(rpmvalue);
-
-		haveData = true;
-	}
-}
-
-rpm_viewer::rpm_viewer(byte adr)
-{
-	Wire.begin(adr);
-	Wire.onReceive(receiveEvent);
-
-	IsRpm_Valid = true;
-}
-
-void rpm_viewer::Process()
-{
-	if (IsRpm_Valid && haveData)
+	if (haveData)
 	{	
-		SendData(RPM_DATA, (String)rpmvalue);
+		SpecialFunctions::SendData(header, (String)rpmvalue);
 
 		haveData = false;
 	}
-}
-
-void rpm_viewer::SendData(String header, String value)
-{
-	Serial.print(header);
-	Serial.print(SPLITTER_SIGN);
-	Serial.print(value);
-
-	Serial.println();
 }
 
 /* end rpm stuff */

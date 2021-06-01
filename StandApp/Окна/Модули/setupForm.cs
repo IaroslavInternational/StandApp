@@ -14,13 +14,19 @@ namespace StandApp
         public int    BaudRate;
         public int    Timeout;
         public double TenzoCalFactor1;
-        public double TenzoCalFactor2;
+        public double TenzoCalFactor2;      
+        public double CurrentCalFactor1;
+        public double CurrentCalFactor2;
+        public double VoltageCalFactor;
         public string LogSplitter;
         public int    WorkInterval_low;
         public int    WorkInterval_high;
         public bool   IsChartAnimationActive;
         public int    WeightChartMax;
         public double Shoulder;
+        public string prop;
+        public string engine;
+        public string esc;
     }
 
     // Форма настроек и тестирования подключения
@@ -44,7 +50,25 @@ namespace StandApp
         
         private bool IsSuccessLoad;             // Если порты добавлены
         private const int AllowedLines = 19;    // Максимум строк в логе
-        
+
+        private string sPortName;
+        private int sBaudRate;
+        private int sTimeout;
+        private double sTenzoCalFactor1;
+        private double sTenzoCalFactor2;    
+        private double sCurrentCalFactor1;
+        private double sCurrentCalFactor2;
+        private double sVoltageCalFactor;
+        private string sLogSplitter;
+        private int sWorkInterval_low;
+        private int sWorkInterval_high;
+        private bool sIsChartAnimationActive;
+        private int sWeightChartMax;
+        private double sShoulder;
+        public string sprop;
+        public string sengine;
+        public string sesc;
+
         // Экземпляр данных
         private ConnectionData data = new ConnectionData();
 
@@ -150,6 +174,68 @@ namespace StandApp
         // Сохранение настроек
         private void SaveConnectionSettings()
         {
+            string rawData = "";
+            bool IsFileExisting = false;
+
+            try
+            {
+                // чтение из файла
+                using (FileStream fstream = File.OpenRead("connection settings.json"))
+                {
+                    byte[] array = new byte[fstream.Length];
+
+                    fstream.Read(array, 0, array.Length);
+                    rawData = System.Text.Encoding.Default.GetString(array);
+
+                    IsFileExisting = true;
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                IsFileExisting = false;
+
+                Errors.ShowMessage(Errors.checkSettings);
+            }
+
+            if (IsFileExisting)
+            {
+                ConnectionData data1 = JsonConvert.DeserializeObject<ConnectionData>(rawData);
+
+                sPortName = data1.PortName;
+                sBaudRate = data1.BaudRate;
+                sTimeout = data1.Timeout;
+                sTenzoCalFactor1 = data1.TenzoCalFactor1;
+                sTenzoCalFactor2 = data1.TenzoCalFactor2;  
+                sCurrentCalFactor1 = data1.CurrentCalFactor1;
+                sCurrentCalFactor2 = data1.CurrentCalFactor2;
+                sVoltageCalFactor = data1.VoltageCalFactor;
+                sLogSplitter = data1.LogSplitter;
+                sWorkInterval_low = data1.WorkInterval_low;
+                sWorkInterval_high = data1.WorkInterval_high;
+                sIsChartAnimationActive = data1.IsChartAnimationActive;
+                sWeightChartMax = data1.WeightChartMax;
+                sShoulder = data1.Shoulder;
+                sprop = data1.prop;
+                sengine = data1.engine;
+                sesc = data1.esc;
+            }
+
+            data.Timeout = sTimeout;
+            data.TenzoCalFactor1 = sTenzoCalFactor1;      
+            data.TenzoCalFactor2 = sTenzoCalFactor2;   
+            data.CurrentCalFactor1 = sCurrentCalFactor1;      
+            data.CurrentCalFactor2 = sCurrentCalFactor2;
+            data.VoltageCalFactor = sVoltageCalFactor;
+            data.LogSplitter = sLogSplitter;
+            data.WorkInterval_low = sWorkInterval_low;
+            data.WorkInterval_high = sWorkInterval_high;
+            data.IsChartAnimationActive = sIsChartAnimationActive;
+            data.WeightChartMax = sWeightChartMax;
+            data.Shoulder = sShoulder;
+            data.prop = sprop;
+            data.engine = sengine;
+            data.esc = sesc;
+
             string json = JsonConvert.SerializeObject(data);
 
             // запись в файл
