@@ -5,6 +5,10 @@
 // C_DELAY итераций
 float cData[C_DELAY];
 
+// Массив с данными тяги двигателя за 
+// T_DELAY итераций
+float tData[T_DELAY];
+
 /*   System stuff   */
 
 bool haveData = false;
@@ -114,8 +118,17 @@ void System::Tick()
 		current_time = 0;
 	}
 
+	tData[current_time] = tenzo1.GetUnits();
+	current_t_time = current_t_time + DELAY_TIME;
+
+	if (current_t_time == T_DELAY)
+	{
+		tenzo1.Process(HX711_PRES);
+
+		current_t_time = 0;
+	}
+
 	engine.Process(NANO_ADR);
-	tenzo1.Process(HX711_PRES);
 	tenzo2.Process(HX711_M_PRES);
 	rpmv.Process(RPM_DATA);
 	vm.Process(V_DATA);
@@ -188,6 +201,11 @@ void hx711_adc::Setup(size_t data_pin, size_t clock_pin)
 
 void hx711_adc::Process(String header)
 {
+	SpecialFunctions::SendData(header, (String)SpecialFunctions::mean(tData, T_DELAY));
+}
+
+float hx711_adc::GetUnits()
+{
 	units = hx711.get_units(), 10;
 
 	if (units < 0)
@@ -195,9 +213,9 @@ void hx711_adc::Process(String header)
 		units = 0.00;
 	}
 
-	kg_press = units * scale;
+	kg_press = units* scale;
 
-	SpecialFunctions::SendData(header, (String)kg_press);
+	return kg_press;
 }
 
 /* end HX 711 stuff */

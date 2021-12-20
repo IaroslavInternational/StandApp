@@ -33,6 +33,9 @@
 // Кол-во итерация считывания данных с INA219 для усреднения
 #define C_DELAY				 50	
 
+// Кол-во итерация считывания данных с HX711 для усреднения
+#define T_DELAY				 10	
+
 // Время отправки данных переферийных модулей в мс
 #define MODULES_UPDATE_TIME	 5000		
 
@@ -161,7 +164,8 @@ public:
 	hx711_adc(float cal_factor, float scale);
 public:
 	void Setup(size_t data_pin, size_t clock_pin);	
-	void Process(String header);					
+	void Process(String header);			
+	float GetUnits();
 private:
 	HX711 hx711;									
 	float calibration_factor;						
@@ -228,7 +232,10 @@ private:
 	size_t current_modules_time = 4990;			
 
 	// Текущий отсчёт времени перед усреднением данных с шунта
-	size_t current_time = 0;				
+	size_t current_time = 0;			
+
+	// Текущий отсчёт времени перед усреднением данных тяги
+	size_t current_t_time = 0;
 
 	// Подкоманда 
 	String sub_command = "";												
